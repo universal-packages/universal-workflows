@@ -46,7 +46,7 @@ describe(Workflow, (): void => {
     expect(listener.mock.calls).toEqual([[{ event: 'error', error: new Error('Routine "test1" has a circular dependency all the way to "test2".') }]])
   })
 
-  it('throws if routines depends on an unresistant routine', async (): Promise<void> => {
+  it('throws if routines depends on an nonexistent routine', async (): Promise<void> => {
     const workflow = new Workflow({
       stepUsableLocation: './tests/__fixtures__/cases',
       target: 'spawn',

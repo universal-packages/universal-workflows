@@ -87,7 +87,7 @@ describe(Step, (): void => {
       expect(step.graph).toEqual({
         command: null,
         endedAt: expect.any(Date),
-        error: 'Step failed\n\nThis Step was failed purposely',
+        error: 'This Step was failed purposely',
         measurement: expect.any(Measurement),
         name: null,
         output: 'This is step is about to fail\n',
@@ -99,8 +99,8 @@ describe(Step, (): void => {
       expect(listener.mock.calls).toEqual([
         [{ event: 'running', payload: { startedAt: expect.any(Date) } }],
         [{ event: 'output', payload: { data: 'This is step is about to fail\n' } }],
-        [{ event: 'failure', error: new Error('Step failed\n\nThis Step was failed purposely'), measurement: expect.any(Measurement) }],
-        [{ event: 'end', error: new Error('Step failed\n\nThis Step was failed purposely'), measurement: expect.any(Measurement), payload: { endedAt: expect.any(Date) } }]
+        [{ event: 'failure', error: new Error('This Step was failed purposely'), measurement: expect.any(Measurement) }],
+        [{ event: 'end', error: new Error('This Step was failed purposely'), measurement: expect.any(Measurement), payload: { endedAt: expect.any(Date) } }]
       ])
     })
 
@@ -118,8 +118,8 @@ describe(Step, (): void => {
       expect(listener.mock.calls).toEqual([
         [{ event: 'running', payload: { startedAt: expect.any(Date) } }],
         [{ event: 'output', payload: { data: 'This is step is about to throw an error\n' } }],
-        [{ event: 'failure', error: new Error('Step failed\n\nUnexpected error'), measurement: expect.any(Measurement) }],
-        [{ event: 'end', error: new Error('Step failed\n\nUnexpected error'), measurement: expect.any(Measurement), payload: { endedAt: expect.any(Date) } }]
+        [{ event: 'failure', error: new Error('Unexpected error'), measurement: expect.any(Measurement) }],
+        [{ event: 'end', error: new Error('Unexpected error'), measurement: expect.any(Measurement), payload: { endedAt: expect.any(Date) } }]
       ])
     })
 
@@ -186,7 +186,7 @@ describe(Step, (): void => {
       expect(step.graph).toEqual({
         command: null,
         endedAt: expect.any(Date),
-        error: 'Step stopped',
+        error: 'Step was stopped',
         measurement: expect.any(Measurement),
         name: null,
         output:
@@ -206,13 +206,13 @@ describe(Step, (): void => {
         ],
         [{ event: 'stopping' }],
         [{ event: 'output', payload: { data: 'The good step was stopped before it could finish\n' } }],
-        [{ event: 'stopped', error: new Error('Step stopped'), measurement: expect.any(Measurement) }],
-        [{ event: 'end', error: new Error('Step stopped'), measurement: expect.any(Measurement), payload: { endedAt: expect.any(Date) } }]
+        [{ event: 'stopped', error: new Error('Step was stopped'), measurement: expect.any(Measurement) }],
+        [{ event: 'end', error: new Error('Step was stopped'), measurement: expect.any(Measurement), payload: { endedAt: expect.any(Date) } }]
       ])
     })
 
     it('complains when no an invalid use name is provided', async (): Promise<void> => {
-      const step = new Step({ use: 'unresistant' })
+      const step = new Step({ use: 'nonexistent' })
       const listener = jest.fn()
 
       step.on('*', listener)
@@ -221,7 +221,7 @@ describe(Step, (): void => {
 
       expect(step.status).toEqual(Status.Error)
 
-      expect(listener.mock.calls).toEqual([[{ event: 'error', error: new Error('No usable step with the name unresistant found') }]])
+      expect(listener.mock.calls).toEqual([[{ event: 'error', error: new Error('No usable step with the name nonexistent found') }]])
     })
 
     it('is able to execute sub processes withing the usable', async (): Promise<void> => {

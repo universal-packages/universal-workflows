@@ -74,7 +74,7 @@ index.ts\n`,
     })
 
     expect(listener.mock.calls).toEqual([
-      [{ event: 'step:running', payload: { index: 0, routine: 'r-test' } }],
+      [{ event: 'step:running', payload: { index: 0 } }],
       [{ event: 'running', payload: { startedAt: expect.any(Date) } }],
       [
         {
@@ -86,13 +86,12 @@ Step
 Workflow
 __fixtures__
 setup.ts\n`,
-            index: 0,
-            routine: 'r-test'
+            index: 0
           }
         }
       ],
-      [{ event: 'step:success', measurement: expect.any(Measurement), payload: { index: 0, routine: 'r-test' } }],
-      [{ event: 'step:running', payload: { index: 1, routine: 'r-test' } }],
+      [{ event: 'step:success', payload: { index: 0 } }],
+      [{ event: 'step:running', payload: { index: 1 } }],
       [
         {
           event: 'step:output',
@@ -107,12 +106,11 @@ Workflow.schema.ts
 Workflow.ts
 Workflow.types.ts
 index.ts\n`,
-            index: 1,
-            routine: 'r-test'
+            index: 1
           }
         }
       ],
-      [{ event: 'step:success', measurement: expect.any(Measurement), payload: { index: 1, routine: 'r-test' } }],
+      [{ event: 'step:success', payload: { index: 1 } }],
       [{ event: 'success', measurement: expect.any(Measurement) }],
       [{ event: 'end', measurement: expect.any(Measurement), payload: { endedAt: expect.any(Date) } }]
     ])

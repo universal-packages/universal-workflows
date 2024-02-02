@@ -94,13 +94,13 @@ describe(Step, (): void => {
     })
 
     it('is prepared for when the command fails', async (): Promise<void> => {
-      const step = new Step({ run: 'sleep f', target: { engine: 'spawn' } })
+      const step = new Step({ run: 'git clone nonexistent', target: { engine: 'spawn' } })
       const listener = jest.fn()
 
       step.on('*', listener)
 
       expect(step.graph).toEqual({
-        command: 'sleep f',
+        command: 'git clone nonexistent',
         endedAt: null,
         error: null,
         measurement: null,
@@ -114,14 +114,14 @@ describe(Step, (): void => {
       await step.run()
 
       expect(step.status).toEqual(Status.Failure)
-      expect(step.output).toEqual('usage: sleep seconds\n')
+      expect(step.output).toEqual("fatal: repository 'nonexistent' does not exist\n")
       expect(step.graph).toEqual({
-        command: 'sleep f',
+        command: 'git clone nonexistent',
         endedAt: expect.any(Date),
-        error: 'Step failed\n\nProcess exited with code 1\n\nusage: sleep seconds\n',
+        error: "Process exited with code 128\n\nfatal: repository 'nonexistent' does not exist\n",
         measurement: expect.any(Measurement),
         name: null,
-        output: 'usage: sleep seconds\n',
+        output: "fatal: repository 'nonexistent' does not exist\n",
         startedAt: expect.any(Date),
         status: Status.Failure,
         usable: null
@@ -129,12 +129,12 @@ describe(Step, (): void => {
 
       expect(listener.mock.calls).toEqual([
         [{ event: 'running', payload: { startedAt: expect.any(Date) } }],
-        [{ event: 'output', payload: { data: 'usage: sleep seconds\n' } }],
-        [{ event: 'failure', error: new Error('Step failed\n\nProcess exited with code 1\n\nusage: sleep seconds\n'), measurement: expect.any(Measurement) }],
+        [{ event: 'output', payload: { data: "fatal: repository 'nonexistent' does not exist\n" } }],
+        [{ event: 'failure', error: new Error("Process exited with code 128\n\nfatal: repository 'nonexistent' does not exist\n"), measurement: expect.any(Measurement) }],
         [
           {
             event: 'end',
-            error: new Error('Step failed\n\nProcess exited with code 1\n\nusage: sleep seconds\n'),
+            error: new Error("Process exited with code 128\n\nfatal: repository 'nonexistent' does not exist\n"),
             measurement: expect.any(Measurement),
             payload: { endedAt: expect.any(Date) }
           }
@@ -197,7 +197,7 @@ describe(Step, (): void => {
       expect(step.graph).toEqual({
         command: 'sleep 10',
         endedAt: expect.any(Date),
-        error: 'Step stopped',
+        error: 'Step was stopped',
         measurement: expect.any(Measurement),
         name: null,
         output: null,
@@ -209,8 +209,8 @@ describe(Step, (): void => {
       expect(listener.mock.calls).toEqual([
         [{ event: 'running', payload: { startedAt: expect.any(Date) } }],
         [{ event: 'stopping' }],
-        [{ event: 'stopped', error: new Error('Step stopped'), measurement: expect.any(Measurement) }],
-        [{ event: 'end', error: new Error('Step stopped'), measurement: expect.any(Measurement), payload: { endedAt: expect.any(Date) } }]
+        [{ event: 'stopped', error: new Error('Step was stopped'), measurement: expect.any(Measurement) }],
+        [{ event: 'end', error: new Error('Step was stopped'), measurement: expect.any(Measurement), payload: { endedAt: expect.any(Date) } }]
       ])
     })
 

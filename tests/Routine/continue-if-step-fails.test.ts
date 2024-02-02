@@ -8,7 +8,7 @@ describe(Routine, (): void => {
   it('continues if a step fails if it was expected to', async (): Promise<void> => {
     const routine = new Routine({
       name: 'r-test',
-      steps: [{ run: 'sleep c', onFailure: OnFailureAction.Continue }, { use: 'good' }],
+      steps: [{ run: 'git clone nonexistent', onFailure: OnFailureAction.Continue }, { use: 'good' }],
       usableMap: { good: GoodUsable },
       target: { engine: 'spawn' }
     })
@@ -36,12 +36,12 @@ describe(Routine, (): void => {
       status: Status.Success,
       steps: [
         {
-          command: 'sleep c',
+          command: 'git clone nonexistent',
           endedAt: expect.any(Date),
-          error: 'Step failed\n\nProcess exited with code 1\n\nusage: sleep seconds\n',
+          error: "Process exited with code 128\n\nfatal: repository 'nonexistent' does not exist\n",
           measurement: expect.any(Measurement),
           name: null,
-          output: 'usage: sleep seconds\n',
+          output: "fatal: repository 'nonexistent' does not exist\n",
           startedAt: expect.any(Date),
           status: Status.Failure,
           usable: null
@@ -61,20 +61,19 @@ describe(Routine, (): void => {
     })
 
     expect(listener.mock.calls).toEqual([
-      [{ event: 'step:running', payload: { index: 0, routine: 'r-test' } }],
+      [{ event: 'step:running', payload: { index: 0 } }],
       [{ event: 'running', payload: { startedAt: expect.any(Date) } }],
-      [{ event: 'step:output', payload: { data: 'usage: sleep seconds\n', index: 0, routine: 'r-test' } }],
+      [{ event: 'step:output', payload: { index: 0, data: "fatal: repository 'nonexistent' does not exist\n" } }],
       [
         {
           event: 'step:failure',
-          error: new Error('Step failed\n\nProcess exited with code 1\n\nusage: sleep seconds\n'),
-          measurement: expect.any(Measurement),
-          payload: { index: 0, routine: 'r-test' }
+          error: new Error("Process exited with code 128\n\nfatal: repository 'nonexistent' does not exist\n"),
+          payload: { index: 0 }
         }
       ],
-      [{ event: 'step:running', payload: { index: 1, routine: 'r-test' } }],
-      [{ event: 'step:output', payload: { data: 'This is a good step, using env: undefined, scope: undefined, and with: undefined\n', index: 1, routine: 'r-test' } }],
-      [{ event: 'step:success', measurement: expect.any(Measurement), payload: { index: 1, routine: 'r-test' } }],
+      [{ event: 'step:running', payload: { index: 1 } }],
+      [{ event: 'step:output', payload: { data: 'This is a good step, using env: undefined, scope: undefined, and with: undefined\n', index: 1 } }],
+      [{ event: 'step:success', payload: { index: 1 } }],
       [{ event: 'success', measurement: expect.any(Measurement) }],
       [{ event: 'end', measurement: expect.any(Measurement), payload: { endedAt: expect.any(Date) } }]
     ])

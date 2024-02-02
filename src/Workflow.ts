@@ -157,7 +157,7 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
           this.internalStatus = Status.Success
         } else if (this.anyRunDescriptorStopped()) {
           this.internalStatus = Status.Stopped
-          this.internalError = new Error('Workflow stopped')
+          this.internalError = new Error('Workflow was stopped')
         } else {
           this.internalStatus = Status.Failure
           this.internalError = new Error(`Workflow failed`)
@@ -179,7 +179,7 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
     try {
       this.listenTo(runDescriptor.routine, 'step:*', {
         reducers: (reducible: any) => {
-          reducible.data.payload = { ...reducible.data.payload, name: runDescriptor.name }
+          reducible.data[0].payload = { ...reducible.data[0].payload, routine: runDescriptor.name }
         }
       })
 
@@ -187,14 +187,14 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
 
       runDescriptor.status = RunDescriptorStatus.Success
 
-      this.emit(`routine:${Status.Success}`, { measurement: runDescriptor.routine.measurement, payload: { name: runDescriptor.name } })
+      this.emit(`routine:${Status.Success}`, { payload: { name: runDescriptor.name } })
 
       if (this.allRunDescriptorsDone()) {
         if (this.allRunDescriptorsSucceeded()) {
           this.internalStatus = Status.Success
         } else if (this.anyRunDescriptorStopped()) {
           this.internalStatus = Status.Stopped
-          this.internalError = new Error('Workflow stopped')
+          this.internalError = new Error('Workflow was stopped')
         } else {
           this.internalStatus = Status.Failure
           this.internalError = new Error(`Workflow failed`)
@@ -205,7 +205,7 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
         this.runDependents(runDescriptor)
       }
     } catch (error) {
-      this.emit(`routine:${runDescriptor.routine.status}`, { error, measurement: runDescriptor.routine.measurement, payload: { name: runDescriptor.name } })
+      this.emit(`routine:${runDescriptor.routine.status}`, { error, payload: { name: runDescriptor.name } })
 
       if (runDescriptor.routineDescriptor.onFailure === OnFailureAction.Continue) {
         runDescriptor.status = RunDescriptorStatus.Success
@@ -234,7 +234,7 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
         if (this.allRunDescriptorsDone()) {
           if (this.anyRunDescriptorStopped()) {
             this.internalStatus = Status.Stopped
-            this.internalError = new Error('Workflow stopped')
+            this.internalError = new Error('Workflow was stopped')
           } else {
             this.internalStatus = Status.Failure
             this.internalError = new Error(`Workflow failed`)
@@ -328,18 +328,42 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
 
       this.listenTo(strategyRunDescriptor.routine, 'step:*', {
         reducers: (reducible: any) => {
-          reducible.data[0].payload = { ...reducible.data[0].payload, strategy: runDescriptor.name, strategyIndex: strategyRunDescriptor.index }
+          reducible.data[0].payload = {
+            ...reducible.data[0].payload,
+            routine: strategyRunDescriptor.routine.name,
+            strategy: runDescriptor.name,
+            strategyIndex: strategyRunDescriptor.index
+          }
         }
       })
 
+      strategyRunDescriptor.routine.once(Status.Success, () =>
+        this.emit(`routine:${Status.Success}`, { payload: { name: strategyRunDescriptor.routine.name, strategy: runDescriptor.name, strategyIndex: strategyRunDescriptor.index } })
+      )
+
+      strategyRunDescriptor.routine.once(Status.Failure, (event) =>
+        this.emit(`routine:${Status.Failure}`, {
+          error: event.error,
+          payload: { name: strategyRunDescriptor.routine.name, strategy: runDescriptor.name, strategyIndex: strategyRunDescriptor.index }
+        })
+      )
+
+      strategyRunDescriptor.routine.once(Status.Stopped, (event) =>
+        this.emit(`routine:${Status.Stopped}`, {
+          error: event.error,
+          payload: { name: strategyRunDescriptor.routine.name, strategy: runDescriptor.name, strategyIndex: strategyRunDescriptor.index }
+        })
+      )
+
+      strategyRunDescriptor.routine.once(Status.Error, (event) =>
+        this.emit(`routine:${Status.Error}`, {
+          error: event.error,
+          payload: { name: strategyRunDescriptor.routine.name, strategy: runDescriptor.name, strategyIndex: strategyRunDescriptor.index }
+        })
+      )
+
       strategyRunDescriptor.routine.once('end', (event: EmittedEvent) => {
         strategyRunDescriptor.routine.removeAllListeners()
-
-        const eventStatus: EventIn = { payload: { name: strategyRunDescriptor.routine.name, strategy: runDescriptor.name, strategyIndex: strategyRunDescriptor.index } }
-        if (event.error) eventStatus.error = event.error
-        if (event.measurement) eventStatus.measurement = event.measurement
-
-        this.emit(`routine:${strategyRunDescriptor.routine.status}`, eventStatus)
 
         if (event.error && runDescriptor.routineDescriptor.strategy.onFailure !== OnFailureAction.Continue) {
           for (let j = 0; j < strategyRunDescriptors.length; j++) {

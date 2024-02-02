@@ -67,11 +67,11 @@ export default class Step extends BaseRunner<StepOptions> {
           case Status.Failure:
           case Status.Error:
             this.internalStatus = Status.Failure
-            this.internalError = new Error(`Step failed\n\n${error.message}`)
+            this.internalError = error
             break
           case Status.Stopped:
             this.internalStatus = Status.Stopped
-            this.internalError = new Error('Step stopped')
+            this.internalError = new Error('Step was stopped')
             break
         }
       } finally {
@@ -106,11 +106,11 @@ export default class Step extends BaseRunner<StepOptions> {
             case Status.Failure:
             case Status.Error:
               this.internalStatus = Status.Failure
-              this.internalError = new Error(`Step failed\n\n${error.message}`)
+              this.internalError = error
               break
             case Status.Stopped:
               this.internalStatus = Status.Stopped
-              this.internalError = new Error('Step stopped')
+              this.internalError = new Error('Step was stopped')
               break
           }
         } finally {

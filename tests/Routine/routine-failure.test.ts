@@ -9,7 +9,7 @@ describe(Routine, (): void => {
     const routine = new Routine({
       name: 'r-test',
       scope: { good: 'Other output' },
-      steps: [{ use: 'good', with: { good: true }, environment: { variable: 'This is a variable' } }, { run: 'sleep c' }],
+      steps: [{ use: 'good', with: { good: true }, environment: { variable: 'This is a variable' } }, { run: 'git clone nonexistent' }],
       usableMap: { good: GoodUsable },
       target: { engine: 'spawn' }
     })
@@ -48,12 +48,12 @@ describe(Routine, (): void => {
           usable: 'good'
         },
         {
-          command: 'sleep c',
+          command: 'git clone nonexistent',
           endedAt: expect.any(Date),
-          error: 'Step failed\n\nProcess exited with code 1\n\nusage: sleep seconds\n',
+          error: "Process exited with code 128\n\nfatal: repository 'nonexistent' does not exist\n",
           measurement: expect.any(Measurement),
           name: null,
-          output: 'usage: sleep seconds\n',
+          output: "fatal: repository 'nonexistent' does not exist\n",
           startedAt: expect.any(Date),
           status: Status.Failure,
           usable: null
@@ -62,34 +62,32 @@ describe(Routine, (): void => {
     })
 
     expect(listener.mock.calls).toEqual([
-      [{ event: 'step:running', payload: { index: 0, routine: 'r-test' } }],
+      [{ event: 'step:running', payload: { index: 0 } }],
       [{ event: 'running', payload: { startedAt: expect.any(Date) } }],
       [
         {
           event: 'step:output',
           payload: {
-            data: 'This is a good step, using env: {"variable":"This is a variable"}, scope: {"good":"Other output"}, and with: {"good":true}\n',
             index: 0,
-            routine: 'r-test'
+            data: 'This is a good step, using env: {"variable":"This is a variable"}, scope: {"good":"Other output"}, and with: {"good":true}\n'
           }
         }
       ],
-      [{ event: 'step:success', measurement: expect.any(Measurement), payload: { index: 0, routine: 'r-test' } }],
-      [{ event: 'step:running', payload: { index: 1, routine: 'r-test' } }],
-      [{ event: 'step:output', payload: { data: 'usage: sleep seconds\n', index: 1, routine: 'r-test' } }],
+      [{ event: 'step:success', payload: { index: 0 } }],
+      [{ event: 'step:running', payload: { index: 1 } }],
+      [{ event: 'step:output', payload: { index: 1, data: "fatal: repository 'nonexistent' does not exist\n" } }],
       [
         {
           event: 'step:failure',
-          error: new Error('Step failed\n\nProcess exited with code 1\n\nusage: sleep seconds\n'),
-          measurement: expect.any(Measurement),
-          payload: { index: 1, routine: 'r-test' }
+          error: new Error("Process exited with code 128\n\nfatal: repository 'nonexistent' does not exist\n"),
+          payload: { index: 1 }
         }
       ],
-      [{ event: 'failure', error: new Error('Routine failed\n\nStep failed\n\nProcess exited with code 1\n\nusage: sleep seconds\n'), measurement: expect.any(Measurement) }],
+      [{ event: 'failure', error: new Error("Process exited with code 128\n\nfatal: repository 'nonexistent' does not exist\n"), measurement: expect.any(Measurement) }],
       [
         {
           event: 'end',
-          error: new Error('Routine failed\n\nStep failed\n\nProcess exited with code 1\n\nusage: sleep seconds\n'),
+          error: new Error("Process exited with code 128\n\nfatal: repository 'nonexistent' does not exist\n"),
           measurement: expect.any(Measurement),
           payload: { endedAt: expect.any(Date) }
         }
@@ -141,10 +139,10 @@ describe(Routine, (): void => {
     })
 
     expect(listener.mock.calls).toEqual([
-      [{ event: 'step:error', error: new Error('Ups'), payload: { index: 0, routine: 'r-test' } }],
+      [{ event: 'step:error', error: new Error('Ups'), payload: { index: 0 } }],
       [{ event: 'running', payload: { startedAt: expect.any(Date) } }],
-      [{ event: 'failure', error: new Error('Routine failed\n\nUps'), measurement: expect.any(Measurement) }],
-      [{ event: 'end', error: new Error('Routine failed\n\nUps'), measurement: expect.any(Measurement), payload: { endedAt: expect.any(Date) } }]
+      [{ event: 'failure', error: new Error('Ups'), measurement: expect.any(Measurement) }],
+      [{ event: 'end', error: new Error('Ups'), measurement: expect.any(Measurement), payload: { endedAt: expect.any(Date) } }]
     ])
   })
 })

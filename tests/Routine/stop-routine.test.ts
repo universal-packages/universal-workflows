@@ -106,7 +106,7 @@ describe(Routine, (): void => {
         {
           command: 'sleep 1000',
           endedAt: expect.any(Date),
-          error: 'Step stopped',
+          error: 'Step was stopped',
           measurement: expect.any(Measurement),
           name: null,
           output: null,
@@ -129,13 +129,13 @@ describe(Routine, (): void => {
     })
 
     expect(listener.mock.calls).toEqual([
-      [{ event: 'step:running', payload: { index: 0, routine: 'r-test' } }],
+      [{ event: 'step:running', payload: { index: 0 } }],
       [{ event: 'running', payload: { startedAt: expect.any(Date) } }],
       [{ event: 'stopping' }],
-      [{ event: 'step:stopping', payload: { index: 0, routine: 'r-test' } }],
-      [{ event: 'step:stopped', error: new Error('Step stopped'), measurement: expect.any(Measurement), payload: { index: 0, routine: 'r-test' } }],
-      [{ event: 'stopped', error: new Error('Routine stopped'), measurement: expect.any(Measurement) }],
-      [{ event: 'end', error: new Error('Routine stopped'), measurement: expect.any(Measurement), payload: { endedAt: expect.any(Date) } }]
+      [{ event: 'step:stopping', payload: { index: 0 } }],
+      [{ event: 'step:stopped', error: new Error('Step was stopped'), payload: { index: 0 } }],
+      [{ event: 'stopped', error: new Error('Routine was stopped'), measurement: expect.any(Measurement) }],
+      [{ event: 'end', error: new Error('Routine was stopped'), measurement: expect.any(Measurement), payload: { endedAt: expect.any(Date) } }]
     ])
   })
 })

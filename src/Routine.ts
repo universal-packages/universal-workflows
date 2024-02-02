@@ -37,7 +37,7 @@ export default class Routine extends BaseRunner<RoutineOptions> {
       const currentStepDescriptor = this.options.steps[i]
       const scope = this.options.strategyScope ? { ...this.options.scope, strategy: this.options.strategyScope } : { ...this.options.scope }
 
-      this.currentStep.once(Status.Skipped, () => this.emit(`step:${Status.Skipped}`, { payload: { index: i, routine: this.name } }))
+      this.currentStep.once(Status.Skipped, () => this.emit(`step:${Status.Skipped}`, { payload: { index: i } }))
 
       if (currentStepDescriptor.if) {
         const finalIf = `$<<${currentStepDescriptor.if.replace(/(\$<<\s*|\s*>>)/g, '')}>>`
@@ -53,9 +53,9 @@ export default class Routine extends BaseRunner<RoutineOptions> {
 
       if (this.currentStep.status === Status.Skipped) continue
 
-      this.currentStep.once(Status.Running, () => this.emit(`step:${Status.Running}`, { payload: { index: i, routine: this.name } }))
-      this.currentStep.once(Status.Stopping, () => this.emit(`step:${Status.Stopping}`, { payload: { index: i, routine: this.name } }))
-      this.currentStep.on('output', (event: EmittedEvent) => this.emit('step:output', { payload: { index: i, routine: this.name, ...event.payload } }))
+      this.currentStep.once(Status.Running, () => this.emit(`step:${Status.Running}`, { payload: { index: i } }))
+      this.currentStep.once(Status.Stopping, () => this.emit(`step:${Status.Stopping}`, { payload: { index: i } }))
+      this.currentStep.on('output', (event: EmittedEvent) => this.emit('step:output', { payload: { index: i, data: event.payload.data } }))
 
       if (!onRunningRan) {
         this.currentStep.once(Status.Running, () => {
@@ -69,11 +69,11 @@ export default class Routine extends BaseRunner<RoutineOptions> {
       try {
         await this.currentStep.run()
 
-        this.emit(`step:${Status.Success}`, { measurement: this.currentStep.measurement, payload: { index: i, routine: this.name } })
+        this.emit(`step:${Status.Success}`, { payload: { index: i } })
 
         if (i === this.steps.length - 1) this.internalStatus = Status.Success
       } catch (error) {
-        this.emit(`step:${this.currentStep.status}`, { error, measurement: this.currentStep.measurement, payload: { index: i, routine: this.name } })
+        this.emit(`step:${this.currentStep.status}`, { error, payload: { index: i } })
 
         switch (this.currentStep.status) {
           case Status.Error:
@@ -84,14 +84,14 @@ export default class Routine extends BaseRunner<RoutineOptions> {
               break
             } else {
               this.internalStatus = Status.Failure
-              this.internalError = new Error(`Routine failed\n\n${error.message}`)
+              this.internalError = error
               notContinue = true
 
               break
             }
           case Status.Stopped:
             this.internalStatus = Status.Stopped
-            this.internalError = new Error('Routine stopped')
+            this.internalError = new Error('Routine was stopped')
             notContinue = true
 
             break

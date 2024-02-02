@@ -13,7 +13,7 @@ describe(Workflow, (): void => {
           steps: [{ name: 'test1', run: 'echo test1' }]
         },
         test2: {
-          steps: [{ name: 'test2', run: 'sleep nop' }]
+          steps: [{ name: 'test2', run: 'git clone nonexistent' }]
         },
         test3: {
           steps: [{ name: 'test3', run: 'sleep 10' }]
@@ -77,7 +77,7 @@ describe(Workflow, (): void => {
             status: 'running',
             steps: [
               {
-                command: 'sleep nop',
+                command: 'git clone nonexistent',
                 endedAt: null,
                 error: null,
                 measurement: null,
@@ -165,12 +165,12 @@ describe(Workflow, (): void => {
             status: 'failure',
             steps: [
               {
-                command: 'sleep nop',
+                command: 'git clone nonexistent',
                 endedAt: expect.any(Date),
-                error: 'Step failed\n\nProcess exited with code 1\n\nusage: sleep seconds\n',
+                error: "Process exited with code 128\n\nfatal: repository 'nonexistent' does not exist\n",
                 measurement: expect.any(Measurement),
                 name: 'test2',
-                output: 'usage: sleep seconds\n',
+                output: "fatal: repository 'nonexistent' does not exist\n",
                 startedAt: expect.any(Date),
                 status: 'failure',
                 usable: null
@@ -250,12 +250,12 @@ describe(Workflow, (): void => {
             status: 'failure',
             steps: [
               {
-                command: 'sleep nop',
+                command: 'git clone nonexistent',
                 endedAt: expect.any(Date),
-                error: 'Step failed\n\nProcess exited with code 1\n\nusage: sleep seconds\n',
+                error: "Process exited with code 128\n\nfatal: repository 'nonexistent' does not exist\n",
                 measurement: expect.any(Measurement),
                 name: 'test2',
-                output: 'usage: sleep seconds\n',
+                output: "fatal: repository 'nonexistent' does not exist\n",
                 startedAt: expect.any(Date),
                 status: 'failure',
                 usable: null
@@ -272,7 +272,7 @@ describe(Workflow, (): void => {
               {
                 command: 'sleep 10',
                 endedAt: expect.any(Date),
-                error: 'Step stopped',
+                error: 'Step was stopped',
                 measurement: expect.any(Measurement),
                 name: 'test3',
                 output: null,
@@ -296,35 +296,33 @@ describe(Workflow, (): void => {
       ]
     })
 
-    const measurement = expect.any(Measurement)
-    const startedAt = expect.any(Date)
-    const endedAt = expect.any(Date)
-    const stepFailureError = new Error('Step failed\n\nProcess exited with code 1\n\nusage: sleep seconds\n')
-    const stepStopError = new Error('Step stopped')
-    const routineFailureError = new Error('Routine failed\n\nStep failed\n\nProcess exited with code 1\n\nusage: sleep seconds\n')
-    const routineStopError = new Error('Routine stopped')
-
     expect(listener).toHaveBeenCalledTimes(20)
     expect(listener.mock.calls).toContainEqual([{ event: 'step:running', payload: { index: 0, routine: 'test1' } }])
     expect(listener.mock.calls).toContainEqual([{ event: 'routine:running', payload: { name: 'test1' } }])
-    expect(listener.mock.calls).toContainEqual([{ event: 'running', payload: { startedAt } }])
-    expect(listener.mock.calls).toContainEqual([{ event: 'step:success', measurement, payload: { index: 0, routine: 'test1' } }])
-    expect(listener.mock.calls).toContainEqual([{ event: 'routine:success', measurement, payload: { name: 'test1' } }])
+    expect(listener.mock.calls).toContainEqual([{ event: 'running', payload: { startedAt: expect.any(Date) } }])
+    expect(listener.mock.calls).toContainEqual([{ event: 'step:success', payload: { index: 0, routine: 'test1' } }])
+    expect(listener.mock.calls).toContainEqual([{ event: 'routine:success', payload: { name: 'test1' } }])
 
     expect(listener.mock.calls).toContainEqual([{ event: 'step:running', payload: { index: 0, routine: 'test2' } }])
     expect(listener.mock.calls).toContainEqual([{ event: 'routine:running', payload: { name: 'test2' } }])
-    expect(listener.mock.calls).toContainEqual([{ event: 'running', payload: { startedAt } }])
-    expect(listener.mock.calls).toContainEqual([{ event: 'step:failure', error: stepFailureError, measurement, payload: { index: 0, routine: 'test2' } }])
-    expect(listener.mock.calls).toContainEqual([{ event: 'routine:failure', error: routineFailureError, measurement, payload: { name: 'test2' } }])
+    expect(listener.mock.calls).toContainEqual([{ event: 'step:output', payload: { index: 0, routine: 'test2', data: "fatal: repository 'nonexistent' does not exist\n" } }])
+    expect(listener.mock.calls).toContainEqual([
+      { event: 'step:failure', error: new Error("Process exited with code 128\n\nfatal: repository 'nonexistent' does not exist\n"), payload: { index: 0, routine: 'test2' } }
+    ])
+    expect(listener.mock.calls).toContainEqual([
+      { event: 'routine:failure', error: new Error("Process exited with code 128\n\nfatal: repository 'nonexistent' does not exist\n"), payload: { name: 'test2' } }
+    ])
 
     expect(listener.mock.calls).toContainEqual([{ event: 'step:running', payload: { index: 0, routine: 'test3' } }])
     expect(listener.mock.calls).toContainEqual([{ event: 'routine:running', payload: { name: 'test3' } }])
     expect(listener.mock.calls).toContainEqual([{ event: 'stopping' }])
     expect(listener.mock.calls).toContainEqual([{ event: 'routine:stopping', payload: { name: 'test3' } }])
     expect(listener.mock.calls).toContainEqual([{ event: 'step:stopping', payload: { index: 0, routine: 'test3' } }])
-    expect(listener.mock.calls).toContainEqual([{ event: 'step:stopped', error: stepStopError, measurement, payload: { index: 0, routine: 'test3' } }])
-    expect(listener.mock.calls).toContainEqual([{ event: 'routine:stopped', error: routineStopError, measurement, payload: { name: 'test3' } }])
-    expect(listener.mock.calls).toContainEqual([{ event: 'stopped', error: new Error('Workflow stopped'), measurement }])
-    expect(listener.mock.calls).toContainEqual([{ event: 'end', error: new Error('Workflow stopped'), measurement, payload: { endedAt } }])
+    expect(listener.mock.calls).toContainEqual([{ event: 'step:stopped', error: new Error('Step was stopped'), payload: { index: 0, routine: 'test3' } }])
+    expect(listener.mock.calls).toContainEqual([{ event: 'routine:stopped', error: new Error('Routine was stopped'), payload: { name: 'test3' } }])
+    expect(listener.mock.calls).toContainEqual([{ event: 'stopped', error: new Error('Workflow was stopped'), measurement: expect.any(Measurement) }])
+    expect(listener.mock.calls).toContainEqual([
+      { event: 'end', error: new Error('Workflow was stopped'), measurement: expect.any(Measurement), payload: { endedAt: expect.any(Date) } }
+    ])
   })
 })
