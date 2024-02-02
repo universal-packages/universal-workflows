@@ -1,0 +1,9 @@
+environment:
+  FOO: bar
+  NUM: 42
+  BOOL: true
+
+routines:
+  echo1:
+    steps:
+      - run: 'echo 1'
