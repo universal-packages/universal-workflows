@@ -69,9 +69,9 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
     })
   }
 
-  public static async buildFrom(name: string, options?: RunOptions): Promise<Workflow> {
+  public static buildFrom(name: string, options?: RunOptions): Workflow {
     const finalOptions: RunOptions = { stepUsableLocation: './src', workflowsLocation: './', ...options }
-    const workflowDescriptors = await loadPluginConfig('universal-workflows', { loadFrom: finalOptions.workflowsLocation })
+    const workflowDescriptors = loadPluginConfig('universal-workflows', { loadFrom: finalOptions.workflowsLocation })
     const workflowDescriptor = workflowDescriptors[name]
     const ajv = new Ajv({ allowUnionTypes: true })
     const validate = ajv.compile(workflowSchema)

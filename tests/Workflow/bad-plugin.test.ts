@@ -82,7 +82,7 @@ describe(Workflow, (): void => {
         let error: Error
 
         try {
-          await Workflow.buildFrom(scenario.name, { stepUsableLocation: './tests/__fixtures__/cases', workflowsLocation: './tests/__fixtures__' })
+          Workflow.buildFrom(scenario.name, { stepUsableLocation: './tests/__fixtures__/cases', workflowsLocation: './tests/__fixtures__' })
         } catch (err) {
           error = err
         }
