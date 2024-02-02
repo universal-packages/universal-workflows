@@ -80,7 +80,21 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
 
     const errors = validate.errors
 
-    if (errors) throw new Error(`Workflow "${name}" is invalid:\n\n${errors.map((error) => `${error.instancePath} ${error.message}`.trim()).join('\n')}`)
+    if (errors) {
+      const baseMessage = `Workflow "${name}" is invalid:\n\n`
+      const schemaErrors = errors
+        .map((error) => {
+          const instancePath = error.instancePath
+          const message = error.message
+          const allowedValues = error.params.allowedValues ? ` ${JSON.stringify(error.params.allowedValues)}` : ''
+
+          return `${instancePath} ${message}${allowedValues}`.trim()
+        })
+        .join('\n')
+      const message = `${baseMessage}${schemaErrors}`
+
+      throw new Error(message)
+    }
 
     return new Workflow({ stepUsableLocation: options.stepUsableLocation, ...workflowDescriptor })
   }
@@ -559,6 +573,7 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
       const currentRoutineOptions: RoutineOptions = {
         name: currentRoutineName,
         scope: this.scope,
+        targets: this.targets,
         usableMap: this.usableMap,
         ...currentRoutineDescriptorWithoutTarget
       }

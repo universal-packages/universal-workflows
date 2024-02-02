@@ -1,0 +1,9 @@
+name: Echo all the way
+
+environment:
+  FOO:
+    BAR: bar
+
+routines:
+  echo1:
+    steps: []

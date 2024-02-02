@@ -26,7 +26,7 @@ export interface StepDescriptor {
   unless?: string
   use?: string
   target?: string
-  with?: Record<string, any>
+  with?: Record<string, string | number | boolean>
   workingDirectory?: string
 }
 

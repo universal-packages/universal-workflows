@@ -1,9 +1,87 @@
+name: Echo all the way
+
 environment:
   FOO: bar
   NUM: 42
   BOOL: true
 
+targets:
+  spawn2:
+    engine: spawn
+
+target: spawn2
+
+workingDirectory: ./
+
 routines:
   echo1:
+    strategy:
+      matrix:
+        fruit:
+          - apple
+          - banana
+        animal:
+          - cat
+          - dog
+      include:
+        - fruit: apple
+          shape: circle
+        - fruit: banana
+          shape: square
+
+    environment:
+      ECHO: echo1
+      ECHO_NUM: 1
+      ECHO_NUM_BOOL: false
+
+    target: exec
+
+    workingDirectory: ./src
+
     steps:
-      - run: 'echo 1'
+      - name: echo-fruit
+        run: echo $<< strategy.fruit >>
+        target: spawn2
+        workingDirectory: ./tests
+      - name: echo-animal
+        run: echo $<< strategy.animal >>
+        target: spawn
+        workingDirectory: ./tests
+
+  echo2:
+    environment:
+      ECHO: echo2
+      ECHO_NUM: 2
+      ECHO_BOOL: true
+
+    target: exec
+
+    workingDirectory: ./src
+
+    steps:
+      - name: echo-env-foo
+        run: echo $FOO
+      - name: echo-env-num
+        run: echo $NUM
+      - name: echo-env-bool
+        run: echo $BOOL
+      - name: echo-env-echo
+        run: echo $ECHO
+      - name: echo-env-echo-num
+        run: echo $ECHO_NUM
+      - name: echo-env-echo-bool
+        run: echo $ECHO_BOOL
+
+  git-failure:
+    target: exec
+
+    workingDirectory: ./src
+
+    dependsOn:
+      - echo1
+      - echo2
+
+    steps:
+      - name: git-failure
+        run: git clone nonexistent
+        onFailure: continue

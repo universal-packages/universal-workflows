@@ -1,0 +1,8 @@
+name: Echo all the way
+
+routines:
+  echo1:
+    steps:
+      - input:
+          bad: true
+        run: echo 1

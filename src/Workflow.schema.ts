@@ -1,7 +1,4 @@
-import Ajv from 'ajv'
 import { JSONSchema7 } from 'json-schema'
-
-const ajv = new Ajv()
 
 export const workflowSchema: JSONSchema7 = {
   $schema: 'http://json-schema.org/draft-07/schema#',
@@ -64,7 +61,25 @@ export const workflowSchema: JSONSchema7 = {
                   }
                 }
               }
-            }
+            },
+            oneOf: [
+              {
+                oneOf: [
+                  {
+                    required: ['matrix']
+                  },
+                  {
+                    required: ['include']
+                  }
+                ]
+              },
+              {
+                required: ['matrix', 'include']
+              }
+            ]
+          },
+          if: {
+            type: 'string'
           },
           dependsOn: {
             oneOf: [
@@ -88,6 +103,24 @@ export const workflowSchema: JSONSchema7 = {
           onFailure: {
             type: 'string',
             enum: ['continue', 'fail']
+          },
+          target: {
+            type: 'string'
+          },
+          targets: {
+            type: 'object',
+            additionalProperties: {
+              type: 'object',
+              properties: {
+                engine: {
+                  type: 'string'
+                },
+                engineOptions: {
+                  type: 'object'
+                }
+              },
+              required: ['engine']
+            }
           },
           steps: {
             type: 'array',
@@ -136,7 +169,10 @@ export const workflowSchema: JSONSchema7 = {
                   type: 'string'
                 },
                 with: {
-                  type: 'object'
+                  type: 'object',
+                  additionalProperties: {
+                    type: ['string', 'number', 'boolean']
+                  }
                 },
                 workingDirectory: {
                   type: 'string'
@@ -152,7 +188,7 @@ export const workflowSchema: JSONSchema7 = {
               ]
             }
           },
-          target: {
+          unless: {
             type: 'string'
           },
           workingDirectory: {

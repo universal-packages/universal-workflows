@@ -1,0 +1,7 @@
+name: Echo all the way
+
+routines:
+  echo1:
+    steps:
+      - onFailure: nop
+        run: echo 1

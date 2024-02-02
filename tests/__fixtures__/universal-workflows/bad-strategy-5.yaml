@@ -1,0 +1,10 @@
+name: Echo all the way
+
+routines:
+  echo1:
+    strategy:
+      include:
+        -
+          fruit:
+            yes: no
+    steps: []

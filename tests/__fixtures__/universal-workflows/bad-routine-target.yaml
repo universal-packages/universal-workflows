@@ -1,0 +1,8 @@
+name: Echo all the way
+
+routines:
+  echo1:
+    target:
+      - 1
+
+    steps: []
