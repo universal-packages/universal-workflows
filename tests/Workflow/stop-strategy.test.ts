@@ -409,9 +409,9 @@ describe(Workflow, (): void => {
     expect(listener.mock.calls).toContainEqual([
       { event: 'routine:stopped', error: new Error('Routine was stopped'), payload: { name: 'test1 [3]', strategy: 'test1', strategyIndex: 3 } }
     ])
-    expect(listener.mock.calls).toContainEqual([{ event: 'stopped', error: new Error('Workflow stopped'), measurement: expect.any(Measurement) }])
+    expect(listener.mock.calls).toContainEqual([{ event: 'stopped', error: new Error('Workflow was stopped'), measurement: expect.any(Measurement) }])
     expect(listener.mock.calls).toContainEqual([
-      { event: 'end', error: new Error('Workflow stopped'), measurement: expect.any(Measurement), payload: { endedAt: expect.any(Date) } }
+      { event: 'end', error: new Error('Workflow was stopped'), measurement: expect.any(Measurement), payload: { endedAt: expect.any(Date) } }
     ])
   })
 })

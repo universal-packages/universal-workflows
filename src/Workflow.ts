@@ -1,5 +1,5 @@
 import { gatherAdapters } from '@universal-packages/adapter-resolver'
-import { EmittedEvent, EventIn } from '@universal-packages/event-emitter'
+import { EmittedEvent } from '@universal-packages/event-emitter'
 import { loadModules } from '@universal-packages/module-loader'
 import { loadPluginConfig } from '@universal-packages/plugin-config-loader'
 import { BaseRunner, EngineInterfaceClass, Status } from '@universal-packages/sub-process'
@@ -144,169 +144,75 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
   private async runRoutine(runDescriptor: RunDescriptor, onRunning?: () => void): Promise<void> {
     runDescriptor.status = RunDescriptorStatus.Running
 
-    const scope = { ...this.scope }
-
-    runDescriptor.routine.once(Status.Skipped, () => this.emit(`routine:${Status.Skipped}`, { payload: { name: runDescriptor.name } }))
-
-    if (runDescriptor.routineDescriptor.if) {
-      const finalIf = `$<<${runDescriptor.routineDescriptor.if.replace(/(\$<<\s*|\s*>>)/g, '')}>>`
-      const evaluatedIf = evaluateAndReplace(finalIf, { scope, enclosures: ['$<<', '>>'] })
-
-      if (!JSON.parse(evaluatedIf)) runDescriptor.routine.skip()
-    } else if (runDescriptor.routineDescriptor.unless) {
-      const finalUnless = `$<<${runDescriptor.routineDescriptor.unless.replace(/(\$<<\s*|\s*>>)/g, '')}>>`
-      const evaluatedUnless = evaluateAndReplace(finalUnless, { scope, enclosures: ['$<<', '>>'] })
-
-      if (JSON.parse(evaluatedUnless)) runDescriptor.routine.skip()
-    }
-
-    if (runDescriptor.routine.status === Status.Skipped) {
+    if (this.shouldSkipRunDescriptor(runDescriptor)) {
+      runDescriptor.routine.once(Status.Skipped, () => this.emit(`routine:${Status.Skipped}`, { payload: { name: runDescriptor.name } }))
+      runDescriptor.routine.skip()
       runDescriptor.status = RunDescriptorStatus.Skipped
-      runDescriptor.routine.removeAllListeners()
 
       if (onRunning) onRunning()
 
-      if (this.allRunDescriptorsDone()) {
-        if (this.allRunDescriptorsSucceeded()) {
-          this.internalStatus = Status.Success
-        } else if (this.anyRunDescriptorStopped()) {
-          this.internalStatus = Status.Stopped
-          this.internalError = new Error('Workflow was stopped')
-        } else {
-          this.internalStatus = Status.Failure
-          this.internalError = new Error(`Workflow failed`)
-        }
-
-        this.resolveRun()
-      } else {
-        this.runDependents(runDescriptor)
-      }
+      this.handleAfterRunDescriptorFinished(runDescriptor)
 
       return
     }
 
-    runDescriptor.routine.once(Status.Running, () => this.emit(`routine:${Status.Running}`, { payload: { name: runDescriptor.name } }))
-    runDescriptor.routine.once(Status.Stopping, () => this.emit(`routine:${Status.Stopping}`, { payload: { name: runDescriptor.name } }))
+    runDescriptor.routine.once(Status.Running, () => {
+      this.emit(`routine:${Status.Running}`, { payload: { name: runDescriptor.name } })
+      if (onRunning) onRunning()
+    })
+    runDescriptor.routine.once(Status.Stopping, () => {
+      this.emit(`routine:${Status.Stopping}`, { payload: { name: runDescriptor.name } })
+    })
+    runDescriptor.routine.once(Status.Success, () => {
+      runDescriptor.status = RunDescriptorStatus.Success
+      this.emit(`routine:${Status.Success}`, { payload: { name: runDescriptor.name } })
+    })
 
-    if (onRunning) runDescriptor.routine.once('running', onRunning)
+    this.listenTo(runDescriptor.routine, 'step:*', {
+      reducers: (reducible: any) => {
+        reducible.data[0].payload = { ...reducible.data[0].payload, routine: runDescriptor.name }
+      }
+    })
 
     try {
-      this.listenTo(runDescriptor.routine, 'step:*', {
-        reducers: (reducible: any) => {
-          reducible.data[0].payload = { ...reducible.data[0].payload, routine: runDescriptor.name }
-        }
-      })
-
       await runDescriptor.routine.run()
-
-      runDescriptor.status = RunDescriptorStatus.Success
-
-      this.emit(`routine:${Status.Success}`, { payload: { name: runDescriptor.name } })
-
-      if (this.allRunDescriptorsDone()) {
-        if (this.allRunDescriptorsSucceeded()) {
-          this.internalStatus = Status.Success
-        } else if (this.anyRunDescriptorStopped()) {
-          this.internalStatus = Status.Stopped
-          this.internalError = new Error('Workflow was stopped')
-        } else {
-          this.internalStatus = Status.Failure
-          this.internalError = new Error(`Workflow failed`)
-        }
-
-        this.resolveRun()
-      } else {
-        this.runDependents(runDescriptor)
-      }
     } catch (error) {
       this.emit(`routine:${runDescriptor.routine.status}`, { error, payload: { name: runDescriptor.name } })
 
       if (runDescriptor.routineDescriptor.onFailure === OnFailureAction.Continue) {
         runDescriptor.status = RunDescriptorStatus.Success
-
-        if (this.allRunDescriptorsDone()) {
-          this.internalStatus = Status.Success
-          this.resolveRun()
-        } else {
-          this.runDependents(runDescriptor)
-        }
       } else {
         this.cancelDependents(runDescriptor)
 
-        switch (runDescriptor.routine.status) {
-          case Status.Failure:
-          case Status.Error:
-            runDescriptor.status = RunDescriptorStatus.Failure
-
-            break
-          case Status.Stopped:
-            runDescriptor.status = RunDescriptorStatus.Stopped
-
-            break
-        }
-
-        if (this.allRunDescriptorsDone()) {
-          if (this.anyRunDescriptorStopped()) {
-            this.internalStatus = Status.Stopped
-            this.internalError = new Error('Workflow was stopped')
-          } else {
-            this.internalStatus = Status.Failure
-            this.internalError = new Error(`Workflow failed`)
-          }
-
-          this.resolveRun()
+        if (runDescriptor.routine.status === Status.Stopped) {
+          runDescriptor.status = RunDescriptorStatus.Stopped
+        } else {
+          runDescriptor.status = RunDescriptorStatus.Failure
         }
       }
     } finally {
+      this.handleAfterRunDescriptorFinished(runDescriptor)
+
       runDescriptor.routine.removeAllListeners()
     }
   }
 
   private async runStrategy(runDescriptor: RunDescriptor, onRunning?: () => void): Promise<void> {
-    const { strategyRunDescriptors } = runDescriptor
-    const scope = { ...this.scope }
+    runDescriptor.status = RunDescriptorStatus.Running
 
-    if (runDescriptor.routineDescriptor.if) {
-      const finalIf = `$<<${runDescriptor.routineDescriptor.if.replace(/(\$<<\s*|\s*>>)/g, '')}>>`
-      const evaluatedIf = evaluateAndReplace(finalIf, { scope, enclosures: ['$<<', '>>'] })
-
-      if (!JSON.parse(evaluatedIf)) {
-        runDescriptor.strategyRunDescriptors.forEach((strategyRunDescriptor) => strategyRunDescriptor.routine.skip())
-        runDescriptor.status = RunDescriptorStatus.Skipped
-      }
-    } else if (runDescriptor.routineDescriptor.unless) {
-      const finalUnless = `$<<${runDescriptor.routineDescriptor.unless.replace(/(\$<<\s*|\s*>>)/g, '')}>>`
-      const evaluatedUnless = evaluateAndReplace(finalUnless, { scope, enclosures: ['$<<', '>>'] })
-
-      if (JSON.parse(evaluatedUnless)) {
-        runDescriptor.strategyRunDescriptors.forEach((strategyRunDescriptor) => strategyRunDescriptor.routine.skip())
-        runDescriptor.status = RunDescriptorStatus.Skipped
-      }
-    }
-
-    if (runDescriptor.status === RunDescriptorStatus.Skipped) {
+    if (this.shouldSkipRunDescriptor(runDescriptor)) {
       this.emit(`routine:${Status.Skipped}`, { payload: { name: runDescriptor.name } })
+      runDescriptor.strategyRunDescriptors.forEach((strategyRunDescriptor) => strategyRunDescriptor.routine.skip())
+      runDescriptor.status = RunDescriptorStatus.Skipped
 
       if (onRunning) onRunning()
 
-      if (this.allRunDescriptorsDone()) {
-        if (this.allRunDescriptorsSucceeded()) {
-          this.internalStatus = Status.Success
-        } else if (this.anyRunDescriptorStopped()) {
-          this.internalStatus = Status.Stopped
-          this.internalError = new Error('Workflow stopped')
-        } else {
-          this.internalStatus = Status.Failure
-          this.internalError = new Error(`Workflow failed`)
-        }
-
-        this.resolveRun()
-      } else {
-        this.runDependents(runDescriptor)
-      }
+      this.handleAfterRunDescriptorFinished(runDescriptor)
 
       return
     }
+
+    const { strategyRunDescriptors } = runDescriptor
 
     const allStrategyRoutinesFinished = (): boolean => {
       return strategyRunDescriptors.every((strategyRunDescriptor) => {
@@ -326,19 +232,16 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
       })
     }
 
-    runDescriptor.status = RunDescriptorStatus.Running
-
     for (let i = 0; i < strategyRunDescriptors.length; i++) {
       const strategyRunDescriptor = strategyRunDescriptors[i]
 
-      strategyRunDescriptor.routine.once(Status.Running, () =>
+      strategyRunDescriptor.routine.once(Status.Running, () => {
         this.emit(`routine:${Status.Running}`, { payload: { name: strategyRunDescriptor.routine.name, strategy: runDescriptor.name, strategyIndex: strategyRunDescriptor.index } })
-      )
-      strategyRunDescriptor.routine.once(Status.Stopping, () =>
+        if (onRunning && i == 0) onRunning()
+      })
+      strategyRunDescriptor.routine.once(Status.Stopping, () => {
         this.emit(`routine:${Status.Stopping}`, { payload: { name: strategyRunDescriptor.routine.name, strategy: runDescriptor.name, strategyIndex: strategyRunDescriptor.index } })
-      )
-
-      if (onRunning && i == 0) strategyRunDescriptor.routine.once('running', onRunning)
+      })
 
       this.listenTo(strategyRunDescriptor.routine, 'step:*', {
         reducers: (reducible: any) => {
@@ -390,31 +293,23 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
         if (allStrategyRoutinesFinished() && runDescriptor.status === RunDescriptorStatus.Running) {
           if (allStrategyRoutinesSucceed()) {
             runDescriptor.status = RunDescriptorStatus.Success
-          } else if (anyStrategyRoutinesFailed()) {
-            if (runDescriptor.routineDescriptor.onFailure === OnFailureAction.Continue) {
-              runDescriptor.status = RunDescriptorStatus.Success
-            } else {
-              runDescriptor.status = RunDescriptorStatus.Failure
-            }
           } else {
-            runDescriptor.status = RunDescriptorStatus.Stopped
+            if (anyStrategyRoutinesFailed()) {
+              if (runDescriptor.routineDescriptor.onFailure === OnFailureAction.Continue) {
+                runDescriptor.status = RunDescriptorStatus.Success
+              } else {
+                this.cancelDependents(runDescriptor)
+
+                runDescriptor.status = RunDescriptorStatus.Failure
+              }
+            } else {
+              this.cancelDependents(runDescriptor)
+
+              runDescriptor.status = RunDescriptorStatus.Stopped
+            }
           }
 
-          if (this.allRunDescriptorsDone()) {
-            if (this.allRunDescriptorsSucceeded()) {
-              this.internalStatus = Status.Success
-            } else if (this.anyRunDescriptorStopped()) {
-              this.internalStatus = Status.Stopped
-              this.internalError = new Error('Workflow stopped')
-            } else {
-              this.internalStatus = Status.Failure
-              this.internalError = new Error(`Workflow failed`)
-            }
-
-            this.resolveRun()
-          } else {
-            this.runDependents(runDescriptor)
-          }
+          this.handleAfterRunDescriptorFinished(runDescriptor)
         }
       })
 
@@ -441,6 +336,24 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
           this.runStrategy(dependentRunDescriptor)
         }
       }
+    }
+  }
+
+  private handleAfterRunDescriptorFinished(runDescriptor: RunDescriptor): void {
+    if (this.allRunDescriptorsDone()) {
+      if (this.allRunDescriptorsSucceeded()) {
+        this.internalStatus = Status.Success
+      } else if (this.anyRunDescriptorStopped()) {
+        this.internalStatus = Status.Stopped
+        this.internalError = new Error('Workflow was stopped')
+      } else {
+        this.internalStatus = Status.Failure
+        this.internalError = new Error(`Workflow failed`)
+      }
+
+      this.resolveRun()
+    } else if (runDescriptor.status === RunDescriptorStatus.Success || runDescriptor.status === RunDescriptorStatus.Skipped) {
+      this.runDependents(runDescriptor)
     }
   }
 
@@ -478,6 +391,20 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
 
       return runDescriptor.status === RunDescriptorStatus.Stopped
     })
+  }
+
+  private shouldSkipRunDescriptor(runDescriptor: RunDescriptor): boolean {
+    if (runDescriptor.routineDescriptor.if) {
+      const finalIf = `$<<${runDescriptor.routineDescriptor.if.replace(/(\$<<\s*|\s*>>)/g, '')}>>`
+      const evaluatedIf = evaluateAndReplace(finalIf, { scope: { ...this.scope }, enclosures: ['$<<', '>>'] })
+
+      return !JSON.parse(evaluatedIf)
+    } else if (runDescriptor.routineDescriptor.unless) {
+      const finalUnless = `$<<${runDescriptor.routineDescriptor.unless.replace(/(\$<<\s*|\s*>>)/g, '')}>>`
+      const evaluatedUnless = evaluateAndReplace(finalUnless, { scope: { ...this.scope }, enclosures: ['$<<', '>>'] })
+
+      return JSON.parse(evaluatedUnless)
+    }
   }
 
   private generateRunGraph(): void {
