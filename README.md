@@ -1,15 +1,15 @@
 # Workflows
 
-[![npm version](https://badge.fury.io/js/@universal-packages%2Fworflows.svg)](https://www.npmjs.com/package/@universal-packages/worflows)
-[![Testing](https://github.com/universal-packages/universal-worflows/actions/workflows/testing.yml/badge.svg)](https://github.com/universal-packages/universal-worflows/actions/workflows/testing.yml)
-[![codecov](https://codecov.io/gh/universal-packages/universal-worflows/branch/main/graph/badge.svg?token=CXPJSN8IGL)](https://codecov.io/gh/universal-packages/universal-worflows)
+[![npm version](https://badge.fury.io/js/@universal-packages%2Fworkflows.svg)](https://www.npmjs.com/package/@universal-packages/workflows)
+[![Testing](https://github.com/universal-packages/universal-workflows/actions/workflows/testing.yml/badge.svg)](https://github.com/universal-packages/universal-workflows/actions/workflows/testing.yml)
+[![codecov](https://codecov.io/gh/universal-packages/universal-workflows/branch/main/graph/badge.svg?token=CXPJSN8IGL)](https://codecov.io/gh/universal-packages/universal-workflows)
 
 Sub process encapsulation for different exec technics.
 
 ## Install
 
 ```shell
-npm install @universal-packages/worflows
+npm install @universal-packages/workflows
 ```
 
 ## Typescript
