@@ -71,6 +71,7 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
 
   public static buildFrom(name: string, options?: RunOptions): Workflow {
     const finalOptions: RunOptions = { stepUsableLocation: './src', workflowsLocation: './', ...options }
+
     const workflowDescriptors = loadPluginConfig('universal-workflows', { loadFrom: finalOptions.workflowsLocation })
     const workflowDescriptor = workflowDescriptors[name]
     const ajv = new Ajv({ allowUnionTypes: true })
@@ -102,7 +103,7 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
   protected async internalPrepare(): Promise<void> {
     await this.loadTargets()
     await this.loadUsableMap()
-    this.generateRunGraph()
+    this.generateRunDescriptors()
   }
 
   protected async internalRun(onRunning: () => void): Promise<void> {
@@ -407,7 +408,7 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
     }
   }
 
-  private generateRunGraph(): void {
+  private generateRunDescriptors(): void {
     const { routines: routineDescriptors } = this.options
     const routineNames = Object.keys(routineDescriptors)
 

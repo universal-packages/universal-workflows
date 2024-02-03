@@ -5,6 +5,7 @@ export interface BaseUsableOptions<W extends Record<string, any> = Record<string
   scope?: Record<string, any>
   target?: Target
   with?: W
+  workingDirectory?: string
 }
 
 export interface RunSubProcessOptions {

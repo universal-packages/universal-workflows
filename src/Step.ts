@@ -91,7 +91,8 @@ export default class Step extends BaseRunner<StepOptions> {
           environment: this.options.environment,
           scope: this.options.scope,
           target: this.options.target,
-          with: this.options.with
+          with: this.options.with,
+          workingDirectory: this.options.workingDirectory
         })
 
         this.usable.once('running', onRunning)

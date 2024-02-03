@@ -12,6 +12,7 @@ export default class BaseUsable<W extends Record<string, any> = any> extends Bas
   protected readonly environment: Record<string, string>
   protected readonly scope: Record<string, any>
   protected readonly with: W
+  protected readonly workingDirectory: string
   protected internalOutput: string
 
   public constructor(options: BaseUsableOptions<W>) {
@@ -28,12 +29,21 @@ export default class BaseUsable<W extends Record<string, any> = any> extends Bas
     return this.use()
   }
 
+  protected async internalStop(): Promise<void> {
+    // NO-OP not all the usable classes will be able to stop
+  }
+
   public async use(): Promise<void> {
     throw new Error('Not implemented')
   }
 
   protected async runSubProcess(command: string, options?: RunSubProcessOptions): Promise<string> {
-    const subProcessOptions: SubProcessOptions = { command, input: options?.input, env: options?.environment, workingDirectory: options?.workingDirectory }
+    const subProcessOptions: SubProcessOptions = {
+      command,
+      input: options?.input,
+      env: { ...this.environment, ...options?.environment },
+      workingDirectory: options?.workingDirectory || this.workingDirectory
+    }
 
     if (this.options.target) subProcessOptions.engine = this.options.target.engine
 
