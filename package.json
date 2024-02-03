@@ -1,6 +1,6 @@
 {
   "name": "@universal-packages/workflows",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Workflows automation tool",
   "author": "David De Anda <david@universal-packages.com> (https://github.com/universal-packages)",
   "license": "MIT",
