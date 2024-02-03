@@ -9,3 +9,5 @@ export * from './Step.types'
 
 export { default as BaseUsable } from './BaseUsable'
 export * from './BaseUsable.types'
+
+export { Status } from '@universal-packages/sub-process'

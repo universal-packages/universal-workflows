@@ -24,6 +24,8 @@ import { workflowSchema } from './Workflow.schema'
 import { Targets, UsableMap, WorkflowOptions } from './Workflow.types'
 
 export default class Workflow extends BaseRunner<WorkflowOptions> {
+  public readonly name: string
+
   public get graph(): WorkflowGraph {
     return {
       endedAt: this.internalEndedAt ? new Date(this.internalEndedAt) : null,
@@ -78,13 +80,19 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
         ...options?.targets
       }
     })
+
+    this.name = this.options.name
   }
 
   public static buildFrom(name: string, options?: BuildFromOptions): Workflow {
     const finalOptions: BuildFromOptions = { stepUsableLocation: './src', workflowsLocation: './', ...options }
 
-    const workflowDescriptors = loadPluginConfig('universal-workflows', { loadFrom: finalOptions.workflowsLocation })
+    const workflowDescriptors = loadPluginConfig('universal-workflows', { loadFrom: finalOptions.workflowsLocation }) || {}
+
     const workflowDescriptor = workflowDescriptors[name]
+
+    if (!workflowDescriptor) throw new Error(`Unrecognized workflow: ${name}\n\nAvailable workflows: ${Object.keys(workflowDescriptors).join('\n')}`)
+
     const ajv = new Ajv({ allowUnionTypes: true })
     const validate = ajv.compile(workflowSchema)
 
