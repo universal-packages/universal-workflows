@@ -1,5 +1,5 @@
 import { gatherAdapters } from '@universal-packages/adapter-resolver'
-import { EmittedEvent } from '@universal-packages/event-emitter'
+import { EmittedEvent, EventIn } from '@universal-packages/event-emitter'
 import { loadModules } from '@universal-packages/module-loader'
 import { loadPluginConfig } from '@universal-packages/plugin-config-loader'
 import { BaseRunner, EngineInterfaceClass, ExecEngine, ForkEngine, SpawnEngine, Status, TestEngine } from '@universal-packages/sub-process'
@@ -187,11 +187,10 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
       runDescriptor.status = RunDescriptorStatus.Success
       this.emit(`routine:${Status.Success}`, { payload: { name: runDescriptor.name } })
     })
-
-    this.listenTo(runDescriptor.routine, 'step:*', {
-      reducers: (reducible: any) => {
-        reducible.data[0].payload = { ...reducible.data[0].payload, routine: runDescriptor.name }
-      }
+    runDescriptor.routine.on('step:*', (event) => {
+      const newEvent: EventIn = { payload: { ...event.payload, routine: runDescriptor.name } }
+      if (event.error) newEvent.error = event.error
+      this.emit(event.event, newEvent)
     })
 
     try {
@@ -263,15 +262,17 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
         this.emit(`routine:${Status.Stopping}`, { payload: { name: strategyRunDescriptor.routine.name, strategy: runDescriptor.name, strategyIndex: strategyRunDescriptor.index } })
       })
 
-      this.listenTo(strategyRunDescriptor.routine, 'step:*', {
-        reducers: (reducible: any) => {
-          reducible.data[0].payload = {
-            ...reducible.data[0].payload,
+      strategyRunDescriptor.routine.on('step:*', (event) => {
+        const newEvent: EventIn = {
+          payload: {
+            ...event.payload,
             routine: strategyRunDescriptor.routine.name,
             strategy: runDescriptor.name,
             strategyIndex: strategyRunDescriptor.index
           }
         }
+        if (event.error) newEvent.error = event.error
+        this.emit(event.event, newEvent)
       })
 
       strategyRunDescriptor.routine.once(Status.Success, () =>
