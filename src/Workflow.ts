@@ -2,7 +2,7 @@ import { gatherAdapters } from '@universal-packages/adapter-resolver'
 import { EmittedEvent } from '@universal-packages/event-emitter'
 import { loadModules } from '@universal-packages/module-loader'
 import { loadPluginConfig } from '@universal-packages/plugin-config-loader'
-import { BaseRunner, EngineInterfaceClass, Status } from '@universal-packages/sub-process'
+import { BaseRunner, EngineInterfaceClass, ExecEngine, ForkEngine, SpawnEngine, Status, TestEngine } from '@universal-packages/sub-process'
 import { evaluateAndReplace } from '@universal-packages/variable-replacer'
 import Ajv from 'ajv'
 import { camelCase, pascalCase } from 'change-case'
@@ -643,7 +643,9 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
   }
 
   private async loadTargets(): Promise<void> {
+    const knownAdapters = { exec: ExecEngine, fork: ForkEngine, spawn: SpawnEngine, test: TestEngine }
     const gatheredAdapters = gatherAdapters({ domain: 'sub-process', type: 'engine' })
+    const finalAdapters = { ...knownAdapters, ...gatheredAdapters }
     const targetsKeys = Object.keys(this.options.targets)
 
     for (let i = 0; i < targetsKeys.length; i++) {
@@ -651,7 +653,7 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
       const currentTarget = this.options.targets[currentTargetKey]
 
       if (typeof currentTarget.engine === 'string') {
-        const GatheredAdapter: EngineInterfaceClass = gatheredAdapters[currentTarget.engine]
+        const GatheredAdapter: EngineInterfaceClass = finalAdapters[currentTarget.engine]
 
         if (GatheredAdapter) {
           const engine = new GatheredAdapter(currentTarget.engineOptions)
