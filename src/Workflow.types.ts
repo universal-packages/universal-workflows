@@ -20,7 +20,7 @@ export enum RunDescriptorStatus {
   Canceled = 'cancelled'
 }
 
-export interface RunOptions {
+export interface BuildFromOptions {
   stepUsableLocation?: string
   workflowsLocation?: string
 }

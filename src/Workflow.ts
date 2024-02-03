@@ -7,7 +7,18 @@ import { evaluateAndReplace } from '@universal-packages/variable-replacer'
 import Ajv from 'ajv'
 import { camelCase, pascalCase } from 'change-case'
 
-import { CombinationItem, OnFailureAction, Routine, RoutineOptions, RunDescriptor, RunDescriptorStatus, RunDescriptors, RunOptions, StrategyRunDescriptor, WorkflowGraph } from '.'
+import {
+  BuildFromOptions,
+  CombinationItem,
+  OnFailureAction,
+  Routine,
+  RoutineOptions,
+  RunDescriptor,
+  RunDescriptorStatus,
+  RunDescriptors,
+  StrategyRunDescriptor,
+  WorkflowGraph
+} from '.'
 import BaseUsable from './BaseUsable'
 import { workflowSchema } from './Workflow.schema'
 import { Targets, UsableMap, WorkflowOptions } from './Workflow.types'
@@ -69,8 +80,8 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
     })
   }
 
-  public static buildFrom(name: string, options?: RunOptions): Workflow {
-    const finalOptions: RunOptions = { stepUsableLocation: './src', workflowsLocation: './', ...options }
+  public static buildFrom(name: string, options?: BuildFromOptions): Workflow {
+    const finalOptions: BuildFromOptions = { stepUsableLocation: './src', workflowsLocation: './', ...options }
 
     const workflowDescriptors = loadPluginConfig('universal-workflows', { loadFrom: finalOptions.workflowsLocation })
     const workflowDescriptor = workflowDescriptors[name]
