@@ -1,9 +1,0 @@
-name: Echo all the way
-
-routines:
-  echo1:
-    targets:
-      spawn2:
-        x: 2
-
-    steps: []

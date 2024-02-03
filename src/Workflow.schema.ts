@@ -3,6 +3,7 @@ import { JSONSchema7 } from 'json-schema'
 export const workflowSchema: JSONSchema7 = {
   $schema: 'http://json-schema.org/draft-07/schema#',
   type: 'object',
+  additionalProperties: false,
   properties: {
     environment: {
       type: 'object',
@@ -20,6 +21,7 @@ export const workflowSchema: JSONSchema7 = {
       type: 'object',
       additionalProperties: {
         type: 'object',
+        additionalProperties: false,
         properties: {
           engine: {
             type: 'string'
@@ -31,13 +33,18 @@ export const workflowSchema: JSONSchema7 = {
         required: ['engine']
       }
     },
+    workingDirectory: {
+      type: 'string'
+    },
     routines: {
       type: 'object',
       additionalProperties: {
         type: 'object',
+        additionalProperties: false,
         properties: {
           strategy: {
             type: 'object',
+            additionalProperties: false,
             properties: {
               matrix: {
                 type: 'object',
@@ -107,25 +114,17 @@ export const workflowSchema: JSONSchema7 = {
           target: {
             type: 'string'
           },
-          targets: {
-            type: 'object',
-            additionalProperties: {
-              type: 'object',
-              properties: {
-                engine: {
-                  type: 'string'
-                },
-                engineOptions: {
-                  type: 'object'
-                }
-              },
-              required: ['engine']
-            }
+          unless: {
+            type: 'string'
+          },
+          workingDirectory: {
+            type: 'string'
           },
           steps: {
             type: 'array',
             items: {
               type: 'object',
+              additionalProperties: false,
               properties: {
                 environment: {
                   type: 'object',
@@ -187,19 +186,10 @@ export const workflowSchema: JSONSchema7 = {
                 }
               ]
             }
-          },
-          unless: {
-            type: 'string'
-          },
-          workingDirectory: {
-            type: 'string'
           }
         },
         required: ['steps']
       }
-    },
-    workingDirectory: {
-      type: 'string'
     }
   },
   required: ['routines']

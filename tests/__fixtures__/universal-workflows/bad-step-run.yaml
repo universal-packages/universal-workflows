@@ -4,4 +4,4 @@ routines:
   echo1:
     steps:
       - run:
-        bad: true
+          bad: true

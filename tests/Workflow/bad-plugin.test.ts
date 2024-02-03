@@ -29,9 +29,6 @@ const scenarios = [
   { name: 'bad-routine-if', errors: ['/routines/echo1/if must be string'] },
   { name: 'bad-routine-unless', errors: ['/routines/echo1/unless must be string'] },
   { name: 'bad-routine-target', errors: ['/routines/echo1/target must be string'] },
-  { name: 'bad-routine-targets', errors: ['/routines/echo1/targets must be object'] },
-  { name: 'bad-routine-targets-2', errors: ['/routines/echo1/targets/spawn2 must be object'] },
-  { name: 'bad-routine-targets-3', errors: ["/routines/echo1/targets/spawn2 must have required property 'engine'"] },
   { name: 'bad-routine-working-directory', errors: ['/routines/echo1/workingDirectory must be string'] },
   { name: 'bad-routine-steps', errors: ['/routines/echo1/steps must be array'] },
   {
