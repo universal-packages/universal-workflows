@@ -3,6 +3,7 @@ name: Echo all the way
 routines:
   echo1:
     strategy:
+      fail-fast: false
       matrix: 
         fruit:
           - apple
