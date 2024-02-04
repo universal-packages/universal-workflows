@@ -4,7 +4,7 @@
 [![Testing](https://github.com/universal-packages/universal-workflows/actions/workflows/testing.yml/badge.svg)](https://github.com/universal-packages/universal-workflows/actions/workflows/testing.yml)
 [![codecov](https://codecov.io/gh/universal-packages/universal-workflows/branch/main/graph/badge.svg?token=CXPJSN8IGL)](https://codecov.io/gh/universal-packages/universal-workflows)
 
-Sub process encapsulation for different exec technics.
+Automate, customize, and execute your software development workflows right from your local machine.
 
 ## Install
 
