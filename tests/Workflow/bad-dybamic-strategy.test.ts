@@ -4,7 +4,7 @@ import { Measurement } from '@universal-packages/time-measurer'
 import { Workflow } from '../../src'
 
 describe(Workflow, (): void => {
-  it('generates the strategy getting it from the outputs', async (): Promise<void> => {
+  it('fails if the generated matrix is not an object', async (): Promise<void> => {
     const workflow = new Workflow({
       stepUsableLocation: './tests/__fixtures__/cases',
       target: 'spawn',
@@ -93,7 +93,7 @@ describe(Workflow, (): void => {
     })
   })
 
-  it('generates the strategy getting it from the outputs', async (): Promise<void> => {
+  it('fails if the generated include is not ana array of objects', async (): Promise<void> => {
     const workflow = new Workflow({
       stepUsableLocation: './tests/__fixtures__/cases',
       target: 'spawn',

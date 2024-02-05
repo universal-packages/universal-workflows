@@ -4,7 +4,7 @@ import { Measurement } from '@universal-packages/time-measurer'
 import { Workflow } from '../../src'
 
 describe(Workflow, (): void => {
-  it('stops all the strategy routines when one fails', async (): Promise<void> => {
+  it('skips a routine if its unless attribute evaluates to true', async (): Promise<void> => {
     const workflow = new Workflow({
       stepUsableLocation: './tests/__fixtures__/cases',
       target: 'spawn',
@@ -284,7 +284,7 @@ describe(Workflow, (): void => {
     expect(listener.mock.calls).toContainEqual([{ event: 'end', measurement: expect.any(Measurement), payload: { endedAt: expect.any(Date) } }])
   })
 
-  it('stops all the strategy routines when one fails', async (): Promise<void> => {
+  it('skips the last routine and all still works as expected', async (): Promise<void> => {
     const workflow = new Workflow({
       stepUsableLocation: './tests/__fixtures__/cases',
       target: 'spawn',

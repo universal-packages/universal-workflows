@@ -4,7 +4,7 @@ import { Measurement } from '@universal-packages/time-measurer'
 import { Workflow } from '../../src'
 
 describe(Workflow, (): void => {
-  it('generates and run several routines grouped based on a single descriptor', async (): Promise<void> => {
+  it('generates and run several routines grouped based on just providing the matrix descriptor', async (): Promise<void> => {
     const workflow = new Workflow({
       stepUsableLocation: './tests/__fixtures__/cases',
       target: 'spawn',

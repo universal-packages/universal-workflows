@@ -4,7 +4,7 @@ import { Measurement } from '@universal-packages/time-measurer'
 import { Workflow } from '../../src'
 
 describe(Workflow, (): void => {
-  it('stops all the strategy routines when one fails', async (): Promise<void> => {
+  it('is prepared to stop an strategy', async (): Promise<void> => {
     const workflow = new Workflow({
       stepUsableLocation: './tests/__fixtures__/cases',
       target: 'spawn',

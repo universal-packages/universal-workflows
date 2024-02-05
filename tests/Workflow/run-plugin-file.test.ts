@@ -4,7 +4,7 @@ import { Measurement } from '@universal-packages/time-measurer'
 import { Workflow } from '../../src'
 
 describe(Workflow, (): void => {
-  it('runs routines in parallel respecting dependencies', async (): Promise<void> => {
+  it('can build a workflow from a plug-in', async (): Promise<void> => {
     const workflow = Workflow.buildFrom('echo-all-the-way', { stepUsableLocation: './tests/__fixtures__/cases', workflowsLocation: './tests/__fixtures__' })
 
     await workflow.run()

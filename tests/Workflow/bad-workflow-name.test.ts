@@ -1,7 +1,7 @@
 import { Workflow } from '../../src'
 
 describe(Workflow, (): void => {
-  it('runs routines in parallel respecting dependencies', async (): Promise<void> => {
+  it('throws if the workflow name does not appear in the available workflows', async (): Promise<void> => {
     expect(() => {
       Workflow.buildFrom('nonexistent', { stepUsableLocation: './tests/__fixtures__/cases', workflowsLocation: './tests/__fixtures__' })
     }).toThrowError(`Unrecognized workflow: nonexistent

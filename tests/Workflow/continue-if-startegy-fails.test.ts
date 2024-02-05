@@ -4,7 +4,7 @@ import { Measurement } from '@universal-packages/time-measurer'
 import { OnFailureAction, Workflow } from '../../src'
 
 describe(Workflow, (): void => {
-  it('runs routines in parallel respecting dependencies', async (): Promise<void> => {
+  it('continue running routines if a strategy fails if it was expected to', async (): Promise<void> => {
     const workflow = new Workflow({
       stepUsableLocation: './tests/__fixtures__/cases',
       target: 'spawn',

@@ -4,7 +4,7 @@ import { Measurement } from '@universal-packages/time-measurer'
 import { Workflow } from '../../src'
 
 describe(Workflow, (): void => {
-  it('runs routines in parallel respecting dependencies', async (): Promise<void> => {
+  it('uses the step wd then teh routine one and finally the workflow one', async (): Promise<void> => {
     const workflow = new Workflow({
       stepUsableLocation: './tests/__fixtures__/cases',
       workingDirectory: './src',
