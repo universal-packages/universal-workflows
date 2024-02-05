@@ -226,5 +226,69 @@ describe(Step, (): void => {
 
       expect(listener.mock.calls).toEqual([[{ event: 'error', error: new Error('Nothing to run, please provide either a run or use option') }]])
     })
+
+    it('evaluates the working directory for a final one', async (): Promise<void> => {
+      const step = new Step({ run: 'ls', workingDirectory: './${{ variables.dir }}', scope: { variables: { dir: 'tests' } }, target: { engine: 'spawn' } })
+      const listener = jest.fn()
+
+      step.on('*', listener)
+
+      expect(step.graph).toEqual({
+        command: 'ls',
+        endedAt: null,
+        error: null,
+        measurement: null,
+        name: null,
+        output: null,
+        startedAt: null,
+        status: Status.Idle,
+        usable: null
+      })
+
+      await step.run()
+
+      expect(step.status).toEqual(Status.Success)
+      expect(step.output).toEqual(`BaseUsable.test.ts
+Routine
+Step
+Workflow
+__fixtures__
+setup.ts\n`)
+      expect(step.graph).toEqual({
+        command: 'ls',
+        endedAt: expect.any(Date),
+        error: null,
+        measurement: expect.any(Measurement),
+        name: null,
+        output: `BaseUsable.test.ts
+Routine
+Step
+Workflow
+__fixtures__
+setup.ts\n`,
+        startedAt: expect.any(Date),
+        status: Status.Success,
+        usable: null
+      })
+
+      expect(listener.mock.calls).toEqual([
+        [{ event: 'running', payload: { startedAt: expect.any(Date) } }],
+        [
+          {
+            event: 'output',
+            payload: {
+              data: `BaseUsable.test.ts
+Routine
+Step
+Workflow
+__fixtures__
+setup.ts\n`
+            }
+          }
+        ],
+        [{ event: 'success', measurement: expect.any(Measurement) }],
+        [{ event: 'end', measurement: expect.any(Measurement), payload: { endedAt: expect.any(Date) } }]
+      ])
+    })
   })
 })

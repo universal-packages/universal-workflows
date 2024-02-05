@@ -45,11 +45,23 @@ export default class Step extends BaseRunner<StepOptions> {
         return
       }
 
+      let finalWorkingDirectory = this.options.workingDirectory
+
+      if (finalWorkingDirectory) {
+        try {
+          finalWorkingDirectory = evaluateAndReplace(finalWorkingDirectory, { scope, enclosures: ['${{', '}}'] })
+        } catch (error) {
+          this.internalStatus = Status.Error
+          this.internalError = error
+          return
+        }
+      }
+
       const subProcessOptions: SubProcessOptions = {
         command: this.finalRunCommand,
         input: this.options.input,
         env: this.options.environment,
-        workingDirectory: this.options.workingDirectory
+        workingDirectory: finalWorkingDirectory
       }
 
       if (this.options.target) subProcessOptions.engine = this.options.target.engine
