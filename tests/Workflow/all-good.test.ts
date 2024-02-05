@@ -22,8 +22,8 @@ describe(Workflow, (): void => {
         test4: {
           strategy: { matrix: { fruit: ['apple', 'pear'], animal: ['cat', 'dog'] } },
           steps: [
-            { name: 'fruit', run: 'echo $<< strategy.fruit >>' },
-            { name: 'animal', run: 'echo $<< strategy.animal >>' }
+            { name: 'fruit', run: 'echo ${{ strategy.fruit }}' },
+            { name: 'animal', run: 'echo ${{ strategy.animal }}' }
           ],
           dependsOn: 'test2'
         },
@@ -34,8 +34,8 @@ describe(Workflow, (): void => {
         test6: {
           strategy: { matrix: { fruit: ['apple', 'pear'], animal: ['cat', 'dog'] } },
           steps: [
-            { name: 'fruit', run: 'echo $<< strategy.fruit >>' },
-            { name: 'animal', run: 'echo $<< strategy.animal >>' }
+            { name: 'fruit', run: 'echo ${{ strategy.fruit }}' },
+            { name: 'animal', run: 'echo ${{ strategy.animal }}' }
           ],
           dependsOn: 'test2'
         },

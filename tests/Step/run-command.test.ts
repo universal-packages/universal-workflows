@@ -49,7 +49,7 @@ describe(Step, (): void => {
 
     it('runs a described step and uses the scope to evaluate dynamic commands', async (): Promise<void> => {
       const step = new Step({
-        run: 'echo $<< outputs.variable >>',
+        run: 'echo ${{ outputs.variable }}',
         scope: { outputs: { variable: 'Comes form values generated dynamically while running' } },
         target: { engine: 'spawn' }
       })
@@ -58,7 +58,7 @@ describe(Step, (): void => {
       step.on('*', listener)
 
       expect(step.graph).toEqual({
-        command: 'echo $<< outputs.variable >>',
+        command: 'echo ${{ outputs.variable }}',
         endedAt: null,
         error: null,
         measurement: null,

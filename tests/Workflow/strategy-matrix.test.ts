@@ -12,8 +12,8 @@ describe(Workflow, (): void => {
         test1: {
           strategy: { matrix: { fruit: ['apple', 'pear'], animal: ['cat', 'dog'] } },
           steps: [
-            { name: 'fruit', run: 'echo $<< strategy.fruit >>' },
-            { name: 'animal', run: 'echo $<< strategy.animal >>' }
+            { name: 'fruit', run: 'echo ${{ strategy.fruit }}' },
+            { name: 'animal', run: 'echo ${{ strategy.animal }}' }
           ]
         }
       }

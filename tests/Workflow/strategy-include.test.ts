@@ -14,8 +14,8 @@ describe(Workflow, (): void => {
             include: [{ color: 'green' }, { color: 'pink', animal: 'cat' }]
           },
           steps: [
-            { name: 'color', run: 'echo $<< strategy.color >>' },
-            { name: 'animal', run: 'echo $<< strategy.animal >>' }
+            { name: 'color', run: 'echo ${{ strategy.color }}' },
+            { name: 'animal', run: 'echo ${{ strategy.animal }}' }
           ]
         }
       }

@@ -47,26 +47,40 @@ export const workflowSchema: JSONSchema7 = {
             additionalProperties: false,
             properties: {
               matrix: {
-                type: 'object',
-                additionalProperties: {
-                  type: 'array',
-                  items: {
-                    type: ['string', 'number', 'boolean']
+                oneOf: [
+                  {
+                    type: 'string'
+                  },
+                  {
+                    type: 'object',
+                    additionalProperties: {
+                      type: 'array',
+                      items: {
+                        type: ['string', 'number', 'boolean']
+                      }
+                    }
                   }
-                }
+                ]
               },
               onFailure: {
                 type: 'string',
                 enum: ['continue', 'fail']
               },
               include: {
-                type: 'array',
-                items: {
-                  type: 'object',
-                  additionalProperties: {
-                    type: ['string', 'number', 'boolean']
+                oneOf: [
+                  {
+                    type: 'string'
+                  },
+                  {
+                    type: 'array',
+                    items: {
+                      type: 'object',
+                      additionalProperties: {
+                        type: ['string', 'number', 'boolean']
+                      }
+                    }
                   }
-                }
+                ]
               }
             },
             oneOf: [

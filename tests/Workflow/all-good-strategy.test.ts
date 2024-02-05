@@ -37,10 +37,10 @@ describe(Workflow, (): void => {
             ]
           },
           steps: [
-            { name: 'color', run: 'echo $<< strategy.color >>' },
-            { name: 'fruit', run: 'echo $<< strategy.fruit >>' },
-            { name: 'animal', run: 'echo $<< strategy.animal >>' },
-            { name: 'shape', run: 'echo $<< strategy.shape >>' }
+            { name: 'color', run: 'echo ${{ strategy.color }}' },
+            { name: 'fruit', run: 'echo ${{ strategy.fruit }}' },
+            { name: 'animal', run: 'echo ${{ strategy.animal }}' },
+            { name: 'shape', run: 'echo ${{ strategy.shape }}' }
           ]
         }
       }

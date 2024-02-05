@@ -3,7 +3,7 @@ import { EmittedEvent, EventIn } from '@universal-packages/event-emitter'
 import { loadModules } from '@universal-packages/module-loader'
 import { loadPluginConfig } from '@universal-packages/plugin-config-loader'
 import { BaseRunner, EngineInterfaceClass, ExecEngine, ForkEngine, SpawnEngine, Status, TestEngine } from '@universal-packages/sub-process'
-import { evaluateAndReplace } from '@universal-packages/variable-replacer'
+import { evaluate } from '@universal-packages/variable-replacer'
 import Ajv from 'ajv'
 import { camelCase, pascalCase } from 'change-case'
 
@@ -15,6 +15,7 @@ import {
   RoutineOptions,
   RunDescriptor,
   RunDescriptorStatus,
+  RunDescriptorStrategyStatus,
   RunDescriptors,
   StrategyRunDescriptor,
   WorkflowGraph
@@ -231,6 +232,42 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
       return
     }
 
+    if (runDescriptor.strategyStatus === RunDescriptorStrategyStatus.Pending) {
+      const strategy = runDescriptor.routineDescriptor.strategy
+
+      if (typeof strategy.matrix === 'string') {
+        const matrix = this.evaluateExpression(strategy.matrix, { ...this.scope })
+
+        if (typeof matrix === 'object') {
+          runDescriptor.routineDescriptor.strategy.matrix = matrix
+          this.generateStrategy(runDescriptor)
+          runDescriptor.strategyStatus = RunDescriptorStrategyStatus.Ready
+        } else {
+          runDescriptor.status = RunDescriptorStatus.Failure
+          // TODO add error message
+
+          this.handleAfterRunDescriptorFinished(runDescriptor)
+          return
+        }
+      }
+
+      if (typeof strategy.include === 'string') {
+        const include = this.evaluateExpression(strategy.include, { ...this.scope })
+
+        if (Array.isArray(include)) {
+          runDescriptor.routineDescriptor.strategy.include = include
+          this.generateStrategy(runDescriptor)
+          runDescriptor.strategyStatus = RunDescriptorStrategyStatus.Ready
+        } else {
+          runDescriptor.status = RunDescriptorStatus.Failure
+          // TODO add error message
+
+          this.handleAfterRunDescriptorFinished(runDescriptor)
+          return
+        }
+      }
+    }
+
     const { strategyRunDescriptors } = runDescriptor
 
     const allStrategyRoutinesFinished = (): boolean => {
@@ -416,16 +453,17 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
 
   private shouldSkipRunDescriptor(runDescriptor: RunDescriptor): boolean {
     if (runDescriptor.routineDescriptor.if) {
-      const finalIf = `$<<${runDescriptor.routineDescriptor.if.replace(/(\$<<\s*|\s*>>)/g, '')}>>`
-      const evaluatedIf = evaluateAndReplace(finalIf, { scope: { ...this.scope }, enclosures: ['$<<', '>>'] })
-
-      return !JSON.parse(evaluatedIf)
+      return !this.evaluateExpression(runDescriptor.routineDescriptor.if, { ...this.scope })
     } else if (runDescriptor.routineDescriptor.unless) {
-      const finalUnless = `$<<${runDescriptor.routineDescriptor.unless.replace(/(\$<<\s*|\s*>>)/g, '')}>>`
-      const evaluatedUnless = evaluateAndReplace(finalUnless, { scope: { ...this.scope }, enclosures: ['$<<', '>>'] })
-
-      return JSON.parse(evaluatedUnless)
+      return !!this.evaluateExpression(runDescriptor.routineDescriptor.unless, { ...this.scope })
     }
+
+    return false
+  }
+
+  private evaluateExpression(expression: string, scope: Record<string, any>): any {
+    const finalIf = expression.replace(/(\$\{\{\s*|\s*\}\})/g, '')
+    return evaluate(finalIf, scope)
   }
 
   private generateRunDescriptors(): void {
@@ -441,6 +479,7 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
         name: currentRoutineName,
         routine: null,
         routineDescriptor: routineDescriptors[currentRoutineName],
+        routineOptions: null,
         stage: 0,
         status: RunDescriptorStatus.Pending,
         strategyRunDescriptors: []
@@ -518,7 +557,7 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
 
       const { target: descriptorTarget, strategy, ...currentRoutineDescriptorWithoutTarget } = currentRoutineDescriptor
 
-      const currentRoutineOptions: RoutineOptions = {
+      currentRunDescriptor.routineOptions = {
         name: currentRoutineName,
         scope: this.scope,
         targets: this.targets,
@@ -526,98 +565,105 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
         ...currentRoutineDescriptorWithoutTarget
       }
       if (this.options.environment || currentRoutineDescriptorWithoutTarget.environment)
-        currentRoutineOptions.environment = { ...this.options.environment, ...currentRoutineDescriptorWithoutTarget.environment }
+        currentRunDescriptor.routineOptions.environment = { ...this.options.environment, ...currentRoutineDescriptorWithoutTarget.environment }
       if (descriptorTarget) {
         if (this.targets[descriptorTarget]) {
-          currentRoutineOptions.target = this.targets[descriptorTarget]
+          currentRunDescriptor.routineOptions.target = this.targets[descriptorTarget]
         } else {
           throw new Error(`The target "${descriptorTarget}" was not found in the targets map`)
         }
       } else if (this.options.target) {
         if (this.targets[this.options.target]) {
-          currentRoutineOptions.target = this.targets[this.options.target]
+          currentRunDescriptor.routineOptions.target = this.targets[this.options.target]
         } else {
           throw new Error(`The target "${this.options.target}" was not found in the targets map`)
         }
       }
       if (currentRoutineDescriptorWithoutTarget.workingDirectory) {
-        currentRoutineOptions.workingDirectory = currentRoutineOptions.workingDirectory
+        currentRunDescriptor.routineOptions.workingDirectory = currentRunDescriptor.routineOptions.workingDirectory
       } else if (this.options.workingDirectory) {
-        currentRoutineOptions.workingDirectory = this.options.workingDirectory
+        currentRunDescriptor.routineOptions.workingDirectory = this.options.workingDirectory
       }
 
       if (strategy) {
         if (strategy.matrix || strategy.include) {
-          const matrix = strategy.matrix || {}
-          const include = strategy.include || []
-          const combinations: CombinationItem[] = []
-
-          const generateBaseCombinations = (keys: string[], index: number, current: Record<string, string | number | boolean>): void => {
-            if (index === keys.length) {
-              combinations.push({ original: { ...current }, withIncludes: { ...current } })
-              return
-            }
-
-            const key = keys[index]
-            for (let i = 0; i < matrix[key].length; i++) {
-              const currentValue = matrix[key][i]
-
-              generateBaseCombinations(keys, index + 1, { ...current, [key]: currentValue })
-            }
-          }
-
-          if (!!Object.keys(matrix).length) generateBaseCombinations(Object.keys(matrix), 0, {})
-
-          for (let i = 0; i < include.length; i++) {
-            let currentInclude = include[i]
-
-            const mergeWithOriginals =
-              !!Object.keys(matrix).length &&
-              combinations.some((combination) => {
-                return Object.keys(currentInclude).every(
-                  (key) => combination.original !== null && (!(key in combination.original) || combination.original[key] === currentInclude[key])
-                )
-              })
-
-            if (mergeWithOriginals) {
-              for (let j = 0; j < combinations.length; j++) {
-                const currentCombination = combinations[j]
-
-                const canMerge = Object.keys(currentInclude).every((key) => !(key in currentCombination.original) || currentCombination.original[key] === currentInclude[key])
-
-                if (canMerge) currentCombination.withIncludes = { ...currentCombination.withIncludes, ...currentInclude }
-              }
-            } else {
-              combinations.push({ original: null, withIncludes: currentInclude })
-            }
-          }
-
-          const finalCombinations = combinations.map((combination) => combination.withIncludes)
-
-          for (let i = 0; i < finalCombinations.length; i++) {
-            const currentCombination = finalCombinations[i]
-            const currentCombinationName = `${currentRoutineOptions.name} [${i}]`
-            const currentRoutineOptionsWithStrategyScope: RoutineOptions = {
-              ...currentRoutineOptions,
-              name: currentCombinationName,
-              strategyScope: currentCombination
-            }
-
-            const strategyRunDescriptor: StrategyRunDescriptor = {
-              index: i,
-              name: currentCombinationName,
-              variables: currentCombination,
-              routine: new Routine(currentRoutineOptionsWithStrategyScope)
-            }
-
-            currentRunDescriptor.strategyRunDescriptors.push(strategyRunDescriptor)
+          if (typeof strategy.matrix === 'string' || typeof strategy.include === 'string') {
+            currentRunDescriptor.strategyStatus = RunDescriptorStrategyStatus.Pending
+          } else {
+            this.generateStrategy(currentRunDescriptor)
           }
         } else {
           throw new Error('Strategy matrix or include must be specified')
         }
       } else {
-        currentRunDescriptor.routine = new Routine(currentRoutineOptions)
+        currentRunDescriptor.routine = new Routine(currentRunDescriptor.routineOptions)
       }
+    }
+  }
+
+  private generateStrategy(runDescriptor: RunDescriptor): void {
+    const strategy = runDescriptor.routineDescriptor.strategy
+    const matrix = (strategy.matrix || {}) as Record<string, string[] | number[] | boolean[]>
+    const include = (strategy.include || []) as Record<string, string | number | boolean>[]
+    const combinations: CombinationItem[] = []
+
+    const generateBaseCombinations = (keys: string[], index: number, current: Record<string, string | number | boolean>): void => {
+      if (index === keys.length) {
+        combinations.push({ original: { ...current }, withIncludes: { ...current } })
+        return
+      }
+
+      const key = keys[index]
+      for (let i = 0; i < matrix[key].length; i++) {
+        const currentValue = matrix[key][i]
+
+        generateBaseCombinations(keys, index + 1, { ...current, [key]: currentValue })
+      }
+    }
+
+    if (!!Object.keys(matrix).length) generateBaseCombinations(Object.keys(matrix), 0, {})
+
+    for (let i = 0; i < include.length; i++) {
+      let currentInclude = include[i]
+
+      const mergeWithOriginals =
+        !!Object.keys(matrix).length &&
+        combinations.some((combination) => {
+          return Object.keys(currentInclude).every((key) => combination.original !== null && (!(key in combination.original) || combination.original[key] === currentInclude[key]))
+        })
+
+      if (mergeWithOriginals) {
+        for (let j = 0; j < combinations.length; j++) {
+          const currentCombination = combinations[j]
+
+          const canMerge = Object.keys(currentInclude).every((key) => !(key in currentCombination.original) || currentCombination.original[key] === currentInclude[key])
+
+          if (canMerge) currentCombination.withIncludes = { ...currentCombination.withIncludes, ...currentInclude }
+        }
+      } else {
+        combinations.push({ original: null, withIncludes: currentInclude })
+      }
+    }
+
+    const finalCombinations = combinations.map((combination) => combination.withIncludes)
+
+    for (let i = 0; i < finalCombinations.length; i++) {
+      const currentCombination = finalCombinations[i]
+      const currentCombinationName = `${runDescriptor.name} [${i}]`
+      const currentRoutineOptionsWithStrategyScope: RoutineOptions = {
+        ...runDescriptor.routineOptions,
+        name: currentCombinationName,
+        strategyScope: currentCombination
+      }
+
+      const strategyRunDescriptor: StrategyRunDescriptor = {
+        index: i,
+        name: currentCombinationName,
+        variables: currentCombination,
+        routine: new Routine(currentRoutineOptionsWithStrategyScope)
+      }
+
+      runDescriptor.strategyRunDescriptors.push(strategyRunDescriptor)
     }
   }
 

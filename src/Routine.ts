@@ -1,9 +1,9 @@
 import { EmittedEvent } from '@universal-packages/event-emitter'
 import { BaseRunner, Status } from '@universal-packages/sub-process'
-import { evaluateAndReplace } from '@universal-packages/variable-replacer'
+import { evaluate } from '@universal-packages/variable-replacer'
 
 import { OnFailureAction, Step, StepOptions } from '.'
-import { RoutineGraph, RoutineOptions } from './Routine.types'
+import { RoutineGraph, RoutineOptions, StepDescriptor } from './Routine.types'
 
 export default class Routine extends BaseRunner<RoutineOptions> {
   public readonly name: string
@@ -32,26 +32,15 @@ export default class Routine extends BaseRunner<RoutineOptions> {
     let onRunningRan = false
 
     for (let i = 0; i < this.steps.length; i++) {
+      const currentStepDescriptor = this.options.steps[i]
       this.currentStep = this.steps[i]
 
-      const currentStepDescriptor = this.options.steps[i]
-      const scope = this.options.strategyScope ? { ...this.options.scope, strategy: this.options.strategyScope } : { ...this.options.scope }
+      if (this.shouldSkipStep(currentStepDescriptor)) {
+        this.currentStep.once(Status.Skipped, () => this.emit(`step:${Status.Skipped}`, { payload: { index: i } }))
+        this.currentStep.skip()
 
-      this.currentStep.once(Status.Skipped, () => this.emit(`step:${Status.Skipped}`, { payload: { index: i } }))
-
-      if (currentStepDescriptor.if) {
-        const finalIf = `$<<${currentStepDescriptor.if.replace(/(\$<<\s*|\s*>>)/g, '')}>>`
-        const evaluatedIf = evaluateAndReplace(finalIf, { scope, enclosures: ['$<<', '>>'] })
-
-        if (!JSON.parse(evaluatedIf)) this.currentStep.skip()
-      } else if (currentStepDescriptor.unless) {
-        const finalUnless = `$<<${currentStepDescriptor.unless.replace(/(\$<<\s*|\s*>>)/g, '')}>>`
-        const evaluatedUnless = evaluateAndReplace(finalUnless, { scope, enclosures: ['$<<', '>>'] })
-
-        if (JSON.parse(evaluatedUnless)) this.currentStep.skip()
+        continue
       }
-
-      if (this.currentStep.status === Status.Skipped) continue
 
       this.currentStep.once(Status.Running, () => this.emit(`step:${Status.Running}`, { payload: { index: i } }))
       this.currentStep.once(Status.Stopping, () => this.emit(`step:${Status.Stopping}`, { payload: { index: i } }))
@@ -148,5 +137,22 @@ export default class Routine extends BaseRunner<RoutineOptions> {
 
       this.steps.push(new Step(currentStepOptions))
     }
+  }
+
+  private shouldSkipStep(stepDescriptor: StepDescriptor): boolean {
+    const scope = this.options.strategyScope ? { ...this.options.scope, strategy: this.options.strategyScope } : { ...this.options.scope }
+
+    if (stepDescriptor.if) {
+      return !this.evaluateExpression(stepDescriptor.if, scope)
+    } else if (stepDescriptor.unless) {
+      return !!this.evaluateExpression(stepDescriptor.unless, scope)
+    }
+
+    return false
+  }
+
+  private evaluateExpression(expression: string, scope: Record<string, any>): any {
+    const finalIf = expression.replace(/(\$\{\{\s*|\s*\}\})/g, '')
+    return evaluate(finalIf, scope)
   }
 }

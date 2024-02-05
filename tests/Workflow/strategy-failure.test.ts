@@ -11,7 +11,7 @@ describe(Workflow, (): void => {
       routines: {
         test1: {
           strategy: { matrix: { seconds: [0.5, 1], multiplier: [1, 2] }, include: [{ seconds: 5, multiplier: 'nop' }] },
-          steps: [{ run: '$<< (strategy.seconds * strategy.multiplier) ? `sleep ${strategy.seconds * strategy.multiplier}` : "git clone nonexistent" >>' }]
+          steps: [{ run: '${{ (strategy.seconds * strategy.multiplier) ? `sleep ${strategy.seconds * strategy.multiplier}` : "git clone nonexistent" }}' }]
         }
       }
     })

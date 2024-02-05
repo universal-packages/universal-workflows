@@ -98,7 +98,7 @@ describe(Routine, (): void => {
   it('is prepared for when a step errors', async (): Promise<void> => {
     const routine = new Routine({
       name: 'r-test',
-      steps: [{ run: 'sleep $<< throw new Error("Ups") >>' }],
+      steps: [{ run: 'sleep ${{ throw new Error("Ups") }}' }],
       target: { engine: 'spawn' }
     })
     const listener = jest.fn()
@@ -125,7 +125,7 @@ describe(Routine, (): void => {
       status: Status.Failure,
       steps: [
         {
-          command: 'sleep $<< throw new Error("Ups") >>',
+          command: 'sleep ${{ throw new Error("Ups") }}',
           endedAt: expect.any(Date),
           error: 'Ups',
           measurement: null,

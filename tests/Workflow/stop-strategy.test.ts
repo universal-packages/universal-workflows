@@ -11,7 +11,7 @@ describe(Workflow, (): void => {
       routines: {
         test1: {
           strategy: { matrix: { seconds: [0.01, 1], multiplier: [0.5, 5] } },
-          steps: [{ run: 'sleep $<< (strategy.seconds * strategy.multiplier) || "nop" >>' }]
+          steps: [{ run: 'sleep ${{ (strategy.seconds * strategy.multiplier) || "nop" }}' }]
         }
       }
     })

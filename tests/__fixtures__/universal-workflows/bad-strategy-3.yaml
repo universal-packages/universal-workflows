@@ -3,5 +3,6 @@ name: Echo all the way
 routines:
   echo1:
     strategy:
-      include: nop
+      include:
+        nop: true
     steps: []

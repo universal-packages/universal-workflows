@@ -11,7 +11,7 @@ describe(Routine, (): void => {
         {
           run: 'echo $SECOND_TEST_VARIABLE',
           environment: { SECOND_TEST_VARIABLE: 'This is another variable' },
-          unless: '$<<outputs.r-test.step-1>>'
+          unless: '${{outputs.r-test.step-1}}'
         }
       ],
       target: { engine: 'spawn' },

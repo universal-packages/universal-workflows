@@ -54,12 +54,16 @@ export default class BaseUsable<W extends Record<string, any> = any> extends Bas
     return subProcess.stdout
   }
 
-  protected pushOutput(output: string | Buffer): void {
-    const processedOutput = (output instanceof Buffer ? output.toString() : output).replace(/\n+$/, '') + '\n'
+  protected pushOutput(output: string): void {
+    const processedOutput = output.replace(/\n+$/, '') + '\n'
 
     this.emit('output', { payload: { data: processedOutput } })
 
     this.internalOutput = (this.internalOutput || '') + processedOutput
+  }
+
+  protected setOutput(output: any): void {
+    this.internalOutput = output
   }
 
   protected fail(error?: Error) {

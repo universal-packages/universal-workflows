@@ -20,10 +20,38 @@ const scenarios = [
       '/routines/echo1/strategy must match exactly one schema in oneOf'
     ]
   },
-  { name: 'bad-strategy-2', errors: ['/routines/echo1/strategy/matrix must be object'] },
-  { name: 'bad-strategy-3', errors: ['/routines/echo1/strategy/include must be array'] },
-  { name: 'bad-strategy-4', errors: ['/routines/echo1/strategy/matrix/fruit/0 must be string,number,boolean'] },
-  { name: 'bad-strategy-5', errors: ['/routines/echo1/strategy/include/0/fruit must be string,number,boolean'] },
+  {
+    name: 'bad-strategy-2',
+    errors: [
+      '/routines/echo1/strategy/matrix must be string',
+      '/routines/echo1/strategy/matrix must be object',
+      '/routines/echo1/strategy/matrix must match exactly one schema in oneOf'
+    ]
+  },
+  {
+    name: 'bad-strategy-3',
+    errors: [
+      '/routines/echo1/strategy/include must be string',
+      '/routines/echo1/strategy/include must be array',
+      '/routines/echo1/strategy/include must match exactly one schema in oneOf'
+    ]
+  },
+  {
+    name: 'bad-strategy-4',
+    errors: [
+      '/routines/echo1/strategy/matrix must be string',
+      '/routines/echo1/strategy/matrix/fruit/0 must be string,number,boolean',
+      '/routines/echo1/strategy/matrix must match exactly one schema in oneOf'
+    ]
+  },
+  {
+    name: 'bad-strategy-5',
+    errors: [
+      '/routines/echo1/strategy/include must be string',
+      '/routines/echo1/strategy/include/0/fruit must be string,number,boolean',
+      '/routines/echo1/strategy/include must match exactly one schema in oneOf'
+    ]
+  },
   { name: 'bad-strategy-6', errors: ['/routines/echo1/strategy/onFailure must be equal to one of the allowed values ["continue","fail"]'] },
   { name: 'bad-routine-environment', errors: ['/routines/echo1/environment/FOO must be string,number,boolean'] },
   { name: 'bad-routine-if', errors: ['/routines/echo1/if must be string'] },

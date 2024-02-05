@@ -18,7 +18,7 @@ describe(Workflow, (): void => {
         },
         test3: {
           strategy: { matrix: { seconds: [0.5, 1], multiplier: [1, 2] }, include: [{ seconds: 5, multiplier: 'nop' }] },
-          steps: [{ run: '$<< (strategy.seconds * strategy.multiplier) ? `sleep ${strategy.seconds * strategy.multiplier}` : "git clone nonexistent" >>' }],
+          steps: [{ run: '${{ (strategy.seconds * strategy.multiplier) ? `sleep ${strategy.seconds * strategy.multiplier}` : "git clone nonexistent" }}' }],
           dependsOn: 'test1',
           onFailure: OnFailureAction.Continue
         },
@@ -28,7 +28,7 @@ describe(Workflow, (): void => {
         },
         test5: {
           strategy: { matrix: { seconds: [0.5, 1], multiplier: [1, 2] }, include: [{ seconds: 5, multiplier: 'nop' }] },
-          steps: [{ run: '$<< (strategy.seconds * strategy.multiplier) ? `sleep ${strategy.seconds * strategy.multiplier}` : "git clone nonexistent" >>' }],
+          steps: [{ run: '${{ (strategy.seconds * strategy.multiplier) ? `sleep ${strategy.seconds * strategy.multiplier}` : "git clone nonexistent" }}' }],
           dependsOn: ['test3', 'test4'],
           onFailure: OnFailureAction.Continue
         }

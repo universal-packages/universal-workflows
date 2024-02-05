@@ -3,11 +3,16 @@ import { Measurement } from '@universal-packages/time-measurer'
 
 import BaseUsable from './BaseUsable'
 import Routine from './Routine'
-import { RoutineGraph, StepDescriptor } from './Routine.types'
+import { RoutineGraph, RoutineOptions, StepDescriptor } from './Routine.types'
 
 export enum OnFailureAction {
   Continue = 'continue',
   Fail = 'fail'
+}
+
+export enum RunDescriptorStrategyStatus {
+  Pending = 'pending',
+  Ready = 'ready'
 }
 
 export enum RunDescriptorStatus {
@@ -36,21 +41,21 @@ export interface WorkflowOptions extends BaseRunnerOptions {
 }
 
 export interface RoutineDescriptor {
-  strategy?: StrategyDescriptor
   dependsOn?: string | string[]
   environment?: Record<string, string>
   if?: string
   onFailure?: OnFailureAction
   steps: StepDescriptor[]
+  strategy?: StrategyDescriptor
   target?: string
   unless?: string
   workingDirectory?: string
 }
 
 export interface StrategyDescriptor {
-  matrix?: Record<string, (string | number | boolean)[]>
+  matrix?: Record<string, (string | number | boolean)[]> | string
   onFailure?: OnFailureAction
-  include?: Record<string, string | number | boolean>[]
+  include?: Record<string, string | number | boolean>[] | string
 }
 
 export interface RoutineDescriptors {
@@ -80,9 +85,11 @@ export interface RunDescriptor {
   name: string
   routine: Routine
   routineDescriptor: RoutineDescriptor
+  routineOptions: RoutineOptions
   stage: number
   status: RunDescriptorStatus
   strategyRunDescriptors: StrategyRunDescriptor[]
+  strategyStatus?: RunDescriptorStrategyStatus
 }
 
 export interface StrategyRunDescriptor {

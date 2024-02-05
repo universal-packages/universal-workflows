@@ -20,13 +20,13 @@ export default class Step extends BaseRunner<StepOptions> {
     }
   }
 
-  public get output(): string {
+  public get output(): any {
     return this.internalOutput
   }
 
   private subProcess: SubProcess
   private usable: BaseUsable
-  private internalOutput: string
+  private internalOutput: any
   private finalRunCommand: string
 
   public constructor(options: StepOptions) {
@@ -38,7 +38,7 @@ export default class Step extends BaseRunner<StepOptions> {
       const scope = this.options.strategyScope ? { ...this.options.scope, strategy: this.options.strategyScope } : { ...this.options.scope }
 
       try {
-        this.finalRunCommand = evaluateAndReplace(this.options.run, { scope, enclosures: ['$<<', '>>'] })
+        this.finalRunCommand = evaluateAndReplace(this.options.run, { scope, enclosures: ['${{', '}}'] })
       } catch (error) {
         this.internalStatus = Status.Error
         this.internalError = error

@@ -12,8 +12,8 @@ describe(Workflow, (): void => {
         test1: {
           strategy: { matrix: { fruit: ['apple', 'pear'], animal: ['cat', 'dog'] } },
           steps: [
-            { name: 'fruit', run: 'echo $<< strategy.fruit >>' },
-            { name: 'animal', run: 'echo $<< strategy.animal >>' }
+            { name: 'fruit', run: 'echo ${{ strategy.fruit }}' },
+            { name: 'animal', run: 'echo ${{ strategy.animal }}' }
           ],
           if: 'false'
         },
@@ -25,8 +25,8 @@ describe(Workflow, (): void => {
         test3: {
           strategy: { matrix: { fruit: ['apple', 'pear'], animal: ['cat', 'dog'] } },
           steps: [
-            { name: 'fruit', run: 'echo $<< strategy.fruit >>' },
-            { name: 'animal', run: 'echo $<< strategy.animal >>' }
+            { name: 'fruit', run: 'echo ${{ strategy.fruit }}' },
+            { name: 'animal', run: 'echo ${{ strategy.animal }}' }
           ],
           if: 'false'
         },
@@ -277,8 +277,8 @@ describe(Workflow, (): void => {
         test1: {
           strategy: { matrix: { fruit: ['apple', 'pear'], animal: ['cat', 'dog'] } },
           steps: [
-            { name: 'fruit', run: 'echo $<< strategy.fruit >>' },
-            { name: 'animal', run: 'echo $<< strategy.animal >>' }
+            { name: 'fruit', run: 'echo ${{ strategy.fruit }}' },
+            { name: 'animal', run: 'echo ${{ strategy.animal }}' }
           ]
         },
         test2: {
@@ -288,8 +288,8 @@ describe(Workflow, (): void => {
         test3: {
           strategy: { matrix: { fruit: ['apple', 'pear'], animal: ['cat', 'dog'] } },
           steps: [
-            { name: 'fruit', run: 'echo $<< strategy.fruit >>' },
-            { name: 'animal', run: 'echo $<< strategy.animal >>' }
+            { name: 'fruit', run: 'echo ${{ strategy.fruit }}' },
+            { name: 'animal', run: 'echo ${{ strategy.animal }}' }
           ],
           if: '2 + 2 === 4'
         },
@@ -300,8 +300,8 @@ describe(Workflow, (): void => {
         test5: {
           strategy: { matrix: { fruit: ['apple', 'pear'], animal: ['cat', 'dog'] } },
           steps: [
-            { name: 'fruit', run: 'echo $<< strategy.fruit >>' },
-            { name: 'animal', run: 'echo $<< strategy.animal >>' }
+            { name: 'fruit', run: 'echo ${{ strategy.fruit }}' },
+            { name: 'animal', run: 'echo ${{ strategy.animal }}' }
           ],
           dependsOn: ['test3', 'test4'],
           if: 'false'

@@ -3,5 +3,6 @@ name: Echo all the way
 routines:
   echo1:
     strategy:
-      matrix: nop
+      matrix:
+        - nop
     steps: []

@@ -40,11 +40,11 @@ routines:
 
     steps:
       - name: echo-fruit
-        run: echo $<< strategy.fruit >>
+        run: echo ${{ strategy.fruit }}
         target: spawn2
         workingDirectory: ./tests
       - name: echo-animal
-        run: echo $<< strategy.animal >>
+        run: echo ${{ strategy.animal }}
         target: spawn
         workingDirectory: ./tests
 
