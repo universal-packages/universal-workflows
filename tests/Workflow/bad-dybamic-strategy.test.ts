@@ -47,7 +47,7 @@ describe(Workflow, (): void => {
       measurement: expect.any(Measurement),
       name: null,
       startedAt: expect.any(Date),
-      status: 'failure',
+      status: Status.Failure,
       routines: [
         [
           {
@@ -56,7 +56,7 @@ describe(Workflow, (): void => {
             measurement: expect.any(Measurement),
             name: 'test1',
             startedAt: expect.any(Date),
-            status: 'success',
+            status: Status.Success,
             steps: [
               {
                 command: null,
@@ -76,7 +76,7 @@ describe(Workflow, (): void => {
                   ]
                 },
                 startedAt: expect.any(Date),
-                status: 'success',
+                status: Status.Success,
                 usable: 'generate-strategy'
               }
             ]
@@ -136,7 +136,7 @@ describe(Workflow, (): void => {
       measurement: expect.any(Measurement),
       name: null,
       startedAt: expect.any(Date),
-      status: 'failure',
+      status: Status.Failure,
       routines: [
         [
           {
@@ -145,7 +145,7 @@ describe(Workflow, (): void => {
             measurement: expect.any(Measurement),
             name: 'test1',
             startedAt: expect.any(Date),
-            status: 'success',
+            status: Status.Success,
             steps: [
               {
                 command: null,
@@ -165,7 +165,7 @@ describe(Workflow, (): void => {
                   ]
                 },
                 startedAt: expect.any(Date),
-                status: 'success',
+                status: Status.Success,
                 usable: 'generate-strategy'
               }
             ]

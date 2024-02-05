@@ -16,7 +16,7 @@ describe(Workflow, (): void => {
       measurement: expect.any(Measurement),
       name: 'Echo all the way',
       startedAt: expect.any(Date),
-      status: 'success',
+      status: Status.Success,
       routines: [
         [
           {
@@ -29,7 +29,7 @@ describe(Workflow, (): void => {
                 measurement: expect.any(Measurement),
                 name: 'echo1 [0]',
                 startedAt: expect.any(Date),
-                status: 'success',
+                status: Status.Success,
                 steps: [
                   {
                     command: 'echo apple',
@@ -39,7 +39,7 @@ describe(Workflow, (): void => {
                     name: 'echo-fruit',
                     output: 'apple\n',
                     startedAt: expect.any(Date),
-                    status: 'success',
+                    status: Status.Success,
                     usable: null
                   },
                   {
@@ -50,7 +50,7 @@ describe(Workflow, (): void => {
                     name: 'echo-animal',
                     output: 'cat\n',
                     startedAt: expect.any(Date),
-                    status: 'success',
+                    status: Status.Success,
                     usable: null
                   }
                 ],
@@ -66,7 +66,7 @@ describe(Workflow, (): void => {
                 measurement: expect.any(Measurement),
                 name: 'echo1 [1]',
                 startedAt: expect.any(Date),
-                status: 'success',
+                status: Status.Success,
                 steps: [
                   {
                     command: 'echo apple',
@@ -76,7 +76,7 @@ describe(Workflow, (): void => {
                     name: 'echo-fruit',
                     output: 'apple\n',
                     startedAt: expect.any(Date),
-                    status: 'success',
+                    status: Status.Success,
                     usable: null
                   },
                   {
@@ -87,7 +87,7 @@ describe(Workflow, (): void => {
                     name: 'echo-animal',
                     output: 'dog\n',
                     startedAt: expect.any(Date),
-                    status: 'success',
+                    status: Status.Success,
                     usable: null
                   }
                 ],
@@ -103,7 +103,7 @@ describe(Workflow, (): void => {
                 measurement: expect.any(Measurement),
                 name: 'echo1 [2]',
                 startedAt: expect.any(Date),
-                status: 'success',
+                status: Status.Success,
                 steps: [
                   {
                     command: 'echo banana',
@@ -113,7 +113,7 @@ describe(Workflow, (): void => {
                     name: 'echo-fruit',
                     output: 'banana\n',
                     startedAt: expect.any(Date),
-                    status: 'success',
+                    status: Status.Success,
                     usable: null
                   },
                   {
@@ -124,7 +124,7 @@ describe(Workflow, (): void => {
                     name: 'echo-animal',
                     output: 'cat\n',
                     startedAt: expect.any(Date),
-                    status: 'success',
+                    status: Status.Success,
                     usable: null
                   }
                 ],
@@ -140,7 +140,7 @@ describe(Workflow, (): void => {
                 measurement: expect.any(Measurement),
                 name: 'echo1 [3]',
                 startedAt: expect.any(Date),
-                status: 'success',
+                status: Status.Success,
                 steps: [
                   {
                     command: 'echo banana',
@@ -150,7 +150,7 @@ describe(Workflow, (): void => {
                     name: 'echo-fruit',
                     output: 'banana\n',
                     startedAt: expect.any(Date),
-                    status: 'success',
+                    status: Status.Success,
                     usable: null
                   },
                   {
@@ -161,7 +161,7 @@ describe(Workflow, (): void => {
                     name: 'echo-animal',
                     output: 'dog\n',
                     startedAt: expect.any(Date),
-                    status: 'success',
+                    status: Status.Success,
                     usable: null
                   }
                 ],
@@ -179,7 +179,7 @@ describe(Workflow, (): void => {
             measurement: expect.any(Measurement),
             name: 'echo2',
             startedAt: expect.any(Date),
-            status: 'success',
+            status: Status.Success,
             steps: [
               {
                 command: 'echo $FOO',
@@ -189,7 +189,7 @@ describe(Workflow, (): void => {
                 name: 'echo-env-foo',
                 output: 'bar\n',
                 startedAt: expect.any(Date),
-                status: 'success',
+                status: Status.Success,
                 usable: null
               },
               {
@@ -200,7 +200,7 @@ describe(Workflow, (): void => {
                 name: 'echo-env-num',
                 output: '42\n',
                 startedAt: expect.any(Date),
-                status: 'success',
+                status: Status.Success,
                 usable: null
               },
               {
@@ -211,7 +211,7 @@ describe(Workflow, (): void => {
                 name: 'echo-env-bool',
                 output: 'true\n',
                 startedAt: expect.any(Date),
-                status: 'success',
+                status: Status.Success,
                 usable: null
               },
               {
@@ -222,7 +222,7 @@ describe(Workflow, (): void => {
                 name: 'echo-env-echo',
                 output: 'echo2\n',
                 startedAt: expect.any(Date),
-                status: 'success',
+                status: Status.Success,
                 usable: null
               },
               {
@@ -233,7 +233,7 @@ describe(Workflow, (): void => {
                 name: 'echo-env-echo-num',
                 output: '2\n',
                 startedAt: expect.any(Date),
-                status: 'success',
+                status: Status.Success,
                 usable: null
               },
               {
@@ -244,7 +244,7 @@ describe(Workflow, (): void => {
                 name: 'echo-env-echo-bool',
                 output: 'true\n',
                 startedAt: expect.any(Date),
-                status: 'success',
+                status: Status.Success,
                 usable: null
               }
             ]
@@ -257,7 +257,7 @@ describe(Workflow, (): void => {
             measurement: expect.any(Measurement),
             name: 'git-failure',
             startedAt: expect.any(Date),
-            status: 'success',
+            status: Status.Success,
             steps: [
               {
                 command: 'git clone nonexistent',
@@ -267,7 +267,7 @@ describe(Workflow, (): void => {
                 name: 'git-failure',
                 output: "fatal: repository 'nonexistent' does not exist\n",
                 startedAt: expect.any(Date),
-                status: 'failure',
+                status: Status.Failure,
                 usable: null
               }
             ]

@@ -41,7 +41,7 @@ describe(Workflow, (): void => {
       measurement: expect.any(Measurement),
       name: null,
       startedAt: expect.any(Date),
-      status: 'success',
+      status: Status.Success,
       routines: [
         [
           {
@@ -54,7 +54,7 @@ describe(Workflow, (): void => {
                 measurement: expect.any(Measurement),
                 name: 'test1 [0]',
                 startedAt: expect.any(Date),
-                status: 'success',
+                status: Status.Success,
                 steps: [
                   {
                     command: 'echo apple',
@@ -64,7 +64,7 @@ describe(Workflow, (): void => {
                     name: 'fruit',
                     output: 'apple\n',
                     startedAt: expect.any(Date),
-                    status: 'success',
+                    status: Status.Success,
                     usable: null
                   },
                   {
@@ -75,7 +75,7 @@ describe(Workflow, (): void => {
                     name: 'animal',
                     output: 'cat\n',
                     startedAt: expect.any(Date),
-                    status: 'success',
+                    status: Status.Success,
                     usable: null
                   }
                 ],
@@ -87,7 +87,7 @@ describe(Workflow, (): void => {
                 measurement: expect.any(Measurement),
                 name: 'test1 [1]',
                 startedAt: expect.any(Date),
-                status: 'success',
+                status: Status.Success,
                 steps: [
                   {
                     command: 'echo apple',
@@ -97,7 +97,7 @@ describe(Workflow, (): void => {
                     name: 'fruit',
                     output: 'apple\n',
                     startedAt: expect.any(Date),
-                    status: 'success',
+                    status: Status.Success,
                     usable: null
                   },
                   {
@@ -108,7 +108,7 @@ describe(Workflow, (): void => {
                     name: 'animal',
                     output: 'dog\n',
                     startedAt: expect.any(Date),
-                    status: 'success',
+                    status: Status.Success,
                     usable: null
                   }
                 ],
@@ -120,7 +120,7 @@ describe(Workflow, (): void => {
                 measurement: expect.any(Measurement),
                 name: 'test1 [2]',
                 startedAt: expect.any(Date),
-                status: 'success',
+                status: Status.Success,
                 steps: [
                   {
                     command: 'echo pear',
@@ -130,7 +130,7 @@ describe(Workflow, (): void => {
                     name: 'fruit',
                     output: 'pear\n',
                     startedAt: expect.any(Date),
-                    status: 'success',
+                    status: Status.Success,
                     usable: null
                   },
                   {
@@ -141,7 +141,7 @@ describe(Workflow, (): void => {
                     name: 'animal',
                     output: 'cat\n',
                     startedAt: expect.any(Date),
-                    status: 'success',
+                    status: Status.Success,
                     usable: null
                   }
                 ],
@@ -153,7 +153,7 @@ describe(Workflow, (): void => {
                 measurement: expect.any(Measurement),
                 name: 'test1 [3]',
                 startedAt: expect.any(Date),
-                status: 'success',
+                status: Status.Success,
                 steps: [
                   {
                     command: 'echo pear',
@@ -163,7 +163,7 @@ describe(Workflow, (): void => {
                     name: 'fruit',
                     output: 'pear\n',
                     startedAt: expect.any(Date),
-                    status: 'success',
+                    status: Status.Success,
                     usable: null
                   },
                   {
@@ -174,7 +174,7 @@ describe(Workflow, (): void => {
                     name: 'animal',
                     output: 'dog\n',
                     startedAt: expect.any(Date),
-                    status: 'success',
+                    status: Status.Success,
                     usable: null
                   }
                 ],

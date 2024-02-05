@@ -57,7 +57,7 @@ describe(Workflow, (): void => {
                 name: null,
                 output: 'from workflow\n',
                 startedAt: expect.any(Date),
-                status: 'success',
+                status: Status.Success,
                 usable: null
               }
             ]
@@ -78,7 +78,7 @@ describe(Workflow, (): void => {
                 name: null,
                 output: 'from routine\n',
                 startedAt: expect.any(Date),
-                status: 'success',
+                status: Status.Success,
                 usable: null
               }
             ]
@@ -99,7 +99,7 @@ describe(Workflow, (): void => {
                 name: null,
                 output: 'from step\n',
                 startedAt: expect.any(Date),
-                status: 'success',
+                status: Status.Success,
                 usable: null
               }
             ]

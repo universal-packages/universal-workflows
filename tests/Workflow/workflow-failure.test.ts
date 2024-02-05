@@ -40,7 +40,7 @@ describe(Workflow, (): void => {
       measurement: expect.any(Measurement),
       name: null,
       startedAt: expect.any(Date),
-      status: 'failure',
+      status: Status.Failure,
       routines: [
         [
           {
@@ -49,7 +49,7 @@ describe(Workflow, (): void => {
             measurement: expect.any(Measurement),
             name: 'test1',
             startedAt: expect.any(Date),
-            status: 'success',
+            status: Status.Success,
             steps: [
               {
                 command: 'echo test1',
@@ -59,7 +59,7 @@ describe(Workflow, (): void => {
                 name: 'test1',
                 output: 'test1\n',
                 startedAt: expect.any(Date),
-                status: 'success',
+                status: Status.Success,
                 usable: null
               }
             ]
@@ -70,7 +70,7 @@ describe(Workflow, (): void => {
             measurement: expect.any(Measurement),
             name: 'test2',
             startedAt: expect.any(Date),
-            status: 'failure',
+            status: Status.Failure,
             steps: [
               {
                 command: 'sleep 1 && git clone nonexistent',
@@ -80,7 +80,7 @@ describe(Workflow, (): void => {
                 name: 'test2',
                 output: "fatal: repository 'nonexistent' does not exist\n",
                 startedAt: expect.any(Date),
-                status: 'failure',
+                status: Status.Failure,
                 usable: null
               }
             ]

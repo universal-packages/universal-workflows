@@ -79,7 +79,7 @@ describe(Workflow, (): void => {
                 name: 'test1',
                 output: 'test1\n',
                 startedAt: expect.any(Date),
-                status: 'success',
+                status: Status.Success,
                 usable: null
               }
             ]
@@ -100,7 +100,7 @@ describe(Workflow, (): void => {
                 name: 'test2',
                 output: 'test2\n',
                 startedAt: expect.any(Date),
-                status: 'success',
+                status: Status.Success,
                 usable: null
               }
             ]
@@ -123,7 +123,7 @@ describe(Workflow, (): void => {
                 name: 'test3',
                 output: 'test3\n',
                 startedAt: expect.any(Date),
-                status: 'success',
+                status: Status.Success,
                 usable: null
               }
             ]
@@ -144,7 +144,7 @@ describe(Workflow, (): void => {
                 name: 'test4',
                 output: 'test4\n',
                 startedAt: expect.any(Date),
-                status: 'success',
+                status: Status.Success,
                 usable: null
               }
             ]
@@ -165,7 +165,7 @@ describe(Workflow, (): void => {
                 name: 'test6',
                 output: 'test6\n',
                 startedAt: expect.any(Date),
-                status: 'success',
+                status: Status.Success,
                 usable: null
               }
             ]
@@ -188,7 +188,7 @@ describe(Workflow, (): void => {
                 name: 'test5',
                 output: 'test5\n',
                 startedAt: expect.any(Date),
-                status: 'success',
+                status: Status.Success,
                 usable: null
               }
             ]
@@ -209,7 +209,7 @@ describe(Workflow, (): void => {
                 name: 'test7',
                 output: 'test7\n',
                 startedAt: expect.any(Date),
-                status: 'success',
+                status: Status.Success,
                 usable: null
               }
             ]

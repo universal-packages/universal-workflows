@@ -48,7 +48,7 @@ describe(Workflow, (): void => {
       measurement: null,
       name: null,
       startedAt: expect.any(Date),
-      status: 'running',
+      status: Status.Running,
       routines: [
         [
           {
@@ -57,7 +57,7 @@ describe(Workflow, (): void => {
             measurement: null,
             name: 'test1',
             startedAt: expect.any(Date),
-            status: 'running',
+            status: Status.Running,
             steps: [
               {
                 command: 'echo test1',
@@ -67,7 +67,7 @@ describe(Workflow, (): void => {
                 name: 'test1',
                 output: null,
                 startedAt: expect.any(Date),
-                status: 'running',
+                status: Status.Running,
                 usable: null
               }
             ]
@@ -78,7 +78,7 @@ describe(Workflow, (): void => {
             measurement: null,
             name: 'test2',
             startedAt: expect.any(Date),
-            status: 'running',
+            status: Status.Running,
             steps: [
               {
                 command: 'git clone nonexistent',
@@ -88,7 +88,7 @@ describe(Workflow, (): void => {
                 name: 'test2',
                 output: null,
                 startedAt: expect.any(Date),
-                status: 'running',
+                status: Status.Running,
                 usable: null
               }
             ]
@@ -99,7 +99,7 @@ describe(Workflow, (): void => {
             measurement: null,
             name: 'test3',
             startedAt: expect.any(Date),
-            status: 'running',
+            status: Status.Running,
             steps: [
               {
                 command: 'sleep 10',
@@ -109,7 +109,7 @@ describe(Workflow, (): void => {
                 name: 'test3',
                 output: null,
                 startedAt: expect.any(Date),
-                status: 'running',
+                status: Status.Running,
                 usable: null
               }
             ]
@@ -141,7 +141,7 @@ describe(Workflow, (): void => {
       measurement: null,
       name: null,
       startedAt: expect.any(Date),
-      status: 'stopping',
+      status: Status.Stopping,
       routines: [
         [
           {
@@ -150,7 +150,7 @@ describe(Workflow, (): void => {
             measurement: expect.any(Measurement),
             name: 'test1',
             startedAt: expect.any(Date),
-            status: 'success',
+            status: Status.Success,
             steps: [
               {
                 command: 'echo test1',
@@ -160,7 +160,7 @@ describe(Workflow, (): void => {
                 name: 'test1',
                 output: 'test1\n',
                 startedAt: expect.any(Date),
-                status: 'success',
+                status: Status.Success,
                 usable: null
               }
             ]
@@ -171,7 +171,7 @@ describe(Workflow, (): void => {
             measurement: expect.any(Measurement),
             name: 'test2',
             startedAt: expect.any(Date),
-            status: 'failure',
+            status: Status.Failure,
             steps: [
               {
                 command: 'git clone nonexistent',
@@ -181,7 +181,7 @@ describe(Workflow, (): void => {
                 name: 'test2',
                 output: "fatal: repository 'nonexistent' does not exist\n",
                 startedAt: expect.any(Date),
-                status: 'failure',
+                status: Status.Failure,
                 usable: null
               }
             ]
@@ -192,7 +192,7 @@ describe(Workflow, (): void => {
             measurement: null,
             name: 'test3',
             startedAt: expect.any(Date),
-            status: 'stopping',
+            status: Status.Stopping,
             steps: [
               {
                 command: 'sleep 10',
@@ -202,7 +202,7 @@ describe(Workflow, (): void => {
                 name: 'test3',
                 output: null,
                 startedAt: expect.any(Date),
-                status: 'stopping',
+                status: Status.Stopping,
                 usable: null
               }
             ]
@@ -231,7 +231,7 @@ describe(Workflow, (): void => {
       measurement: expect.any(Measurement),
       name: null,
       startedAt: expect.any(Date),
-      status: 'stopped',
+      status: Status.Stopped,
       routines: [
         [
           {
@@ -240,7 +240,7 @@ describe(Workflow, (): void => {
             measurement: expect.any(Measurement),
             name: 'test1',
             startedAt: expect.any(Date),
-            status: 'success',
+            status: Status.Success,
             steps: [
               {
                 command: 'echo test1',
@@ -250,7 +250,7 @@ describe(Workflow, (): void => {
                 name: 'test1',
                 output: 'test1\n',
                 startedAt: expect.any(Date),
-                status: 'success',
+                status: Status.Success,
                 usable: null
               }
             ]
@@ -261,7 +261,7 @@ describe(Workflow, (): void => {
             measurement: expect.any(Measurement),
             name: 'test2',
             startedAt: expect.any(Date),
-            status: 'failure',
+            status: Status.Failure,
             steps: [
               {
                 command: 'git clone nonexistent',
@@ -271,7 +271,7 @@ describe(Workflow, (): void => {
                 name: 'test2',
                 output: "fatal: repository 'nonexistent' does not exist\n",
                 startedAt: expect.any(Date),
-                status: 'failure',
+                status: Status.Failure,
                 usable: null
               }
             ]
@@ -282,7 +282,7 @@ describe(Workflow, (): void => {
             measurement: expect.any(Measurement),
             name: 'test3',
             startedAt: expect.any(Date),
-            status: 'stopped',
+            status: Status.Stopped,
             steps: [
               {
                 command: 'sleep 10',
@@ -292,7 +292,7 @@ describe(Workflow, (): void => {
                 name: 'test3',
                 output: null,
                 startedAt: expect.any(Date),
-                status: 'stopped',
+                status: Status.Stopped,
                 usable: null
               }
             ]

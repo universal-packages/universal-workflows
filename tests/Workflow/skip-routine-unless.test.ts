@@ -55,7 +55,7 @@ describe(Workflow, (): void => {
       measurement: expect.any(Measurement),
       name: null,
       startedAt: expect.any(Date),
-      status: 'success',
+      status: Status.Success,
       routines: [
         [
           {
@@ -64,7 +64,7 @@ describe(Workflow, (): void => {
             measurement: null,
             name: 'test1',
             startedAt: null,
-            status: 'skipped',
+            status: Status.Skipped,
             steps: []
           }
         ],
@@ -75,7 +75,7 @@ describe(Workflow, (): void => {
             measurement: expect.any(Measurement),
             name: 'test2',
             startedAt: expect.any(Date),
-            status: 'success',
+            status: Status.Success,
             steps: [
               {
                 command: 'echo test2',
@@ -85,7 +85,7 @@ describe(Workflow, (): void => {
                 name: 'test2',
                 output: 'test2\n',
                 startedAt: expect.any(Date),
-                status: 'success',
+                status: Status.Success,
                 usable: null
               }
             ]
@@ -96,7 +96,7 @@ describe(Workflow, (): void => {
             measurement: null,
             name: 'test3',
             startedAt: null,
-            status: 'skipped',
+            status: Status.Skipped,
             steps: []
           }
         ],
@@ -107,7 +107,7 @@ describe(Workflow, (): void => {
             measurement: expect.any(Measurement),
             name: 'test4',
             startedAt: expect.any(Date),
-            status: 'success',
+            status: Status.Success,
             steps: [
               {
                 command: 'echo test3',
@@ -117,7 +117,7 @@ describe(Workflow, (): void => {
                 name: 'test3',
                 output: 'test3\n',
                 startedAt: expect.any(Date),
-                status: 'success',
+                status: Status.Success,
                 usable: null
               }
             ]
@@ -130,7 +130,7 @@ describe(Workflow, (): void => {
             measurement: expect.any(Measurement),
             name: 'test5',
             startedAt: expect.any(Date),
-            status: 'success',
+            status: Status.Success,
             steps: [
               {
                 command: 'echo test5',
@@ -140,7 +140,7 @@ describe(Workflow, (): void => {
                 name: 'test5',
                 output: 'test5\n',
                 startedAt: expect.any(Date),
-                status: 'success',
+                status: Status.Success,
                 usable: null
               }
             ]
@@ -228,7 +228,7 @@ describe(Workflow, (): void => {
       measurement: expect.any(Measurement),
       name: null,
       startedAt: expect.any(Date),
-      status: 'success',
+      status: Status.Success,
       routines: [
         [
           {
@@ -237,7 +237,7 @@ describe(Workflow, (): void => {
             measurement: expect.any(Measurement),
             name: 'test1',
             startedAt: expect.any(Date),
-            status: 'success',
+            status: Status.Success,
             steps: [
               {
                 command: 'echo test1',
@@ -247,7 +247,7 @@ describe(Workflow, (): void => {
                 name: 'test1',
                 output: 'test1\n',
                 startedAt: expect.any(Date),
-                status: 'success',
+                status: Status.Success,
                 usable: null
               }
             ]
@@ -260,7 +260,7 @@ describe(Workflow, (): void => {
             measurement: expect.any(Measurement),
             name: 'test2',
             startedAt: expect.any(Date),
-            status: 'success',
+            status: Status.Success,
             steps: [
               {
                 command: 'echo test2',
@@ -270,7 +270,7 @@ describe(Workflow, (): void => {
                 name: 'test2',
                 output: 'test2\n',
                 startedAt: expect.any(Date),
-                status: 'success',
+                status: Status.Success,
                 usable: null
               }
             ]
@@ -281,7 +281,7 @@ describe(Workflow, (): void => {
             measurement: expect.any(Measurement),
             name: 'test3',
             startedAt: expect.any(Date),
-            status: 'success',
+            status: Status.Success,
             steps: [
               {
                 command: 'echo test3',
@@ -291,7 +291,7 @@ describe(Workflow, (): void => {
                 name: 'test3',
                 output: 'test3\n',
                 startedAt: expect.any(Date),
-                status: 'success',
+                status: Status.Success,
                 usable: null
               }
             ]
@@ -304,7 +304,7 @@ describe(Workflow, (): void => {
             measurement: expect.any(Measurement),
             name: 'test4',
             startedAt: expect.any(Date),
-            status: 'success',
+            status: Status.Success,
             steps: [
               {
                 command: 'echo test3',
@@ -314,7 +314,7 @@ describe(Workflow, (): void => {
                 name: 'test3',
                 output: 'test3\n',
                 startedAt: expect.any(Date),
-                status: 'success',
+                status: Status.Success,
                 usable: null
               }
             ]
@@ -327,7 +327,7 @@ describe(Workflow, (): void => {
             measurement: null,
             name: 'test5',
             startedAt: null,
-            status: 'skipped',
+            status: Status.Skipped,
             steps: []
           }
         ]
