@@ -21,6 +21,7 @@ describe(Workflow, (): void => {
 
     expect(workflow.graph).toEqual({
       endedAt: null,
+      error: null,
       measurement: null,
       name: null,
       startedAt: null,
@@ -33,6 +34,7 @@ describe(Workflow, (): void => {
     expect(workflow.status).toEqual(Status.Failure)
     expect(workflow.graph).toEqual({
       endedAt: expect.any(Date),
+      error: 'Workflow failed',
       measurement: expect.any(Measurement),
       name: null,
       startedAt: expect.any(Date),
@@ -44,6 +46,7 @@ describe(Workflow, (): void => {
             strategy: [
               {
                 endedAt: expect.any(Date),
+                error: 'Routine was stopped',
                 measurement: expect.any(Measurement),
                 name: 'test1 [0]',
                 startedAt: expect.any(Date),
@@ -65,6 +68,7 @@ describe(Workflow, (): void => {
               },
               {
                 endedAt: expect.any(Date),
+                error: 'Routine was stopped',
                 measurement: expect.any(Measurement),
                 name: 'test1 [1]',
                 startedAt: expect.any(Date),
@@ -86,6 +90,7 @@ describe(Workflow, (): void => {
               },
               {
                 endedAt: expect.any(Date),
+                error: 'Routine was stopped',
                 measurement: expect.any(Measurement),
                 name: 'test1 [2]',
                 startedAt: expect.any(Date),
@@ -107,6 +112,7 @@ describe(Workflow, (): void => {
               },
               {
                 endedAt: expect.any(Date),
+                error: 'Routine was stopped',
                 measurement: expect.any(Measurement),
                 name: 'test1 [3]',
                 startedAt: expect.any(Date),
@@ -128,6 +134,7 @@ describe(Workflow, (): void => {
               },
               {
                 endedAt: expect.any(Date),
+                error: "Process exited with code 128\n\nfatal: repository 'nonexistent' does not exist\n",
                 measurement: expect.any(Measurement),
                 name: 'test1 [4]',
                 startedAt: expect.any(Date),

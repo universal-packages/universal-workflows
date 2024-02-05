@@ -38,6 +38,7 @@ describe(Workflow, (): void => {
 
     expect(workflow.graph).toEqual({
       endedAt: null,
+      error: null,
       measurement: null,
       name: null,
       startedAt: null,
@@ -50,6 +51,7 @@ describe(Workflow, (): void => {
     expect(workflow.status).toEqual(Status.Success)
     expect(workflow.graph).toEqual({
       endedAt: expect.any(Date),
+      error: null,
       measurement: expect.any(Measurement),
       name: null,
       startedAt: expect.any(Date),
@@ -58,6 +60,7 @@ describe(Workflow, (): void => {
         [
           {
             endedAt: null,
+            error: null,
             measurement: null,
             name: 'test1',
             startedAt: null,
@@ -68,6 +71,7 @@ describe(Workflow, (): void => {
         [
           {
             endedAt: expect.any(Date),
+            error: null,
             measurement: expect.any(Measurement),
             name: 'test2',
             startedAt: expect.any(Date),
@@ -88,6 +92,7 @@ describe(Workflow, (): void => {
           },
           {
             endedAt: null,
+            error: null,
             measurement: null,
             name: 'test3',
             startedAt: null,
@@ -98,6 +103,7 @@ describe(Workflow, (): void => {
         [
           {
             endedAt: expect.any(Date),
+            error: null,
             measurement: expect.any(Measurement),
             name: 'test4',
             startedAt: expect.any(Date),
@@ -120,6 +126,7 @@ describe(Workflow, (): void => {
         [
           {
             endedAt: expect.any(Date),
+            error: null,
             measurement: expect.any(Measurement),
             name: 'test5',
             startedAt: expect.any(Date),
@@ -204,6 +211,7 @@ describe(Workflow, (): void => {
 
     expect(workflow.graph).toEqual({
       endedAt: null,
+      error: null,
       measurement: null,
       name: null,
       startedAt: null,
@@ -216,6 +224,7 @@ describe(Workflow, (): void => {
     expect(workflow.status).toEqual(Status.Success)
     expect(workflow.graph).toEqual({
       endedAt: expect.any(Date),
+      error: null,
       measurement: expect.any(Measurement),
       name: null,
       startedAt: expect.any(Date),
@@ -224,6 +233,7 @@ describe(Workflow, (): void => {
         [
           {
             endedAt: expect.any(Date),
+            error: null,
             measurement: expect.any(Measurement),
             name: 'test1',
             startedAt: expect.any(Date),
@@ -246,6 +256,7 @@ describe(Workflow, (): void => {
         [
           {
             endedAt: expect.any(Date),
+            error: null,
             measurement: expect.any(Measurement),
             name: 'test2',
             startedAt: expect.any(Date),
@@ -266,6 +277,7 @@ describe(Workflow, (): void => {
           },
           {
             endedAt: expect.any(Date),
+            error: null,
             measurement: expect.any(Measurement),
             name: 'test3',
             startedAt: expect.any(Date),
@@ -288,6 +300,7 @@ describe(Workflow, (): void => {
         [
           {
             endedAt: expect.any(Date),
+            error: null,
             measurement: expect.any(Measurement),
             name: 'test4',
             startedAt: expect.any(Date),
@@ -310,6 +323,7 @@ describe(Workflow, (): void => {
         [
           {
             endedAt: null,
+            error: null,
             measurement: null,
             name: 'test5',
             startedAt: null,

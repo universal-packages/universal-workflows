@@ -12,6 +12,7 @@ describe(Workflow, (): void => {
     expect(workflow.status).toBe(Status.Success)
     expect(workflow.graph).toEqual({
       endedAt: expect.any(Date),
+      error: null,
       measurement: expect.any(Measurement),
       name: 'Echo all the way',
       startedAt: expect.any(Date),
@@ -23,6 +24,7 @@ describe(Workflow, (): void => {
             strategy: [
               {
                 endedAt: expect.any(Date),
+                error: null,
                 measurement: expect.any(Measurement),
                 name: 'echo1 [0]',
                 startedAt: expect.any(Date),
@@ -59,6 +61,7 @@ describe(Workflow, (): void => {
               },
               {
                 endedAt: expect.any(Date),
+                error: null,
                 measurement: expect.any(Measurement),
                 name: 'echo1 [1]',
                 startedAt: expect.any(Date),
@@ -95,6 +98,7 @@ describe(Workflow, (): void => {
               },
               {
                 endedAt: expect.any(Date),
+                error: null,
                 measurement: expect.any(Measurement),
                 name: 'echo1 [2]',
                 startedAt: expect.any(Date),
@@ -131,6 +135,7 @@ describe(Workflow, (): void => {
               },
               {
                 endedAt: expect.any(Date),
+                error: null,
                 measurement: expect.any(Measurement),
                 name: 'echo1 [3]',
                 startedAt: expect.any(Date),
@@ -169,6 +174,7 @@ describe(Workflow, (): void => {
           },
           {
             endedAt: expect.any(Date),
+            error: null,
             measurement: expect.any(Measurement),
             name: 'echo2',
             startedAt: expect.any(Date),
@@ -246,6 +252,7 @@ describe(Workflow, (): void => {
         [
           {
             endedAt: expect.any(Date),
+            error: null,
             measurement: expect.any(Measurement),
             name: 'git-failure',
             startedAt: expect.any(Date),

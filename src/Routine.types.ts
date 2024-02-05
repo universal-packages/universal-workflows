@@ -32,6 +32,7 @@ export interface StepDescriptor {
 
 export interface RoutineGraph {
   endedAt?: Date
+  error?: string
   name?: string
   measurement?: Measurement
   startedAt?: Date

@@ -101,6 +101,7 @@ export interface StrategyRunDescriptor {
 
 export interface WorkflowGraph {
   endedAt?: Date
+  error?: string
   name?: string
   measurement?: Measurement
   startedAt?: Date

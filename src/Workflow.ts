@@ -30,6 +30,7 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
   public get graph(): WorkflowGraph {
     return {
       endedAt: this.internalEndedAt ? new Date(this.internalEndedAt) : null,
+      error: this.internalError ? this.internalError.message : null,
       measurement: this.measurement || null,
       name: this.options.name || null,
       startedAt: this.internalStartedAt ? new Date(this.internalStartedAt) : null,

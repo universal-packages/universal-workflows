@@ -13,8 +13,8 @@ describe(Step, (): void => {
 
       expect(step.graph).toEqual({
         command: 'echo $variable',
-        error: null,
         endedAt: null,
+        error: null,
         measurement: null,
         name: null,
         output: null,
@@ -29,8 +29,8 @@ describe(Step, (): void => {
       expect(step.output).toEqual('This is a variable\n')
       expect(step.graph).toEqual({
         command: 'echo $variable',
-        error: null,
         endedAt: expect.any(Date),
+        error: null,
         measurement: expect.any(Measurement),
         name: null,
         output: 'This is a variable\n',

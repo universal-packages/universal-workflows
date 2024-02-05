@@ -23,6 +23,7 @@ describe(Workflow, (): void => {
 
     expect(workflow.graph).toEqual({
       endedAt: null,
+      error: null,
       measurement: null,
       name: null,
       startedAt: null,
@@ -35,6 +36,7 @@ describe(Workflow, (): void => {
     expect(workflow.status).toEqual(Status.Failure)
     expect(workflow.graph).toEqual({
       endedAt: expect.any(Date),
+      error: 'Workflow failed',
       measurement: expect.any(Measurement),
       name: null,
       startedAt: expect.any(Date),
@@ -43,6 +45,7 @@ describe(Workflow, (): void => {
         [
           {
             endedAt: expect.any(Date),
+            error: null,
             measurement: expect.any(Measurement),
             name: 'test1',
             startedAt: expect.any(Date),
@@ -63,6 +66,7 @@ describe(Workflow, (): void => {
           },
           {
             endedAt: expect.any(Date),
+            error: "Process exited with code 128\n\nfatal: repository 'nonexistent' does not exist\n",
             measurement: expect.any(Measurement),
             name: 'test2',
             startedAt: expect.any(Date),

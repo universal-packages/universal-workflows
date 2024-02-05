@@ -20,6 +20,7 @@ describe(Workflow, (): void => {
 
     expect(workflow.graph).toEqual({
       endedAt: null,
+      error: null,
       measurement: null,
       name: null,
       startedAt: null,
@@ -32,6 +33,7 @@ describe(Workflow, (): void => {
     expect(workflow.status).toEqual(Status.Error)
     expect(workflow.graph).toEqual({
       endedAt: null,
+      error: null,
       measurement: null,
       name: null,
       startedAt: null,

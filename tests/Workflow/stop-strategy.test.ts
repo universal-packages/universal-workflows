@@ -21,6 +21,7 @@ describe(Workflow, (): void => {
 
     expect(workflow.graph).toEqual({
       endedAt: null,
+      error: null,
       measurement: null,
       name: null,
       startedAt: null,
@@ -34,6 +35,7 @@ describe(Workflow, (): void => {
 
     expect(workflow.graph).toEqual({
       endedAt: null,
+      error: null,
       measurement: null,
       name: null,
       startedAt: expect.any(Date),
@@ -45,6 +47,7 @@ describe(Workflow, (): void => {
             strategy: [
               {
                 endedAt: null,
+                error: null,
                 measurement: null,
                 name: 'test1 [0]',
                 startedAt: expect.any(Date),
@@ -69,6 +72,7 @@ describe(Workflow, (): void => {
               },
               {
                 endedAt: null,
+                error: null,
                 measurement: null,
                 name: 'test1 [1]',
                 startedAt: expect.any(Date),
@@ -93,6 +97,7 @@ describe(Workflow, (): void => {
               },
               {
                 endedAt: null,
+                error: null,
                 measurement: null,
                 name: 'test1 [2]',
                 startedAt: expect.any(Date),
@@ -117,6 +122,7 @@ describe(Workflow, (): void => {
               },
               {
                 endedAt: null,
+                error: null,
                 measurement: null,
                 name: 'test1 [3]',
                 startedAt: expect.any(Date),
@@ -153,6 +159,7 @@ describe(Workflow, (): void => {
 
     expect(workflow.graph).toEqual({
       endedAt: null,
+      error: null,
       measurement: null,
       name: null,
       startedAt: expect.any(Date),
@@ -164,6 +171,7 @@ describe(Workflow, (): void => {
             strategy: [
               {
                 endedAt: expect.any(Date),
+                error: null,
                 measurement: expect.any(Measurement),
                 name: 'test1 [0]',
                 startedAt: expect.any(Date),
@@ -188,6 +196,7 @@ describe(Workflow, (): void => {
               },
               {
                 endedAt: expect.any(Date),
+                error: null,
                 measurement: expect.any(Measurement),
                 name: 'test1 [1]',
                 startedAt: expect.any(Date),
@@ -212,6 +221,7 @@ describe(Workflow, (): void => {
               },
               {
                 endedAt: expect.any(Date),
+                error: null,
                 measurement: expect.any(Measurement),
                 name: 'test1 [2]',
                 startedAt: expect.any(Date),
@@ -236,6 +246,7 @@ describe(Workflow, (): void => {
               },
               {
                 endedAt: null,
+                error: null,
                 measurement: null,
                 name: 'test1 [3]',
                 startedAt: expect.any(Date),
@@ -270,6 +281,7 @@ describe(Workflow, (): void => {
 
     expect(workflow.graph).toEqual({
       endedAt: expect.any(Date),
+      error: 'Workflow was stopped',
       measurement: expect.any(Measurement),
       name: null,
       startedAt: expect.any(Date),
@@ -281,6 +293,7 @@ describe(Workflow, (): void => {
             strategy: [
               {
                 endedAt: expect.any(Date),
+                error: null,
                 measurement: expect.any(Measurement),
                 name: 'test1 [0]',
                 startedAt: expect.any(Date),
@@ -305,6 +318,7 @@ describe(Workflow, (): void => {
               },
               {
                 endedAt: expect.any(Date),
+                error: null,
                 measurement: expect.any(Measurement),
                 name: 'test1 [1]',
                 startedAt: expect.any(Date),
@@ -329,6 +343,7 @@ describe(Workflow, (): void => {
               },
               {
                 endedAt: expect.any(Date),
+                error: null,
                 measurement: expect.any(Measurement),
                 name: 'test1 [2]',
                 startedAt: expect.any(Date),
@@ -353,6 +368,7 @@ describe(Workflow, (): void => {
               },
               {
                 endedAt: expect.any(Date),
+                error: 'Routine was stopped',
                 measurement: expect.any(Measurement),
                 name: 'test1 [3]',
                 startedAt: expect.any(Date),

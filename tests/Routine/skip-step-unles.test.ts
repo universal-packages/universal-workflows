@@ -23,6 +23,7 @@ describe(Routine, (): void => {
 
     expect(routine.graph).toEqual({
       endedAt: null,
+      error: null,
       measurement: null,
       name: 'r-test',
       startedAt: null,
@@ -35,6 +36,7 @@ describe(Routine, (): void => {
     expect(routine.status).toEqual(Status.Success)
     expect(routine.graph).toEqual({
       endedAt: expect.any(Date),
+      error: null,
       measurement: expect.any(Measurement),
       name: 'r-test',
       startedAt: expect.any(Date),
