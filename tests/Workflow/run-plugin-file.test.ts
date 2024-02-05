@@ -20,6 +20,7 @@ describe(Workflow, (): void => {
       routines: [
         [
           {
+            error: null,
             name: 'echo1',
             strategy: [
               {

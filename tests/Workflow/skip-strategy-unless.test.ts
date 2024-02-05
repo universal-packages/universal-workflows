@@ -69,6 +69,7 @@ describe(Workflow, (): void => {
       routines: [
         [
           {
+            error: null,
             name: 'test1',
             strategy: [
               {
@@ -126,6 +127,7 @@ describe(Workflow, (): void => {
             ]
           },
           {
+            error: null,
             name: 'test3',
             strategy: [
               {
@@ -348,6 +350,7 @@ describe(Workflow, (): void => {
       routines: [
         [
           {
+            error: null,
             name: 'test1',
             strategy: [
               {
@@ -497,6 +500,7 @@ describe(Workflow, (): void => {
             ]
           },
           {
+            error: null,
             name: 'test3',
             strategy: [
               {
@@ -694,6 +698,7 @@ describe(Workflow, (): void => {
         ],
         [
           {
+            error: null,
             name: 'test5',
             strategy: [
               {

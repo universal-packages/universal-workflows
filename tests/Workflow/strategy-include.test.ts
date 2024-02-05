@@ -47,6 +47,7 @@ describe(Workflow, (): void => {
       routines: [
         [
           {
+            error: null,
             name: 'test1',
             strategy: [
               {

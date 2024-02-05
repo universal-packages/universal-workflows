@@ -51,6 +51,7 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
           })
 
           accumulation[runDescriptor.stage - 1].push({
+            error: runDescriptor.error || null,
             name: runDescriptor.name,
             strategy: strategyRoutineGraphs
           })
@@ -235,17 +236,14 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
 
     if (runDescriptor.strategyStatus === RunDescriptorStrategyStatus.Pending) {
       const strategy = runDescriptor.routineDescriptor.strategy
-
       if (typeof strategy.matrix === 'string') {
         const matrix = this.evaluateExpression(strategy.matrix, { ...this.scope })
 
         if (typeof matrix === 'object') {
           runDescriptor.routineDescriptor.strategy.matrix = matrix
-          this.generateStrategy(runDescriptor)
-          runDescriptor.strategyStatus = RunDescriptorStrategyStatus.Ready
         } else {
           runDescriptor.status = RunDescriptorStatus.Failure
-          // TODO add error message
+          runDescriptor.error = 'Strategy matrix did not evaluate to an object'
 
           this.handleAfterRunDescriptorFinished(runDescriptor)
           return
@@ -255,18 +253,28 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
       if (typeof strategy.include === 'string') {
         const include = this.evaluateExpression(strategy.include, { ...this.scope })
 
-        if (Array.isArray(include)) {
+        if (Array.isArray(include) && include.every((includeItem: any) => typeof includeItem === 'object')) {
           runDescriptor.routineDescriptor.strategy.include = include
-          this.generateStrategy(runDescriptor)
-          runDescriptor.strategyStatus = RunDescriptorStrategyStatus.Ready
         } else {
           runDescriptor.status = RunDescriptorStatus.Failure
-          // TODO add error message
+          runDescriptor.error = 'Strategy include did not evaluate to an array if objects'
 
           this.handleAfterRunDescriptorFinished(runDescriptor)
           return
         }
       }
+
+      try {
+        this.generateStrategy(runDescriptor)
+      } catch (error) {
+        runDescriptor.status = RunDescriptorStatus.Failure
+        runDescriptor.error = error.message
+
+        this.handleAfterRunDescriptorFinished(runDescriptor)
+        return
+      }
+
+      runDescriptor.strategyStatus = RunDescriptorStrategyStatus.Ready
     }
 
     const { strategyRunDescriptors } = runDescriptor

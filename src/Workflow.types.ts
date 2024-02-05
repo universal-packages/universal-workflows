@@ -82,6 +82,7 @@ export interface RunDescriptors {
 export interface RunDescriptor {
   dependents: RunDescriptor[]
   dependsOnReady: Record<string, boolean>
+  error?: string
   name: string
   routine: Routine
   routineDescriptor: RoutineDescriptor

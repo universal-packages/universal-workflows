@@ -137,6 +137,7 @@ describe(Workflow, (): void => {
             ]
           },
           {
+            error: null,
             name: 'test4',
             strategy: [
               {
@@ -286,6 +287,7 @@ describe(Workflow, (): void => {
             ]
           },
           {
+            error: null,
             name: 'test6',
             strategy: [
               {
