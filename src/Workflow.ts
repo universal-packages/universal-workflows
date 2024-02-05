@@ -119,7 +119,7 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
       throw new Error(message)
     }
 
-    return new Workflow({ stepUsableLocation: options.stepUsableLocation, ...workflowDescriptor })
+    return new Workflow({ stepUsableLocation: finalOptions.stepUsableLocation, ...workflowDescriptor })
   }
 
   protected async internalPrepare(): Promise<void> {
