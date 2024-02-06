@@ -1,0 +1,11 @@
+name: Sleep good
+
+routines:
+  sleep:
+    strategy:
+      matrix: 
+        term1: [1, 2, 3, 4]
+        term2: [1, 2, 3, 4, 5]
+    steps:
+      - run: echo "Sleeping for ${{ strategy.term1 * strategy.term2 }} seconds"
+      - run: echo "Temporal" && sleep ${{ strategy.term1 * strategy.term2 }}

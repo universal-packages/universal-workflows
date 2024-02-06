@@ -111,8 +111,9 @@ export interface WorkflowGraph {
 }
 
 export interface StrategyGraph {
+  error?: string
   name: string
-  routines: StrategyRoutineGraph[]
+  strategy: StrategyRoutineGraph[]
 }
 
 export interface StrategyRoutineGraph extends RoutineGraph {
