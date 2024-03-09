@@ -10,7 +10,7 @@ describe(Workflow, (): void => {
       target: 'spawn',
       routines: {
         test1: {
-          strategy: { matrix: { seconds: [0.01, 1], multiplier: [0.5, 5] } },
+          strategy: { matrix: { seconds: [0.01, 1], multiplier: [0.2, 2] } },
           steps: [{ run: 'sleep ${{ (strategy.seconds * strategy.multiplier) || "nop" }}' }]
         }
       }
@@ -55,7 +55,7 @@ describe(Workflow, (): void => {
                 status: Status.Running,
                 steps: [
                   {
-                    command: 'sleep 0.005',
+                    command: 'sleep 0.002',
                     endedAt: null,
                     error: null,
                     measurement: null,
@@ -68,7 +68,7 @@ describe(Workflow, (): void => {
                 ],
                 variables: {
                   seconds: 0.01,
-                  multiplier: 0.5
+                  multiplier: 0.2
                 }
               },
               {
@@ -80,7 +80,7 @@ describe(Workflow, (): void => {
                 status: Status.Running,
                 steps: [
                   {
-                    command: 'sleep 0.05',
+                    command: 'sleep 0.02',
                     endedAt: null,
                     error: null,
                     measurement: null,
@@ -93,7 +93,7 @@ describe(Workflow, (): void => {
                 ],
                 variables: {
                   seconds: 0.01,
-                  multiplier: 5
+                  multiplier: 2
                 }
               },
               {
@@ -105,7 +105,7 @@ describe(Workflow, (): void => {
                 status: Status.Running,
                 steps: [
                   {
-                    command: 'sleep 0.5',
+                    command: 'sleep 0.2',
                     endedAt: null,
                     error: null,
                     measurement: null,
@@ -118,7 +118,7 @@ describe(Workflow, (): void => {
                 ],
                 variables: {
                   seconds: 1,
-                  multiplier: 0.5
+                  multiplier: 0.2
                 }
               },
               {
@@ -130,7 +130,7 @@ describe(Workflow, (): void => {
                 status: Status.Running,
                 steps: [
                   {
-                    command: 'sleep 5',
+                    command: 'sleep 2',
                     endedAt: null,
                     error: null,
                     measurement: null,
@@ -143,7 +143,7 @@ describe(Workflow, (): void => {
                 ],
                 variables: {
                   seconds: 1,
-                  multiplier: 5
+                  multiplier: 2
                 }
               }
             ]
@@ -152,7 +152,7 @@ describe(Workflow, (): void => {
       ]
     })
 
-    await new Promise((resolve) => setTimeout(resolve, 2500))
+    await new Promise((resolve) => setTimeout(resolve, 800))
 
     workflow.stop()
 
@@ -180,7 +180,7 @@ describe(Workflow, (): void => {
                 status: Status.Success,
                 steps: [
                   {
-                    command: 'sleep 0.005',
+                    command: 'sleep 0.002',
                     endedAt: expect.any(Date),
                     error: null,
                     measurement: expect.any(Measurement),
@@ -193,7 +193,7 @@ describe(Workflow, (): void => {
                 ],
                 variables: {
                   seconds: 0.01,
-                  multiplier: 0.5
+                  multiplier: 0.2
                 }
               },
               {
@@ -205,7 +205,7 @@ describe(Workflow, (): void => {
                 status: Status.Success,
                 steps: [
                   {
-                    command: 'sleep 0.05',
+                    command: 'sleep 0.02',
                     endedAt: expect.any(Date),
                     error: null,
                     measurement: expect.any(Measurement),
@@ -218,7 +218,7 @@ describe(Workflow, (): void => {
                 ],
                 variables: {
                   seconds: 0.01,
-                  multiplier: 5
+                  multiplier: 2
                 }
               },
               {
@@ -230,7 +230,7 @@ describe(Workflow, (): void => {
                 status: Status.Success,
                 steps: [
                   {
-                    command: 'sleep 0.5',
+                    command: 'sleep 0.2',
                     endedAt: expect.any(Date),
                     error: null,
                     measurement: expect.any(Measurement),
@@ -243,7 +243,7 @@ describe(Workflow, (): void => {
                 ],
                 variables: {
                   seconds: 1,
-                  multiplier: 0.5
+                  multiplier: 0.2
                 }
               },
               {
@@ -255,7 +255,7 @@ describe(Workflow, (): void => {
                 status: Status.Stopping,
                 steps: [
                   {
-                    command: 'sleep 5',
+                    command: 'sleep 2',
                     endedAt: null,
                     error: null,
                     measurement: null,
@@ -268,7 +268,7 @@ describe(Workflow, (): void => {
                 ],
                 variables: {
                   seconds: 1,
-                  multiplier: 5
+                  multiplier: 2
                 }
               }
             ]
@@ -303,7 +303,7 @@ describe(Workflow, (): void => {
                 status: Status.Success,
                 steps: [
                   {
-                    command: 'sleep 0.005',
+                    command: 'sleep 0.002',
                     endedAt: expect.any(Date),
                     error: null,
                     measurement: expect.any(Measurement),
@@ -316,7 +316,7 @@ describe(Workflow, (): void => {
                 ],
                 variables: {
                   seconds: 0.01,
-                  multiplier: 0.5
+                  multiplier: 0.2
                 }
               },
               {
@@ -328,7 +328,7 @@ describe(Workflow, (): void => {
                 status: Status.Success,
                 steps: [
                   {
-                    command: 'sleep 0.05',
+                    command: 'sleep 0.02',
                     endedAt: expect.any(Date),
                     error: null,
                     measurement: expect.any(Measurement),
@@ -341,7 +341,7 @@ describe(Workflow, (): void => {
                 ],
                 variables: {
                   seconds: 0.01,
-                  multiplier: 5
+                  multiplier: 2
                 }
               },
               {
@@ -353,7 +353,7 @@ describe(Workflow, (): void => {
                 status: Status.Success,
                 steps: [
                   {
-                    command: 'sleep 0.5',
+                    command: 'sleep 0.2',
                     endedAt: expect.any(Date),
                     error: null,
                     measurement: expect.any(Measurement),
@@ -366,7 +366,7 @@ describe(Workflow, (): void => {
                 ],
                 variables: {
                   seconds: 1,
-                  multiplier: 0.5
+                  multiplier: 0.2
                 }
               },
               {
@@ -378,7 +378,7 @@ describe(Workflow, (): void => {
                 status: Status.Stopped,
                 steps: [
                   {
-                    command: 'sleep 5',
+                    command: 'sleep 2',
                     endedAt: expect.any(Date),
                     error: 'Step was stopped',
                     measurement: expect.any(Measurement),
@@ -391,7 +391,7 @@ describe(Workflow, (): void => {
                 ],
                 variables: {
                   seconds: 1,
-                  multiplier: 5
+                  multiplier: 2
                 }
               }
             ]
