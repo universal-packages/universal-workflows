@@ -2,6 +2,7 @@ import { Status } from '@universal-packages/sub-process'
 import { Measurement } from '@universal-packages/time-measurer'
 
 import { Workflow } from '../../src'
+import ControllableUsable from '../__fixtures__/cases/Controllable.usable'
 
 describe(Workflow, (): void => {
   it('is prepared to stop an strategy', async (): Promise<void> => {
@@ -10,8 +11,8 @@ describe(Workflow, (): void => {
       target: 'spawn',
       routines: {
         test1: {
-          strategy: { matrix: { seconds: [0.01, 1], multiplier: [0.2, 2] } },
-          steps: [{ run: 'sleep ${{ (strategy.seconds * strategy.multiplier) || "nop" }}' }]
+          strategy: { matrix: { fruit: ['apple', 'banana'], color: ['red', 'yellow'] } },
+          steps: [{ use: 'Controllable', with: { id: '${{ strategy.fruit }}-${{ strategy.color }}' } }]
         }
       }
     })
@@ -55,7 +56,7 @@ describe(Workflow, (): void => {
                 status: Status.Running,
                 steps: [
                   {
-                    command: 'sleep 0.002',
+                    command: null,
                     endedAt: null,
                     error: null,
                     measurement: null,
@@ -63,12 +64,12 @@ describe(Workflow, (): void => {
                     output: null,
                     startedAt: expect.any(Date),
                     status: Status.Running,
-                    usable: null
+                    usable: 'Controllable'
                   }
                 ],
                 variables: {
-                  seconds: 0.01,
-                  multiplier: 0.2
+                  fruit: 'apple',
+                  color: 'red'
                 }
               },
               {
@@ -80,7 +81,7 @@ describe(Workflow, (): void => {
                 status: Status.Running,
                 steps: [
                   {
-                    command: 'sleep 0.02',
+                    command: null,
                     endedAt: null,
                     error: null,
                     measurement: null,
@@ -88,12 +89,12 @@ describe(Workflow, (): void => {
                     output: null,
                     startedAt: expect.any(Date),
                     status: Status.Running,
-                    usable: null
+                    usable: 'Controllable'
                   }
                 ],
                 variables: {
-                  seconds: 0.01,
-                  multiplier: 2
+                  fruit: 'apple',
+                  color: 'yellow'
                 }
               },
               {
@@ -105,7 +106,7 @@ describe(Workflow, (): void => {
                 status: Status.Running,
                 steps: [
                   {
-                    command: 'sleep 0.2',
+                    command: null,
                     endedAt: null,
                     error: null,
                     measurement: null,
@@ -113,12 +114,12 @@ describe(Workflow, (): void => {
                     output: null,
                     startedAt: expect.any(Date),
                     status: Status.Running,
-                    usable: null
+                    usable: 'Controllable'
                   }
                 ],
                 variables: {
-                  seconds: 1,
-                  multiplier: 0.2
+                  fruit: 'banana',
+                  color: 'red'
                 }
               },
               {
@@ -130,7 +131,7 @@ describe(Workflow, (): void => {
                 status: Status.Running,
                 steps: [
                   {
-                    command: 'sleep 2',
+                    command: null,
                     endedAt: null,
                     error: null,
                     measurement: null,
@@ -138,12 +139,12 @@ describe(Workflow, (): void => {
                     output: null,
                     startedAt: expect.any(Date),
                     status: Status.Running,
-                    usable: null
+                    usable: 'Controllable'
                   }
                 ],
                 variables: {
-                  seconds: 1,
-                  multiplier: 2
+                  fruit: 'banana',
+                  color: 'yellow'
                 }
               }
             ]
@@ -152,7 +153,11 @@ describe(Workflow, (): void => {
       ]
     })
 
-    await new Promise((resolve) => setTimeout(resolve, 800))
+    ControllableUsable.finish('apple-red')
+    ControllableUsable.finish('apple-yellow')
+    ControllableUsable.finish('banana-red')
+
+    await new Promise((resolve) => setTimeout(resolve, 200))
 
     workflow.stop()
 
@@ -180,20 +185,20 @@ describe(Workflow, (): void => {
                 status: Status.Success,
                 steps: [
                   {
-                    command: 'sleep 0.002',
+                    command: null,
                     endedAt: expect.any(Date),
                     error: null,
                     measurement: expect.any(Measurement),
                     name: null,
-                    output: null,
+                    output: 'Controllable step with id: apple-red is running\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
-                    usable: null
+                    usable: 'Controllable'
                   }
                 ],
                 variables: {
-                  seconds: 0.01,
-                  multiplier: 0.2
+                  fruit: 'apple',
+                  color: 'red'
                 }
               },
               {
@@ -205,20 +210,20 @@ describe(Workflow, (): void => {
                 status: Status.Success,
                 steps: [
                   {
-                    command: 'sleep 0.02',
+                    command: null,
                     endedAt: expect.any(Date),
                     error: null,
                     measurement: expect.any(Measurement),
                     name: null,
-                    output: null,
+                    output: 'Controllable step with id: apple-yellow is running\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
-                    usable: null
+                    usable: 'Controllable'
                   }
                 ],
                 variables: {
-                  seconds: 0.01,
-                  multiplier: 2
+                  fruit: 'apple',
+                  color: 'yellow'
                 }
               },
               {
@@ -230,20 +235,20 @@ describe(Workflow, (): void => {
                 status: Status.Success,
                 steps: [
                   {
-                    command: 'sleep 0.2',
+                    command: null,
                     endedAt: expect.any(Date),
                     error: null,
                     measurement: expect.any(Measurement),
                     name: null,
-                    output: null,
+                    output: 'Controllable step with id: banana-red is running\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
-                    usable: null
+                    usable: 'Controllable'
                   }
                 ],
                 variables: {
-                  seconds: 1,
-                  multiplier: 0.2
+                  fruit: 'banana',
+                  color: 'red'
                 }
               },
               {
@@ -255,7 +260,7 @@ describe(Workflow, (): void => {
                 status: Status.Stopping,
                 steps: [
                   {
-                    command: 'sleep 2',
+                    command: null,
                     endedAt: null,
                     error: null,
                     measurement: null,
@@ -263,12 +268,12 @@ describe(Workflow, (): void => {
                     output: null,
                     startedAt: expect.any(Date),
                     status: Status.Stopping,
-                    usable: null
+                    usable: 'Controllable'
                   }
                 ],
                 variables: {
-                  seconds: 1,
-                  multiplier: 2
+                  fruit: 'banana',
+                  color: 'yellow'
                 }
               }
             ]
@@ -303,20 +308,20 @@ describe(Workflow, (): void => {
                 status: Status.Success,
                 steps: [
                   {
-                    command: 'sleep 0.002',
+                    command: null,
                     endedAt: expect.any(Date),
                     error: null,
                     measurement: expect.any(Measurement),
                     name: null,
-                    output: null,
+                    output: 'Controllable step with id: apple-red is running\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
-                    usable: null
+                    usable: 'Controllable'
                   }
                 ],
                 variables: {
-                  seconds: 0.01,
-                  multiplier: 0.2
+                  fruit: 'apple',
+                  color: 'red'
                 }
               },
               {
@@ -328,20 +333,20 @@ describe(Workflow, (): void => {
                 status: Status.Success,
                 steps: [
                   {
-                    command: 'sleep 0.02',
+                    command: null,
                     endedAt: expect.any(Date),
                     error: null,
                     measurement: expect.any(Measurement),
                     name: null,
-                    output: null,
+                    output: 'Controllable step with id: apple-yellow is running\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
-                    usable: null
+                    usable: 'Controllable'
                   }
                 ],
                 variables: {
-                  seconds: 0.01,
-                  multiplier: 2
+                  fruit: 'apple',
+                  color: 'yellow'
                 }
               },
               {
@@ -353,20 +358,20 @@ describe(Workflow, (): void => {
                 status: Status.Success,
                 steps: [
                   {
-                    command: 'sleep 0.2',
+                    command: null,
                     endedAt: expect.any(Date),
                     error: null,
                     measurement: expect.any(Measurement),
                     name: null,
-                    output: null,
+                    output: 'Controllable step with id: banana-red is running\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
-                    usable: null
+                    usable: 'Controllable'
                   }
                 ],
                 variables: {
-                  seconds: 1,
-                  multiplier: 0.2
+                  fruit: 'banana',
+                  color: 'red'
                 }
               },
               {
@@ -378,20 +383,20 @@ describe(Workflow, (): void => {
                 status: Status.Stopped,
                 steps: [
                   {
-                    command: 'sleep 2',
+                    command: null,
                     endedAt: expect.any(Date),
                     error: 'Step was stopped',
                     measurement: expect.any(Measurement),
                     name: null,
-                    output: null,
+                    output: 'Controllable step with id: banana-yellow is running\nControllable step with id: banana-yellow was stopped\n',
                     startedAt: expect.any(Date),
                     status: Status.Stopped,
-                    usable: null
+                    usable: 'Controllable'
                   }
                 ],
                 variables: {
-                  seconds: 1,
-                  multiplier: 2
+                  fruit: 'banana',
+                  color: 'yellow'
                 }
               }
             ]
@@ -400,25 +405,40 @@ describe(Workflow, (): void => {
       ]
     })
 
-    expect(listener).toHaveBeenCalledTimes(22)
+    expect(listener).toHaveBeenCalledTimes(27)
     expect(listener.mock.calls).toContainEqual([{ event: 'step:running', payload: { index: 0, routine: 'test1 [0]', strategy: 'test1', strategyIndex: 0 } }])
     expect(listener.mock.calls).toContainEqual([{ event: 'routine:running', payload: { name: 'test1 [0]', strategy: 'test1', strategyIndex: 0 } }])
     expect(listener.mock.calls).toContainEqual([{ event: 'running', payload: { startedAt: expect.any(Date) } }])
+    expect(listener.mock.calls).toContainEqual([
+      { event: 'step:output', payload: { index: 0, routine: 'test1 [0]', strategy: 'test1', strategyIndex: 0, data: 'Controllable step with id: apple-red is running\n' } }
+    ])
     expect(listener.mock.calls).toContainEqual([{ event: 'step:success', payload: { index: 0, routine: 'test1 [0]', strategy: 'test1', strategyIndex: 0 } }])
     expect(listener.mock.calls).toContainEqual([{ event: 'routine:success', payload: { name: 'test1 [0]', strategy: 'test1', strategyIndex: 0 } }])
 
     expect(listener.mock.calls).toContainEqual([{ event: 'step:running', payload: { index: 0, routine: 'test1 [1]', strategy: 'test1', strategyIndex: 1 } }])
     expect(listener.mock.calls).toContainEqual([{ event: 'routine:running', payload: { name: 'test1 [1]', strategy: 'test1', strategyIndex: 1 } }])
+    expect(listener.mock.calls).toContainEqual([
+      { event: 'step:output', payload: { index: 0, routine: 'test1 [1]', strategy: 'test1', strategyIndex: 1, data: 'Controllable step with id: apple-yellow is running\n' } }
+    ])
     expect(listener.mock.calls).toContainEqual([{ event: 'step:success', payload: { index: 0, routine: 'test1 [1]', strategy: 'test1', strategyIndex: 1 } }])
     expect(listener.mock.calls).toContainEqual([{ event: 'routine:success', payload: { name: 'test1 [1]', strategy: 'test1', strategyIndex: 1 } }])
 
     expect(listener.mock.calls).toContainEqual([{ event: 'step:running', payload: { index: 0, routine: 'test1 [2]', strategy: 'test1', strategyIndex: 2 } }])
     expect(listener.mock.calls).toContainEqual([{ event: 'routine:running', payload: { name: 'test1 [2]', strategy: 'test1', strategyIndex: 2 } }])
+    expect(listener.mock.calls).toContainEqual([
+      { event: 'step:output', payload: { index: 0, routine: 'test1 [2]', strategy: 'test1', strategyIndex: 2, data: 'Controllable step with id: banana-red is running\n' } }
+    ])
     expect(listener.mock.calls).toContainEqual([{ event: 'step:success', payload: { index: 0, routine: 'test1 [2]', strategy: 'test1', strategyIndex: 2 } }])
     expect(listener.mock.calls).toContainEqual([{ event: 'routine:success', payload: { name: 'test1 [2]', strategy: 'test1', strategyIndex: 2 } }])
 
     expect(listener.mock.calls).toContainEqual([{ event: 'step:running', payload: { index: 0, routine: 'test1 [3]', strategy: 'test1', strategyIndex: 3 } }])
     expect(listener.mock.calls).toContainEqual([{ event: 'routine:running', payload: { name: 'test1 [3]', strategy: 'test1', strategyIndex: 3 } }])
+    expect(listener.mock.calls).toContainEqual([
+      { event: 'step:output', payload: { index: 0, routine: 'test1 [3]', strategy: 'test1', strategyIndex: 3, data: 'Controllable step with id: banana-yellow is running\n' } }
+    ])
+    expect(listener.mock.calls).toContainEqual([
+      { event: 'step:output', payload: { index: 0, routine: 'test1 [3]', strategy: 'test1', strategyIndex: 3, data: 'Controllable step with id: banana-yellow was stopped\n' } }
+    ])
     expect(listener.mock.calls).toContainEqual([{ event: 'stopping' }])
     expect(listener.mock.calls).toContainEqual([{ event: 'routine:stopping', payload: { name: 'test1 [3]', strategy: 'test1', strategyIndex: 3 } }])
     expect(listener.mock.calls).toContainEqual([{ event: 'step:stopping', payload: { index: 0, routine: 'test1 [3]', strategy: 'test1', strategyIndex: 3 } }])
