@@ -6,6 +6,7 @@ import { OnFailureAction, Workflow } from '../../src'
 describe(Workflow, (): void => {
   it('continue running routines if a strategy fails if it was expected to', async (): Promise<void> => {
     const workflow = new Workflow({
+      maxConcurrentRoutines: 8,
       stepUsableLocation: './tests/__fixtures__/cases',
       target: 'spawn',
       routines: {

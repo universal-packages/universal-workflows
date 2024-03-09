@@ -6,6 +6,7 @@ import { Workflow } from '../../src'
 describe(Workflow, (): void => {
   it('stops all the strategy routines when one fails', async (): Promise<void> => {
     const workflow = new Workflow({
+      maxConcurrentRoutines: 5,
       stepUsableLocation: './tests/__fixtures__/cases',
       target: 'spawn',
       routines: {

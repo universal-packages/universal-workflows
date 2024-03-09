@@ -7,6 +7,7 @@ import ControllableUsable from '../__fixtures__/cases/Controllable.usable'
 describe(Workflow, (): void => {
   it('is prepared to stop an strategy', async (): Promise<void> => {
     const workflow = new Workflow({
+      maxConcurrentRoutines: 4,
       stepUsableLocation: './tests/__fixtures__/cases',
       target: 'spawn',
       routines: {
