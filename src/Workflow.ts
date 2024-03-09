@@ -6,6 +6,7 @@ import { BaseRunner, EngineInterfaceClass, ExecEngine, ForkEngine, SpawnEngine, 
 import { evaluate } from '@universal-packages/variable-replacer'
 import Ajv from 'ajv'
 import { camelCase, pascalCase } from 'change-case'
+import os from 'os'
 
 import {
   BuildFromOptions,
@@ -17,6 +18,7 @@ import {
   RunDescriptorStatus,
   RunDescriptorStrategyStatus,
   RunDescriptors,
+  RunQueueEntry,
   StrategyRunDescriptor,
   WorkflowGraph
 } from '.'
@@ -67,12 +69,16 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
   private readonly runDescriptors: RunDescriptors = {}
   private readonly scope: Record<string, any> = {}
 
+  private runQueue: RunQueueEntry[] = []
+  private runConcurrency = 0
+
   private resolveRun: () => void
 
   public constructor(options?: WorkflowOptions) {
     super({
       stepUsableLocation: './src',
       ...options,
+      maxConcurrentRoutines: Math.max(options?.maxConcurrentRoutines || os.cpus().length - 1, 1),
       targets: {
         ...{
           spawn: { engine: 'spawn' },
@@ -145,10 +151,16 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
           this.runStrategy(runDescriptor, i === 0 ? onRunning : undefined)
         }
       }
+
+      this.runNext()
     })
   }
 
   protected async internalStop(): Promise<void> {
+    for (let i = 0; i < this.runQueue.length; i++) {
+      this.runQueue[i].runDescriptor.status = RunDescriptorStatus.Canceled
+    }
+
     for (let i = 0; i < Object.keys(this.runDescriptors).length; i++) {
       const runDescriptor = this.runDescriptors[Object.keys(this.runDescriptors)[i]]
 
@@ -160,6 +172,23 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
 
           strategyRunDescriptor.routine.stop()
         }
+      }
+    }
+  }
+
+  private runNext(): void {
+    if (this.runConcurrency < this.options.maxConcurrentRoutines) {
+      const next = this.runQueue.shift()
+
+      if (next) {
+        this.runConcurrency++
+
+        next.run().then(() => {
+          this.runConcurrency--
+          this.runNext()
+        })
+
+        this.runNext()
       }
     }
   }
@@ -196,27 +225,32 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
       this.emit(event.event, newEvent)
     })
 
-    try {
-      await runDescriptor.routine.run()
-    } catch (error) {
-      this.emit(`routine:${runDescriptor.routine.status}`, { error, payload: { name: runDescriptor.name } })
+    this.runQueue.push({
+      run: async () => {
+        try {
+          await runDescriptor.routine.run()
+        } catch (error) {
+          this.emit(`routine:${runDescriptor.routine.status}`, { error, payload: { name: runDescriptor.name } })
 
-      if (runDescriptor.routineDescriptor.onFailure === OnFailureAction.Continue) {
-        runDescriptor.status = RunDescriptorStatus.Success
-      } else {
-        this.cancelDependents(runDescriptor)
+          if (runDescriptor.routineDescriptor.onFailure === OnFailureAction.Continue) {
+            runDescriptor.status = RunDescriptorStatus.Success
+          } else {
+            this.cancelDependents(runDescriptor)
 
-        if (runDescriptor.routine.status === Status.Stopped) {
-          runDescriptor.status = RunDescriptorStatus.Stopped
-        } else {
-          runDescriptor.status = RunDescriptorStatus.Failure
+            if (runDescriptor.routine.status === Status.Stopped) {
+              runDescriptor.status = RunDescriptorStatus.Stopped
+            } else {
+              runDescriptor.status = RunDescriptorStatus.Failure
+            }
+          }
+        } finally {
+          this.handleAfterRunDescriptorFinished(runDescriptor)
+
+          runDescriptor.routine.removeAllListeners()
         }
-      }
-    } finally {
-      this.handleAfterRunDescriptorFinished(runDescriptor)
-
-      runDescriptor.routine.removeAllListeners()
-    }
+      },
+      runDescriptor
+    })
   }
 
   private async runStrategy(runDescriptor: RunDescriptor, onRunning?: () => void): Promise<void> {
@@ -380,7 +414,7 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
         }
       })
 
-      strategyRunDescriptor.routine.run()
+      this.runQueue.push({ run: async () => strategyRunDescriptor.routine.run(), runDescriptor })
     }
   }
 
@@ -408,6 +442,8 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
 
   private handleAfterRunDescriptorFinished(runDescriptor: RunDescriptor): void {
     if (this.allRunDescriptorsDone()) {
+      this.runQueue = []
+
       if (this.allRunDescriptorsSucceeded()) {
         this.internalStatus = Status.Success
       } else if (this.anyRunDescriptorStopped()) {
@@ -662,7 +698,7 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
       const currentRoutineOptionsWithStrategyScope: RoutineOptions = {
         ...runDescriptor.routineOptions,
         name: currentCombinationName,
-        strategyScope: currentCombination
+        strategyScope: { ...currentCombination, index: i }
       }
 
       const strategyRunDescriptor: StrategyRunDescriptor = {

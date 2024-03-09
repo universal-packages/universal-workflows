@@ -11,6 +11,9 @@ export const workflowSchema: JSONSchema7 = {
         type: ['string', 'number', 'boolean']
       }
     },
+    maxConcurrentRoutines: {
+      type: 'number'
+    },
     name: {
       type: 'string'
     },

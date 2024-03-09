@@ -63,7 +63,6 @@ Routine.ts
 Routine.types.ts
 Step.ts
 Step.types.ts
-TerminalPresenter.ts
 Workflow.schema.ts
 Workflow.ts
 Workflow.types.ts
@@ -105,7 +104,6 @@ Routine.ts
 Routine.types.ts
 Step.ts
 Step.types.ts
-TerminalPresenter.ts
 Workflow.schema.ts
 Workflow.ts
 Workflow.types.ts

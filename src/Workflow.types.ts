@@ -32,6 +32,7 @@ export interface BuildFromOptions {
 
 export interface WorkflowOptions extends BaseRunnerOptions {
   environment?: Record<string, string>
+  maxConcurrentRoutines?: number
   name?: string
   target?: string
   targets?: Targets
@@ -136,4 +137,9 @@ export interface WorkflowDescriptor {
   targets?: Targets
   routines: RoutineDescriptors
   workingDirectory?: string
+}
+
+export interface RunQueueEntry {
+  run: () => Promise<void>
+  runDescriptor: RunDescriptor
 }

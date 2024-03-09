@@ -34,9 +34,9 @@ export default class Step extends BaseRunner<StepOptions> {
   }
 
   protected async internalRun(onRunning: () => void): Promise<void> {
-    if (this.options.run) {
-      const scope = this.options.strategyScope ? { ...this.options.scope, strategy: this.options.strategyScope } : { ...this.options.scope }
+    const scope = this.options.strategyScope ? { ...this.options.scope, strategy: this.options.strategyScope } : { ...this.options.scope }
 
+    if (this.options.run) {
       try {
         this.finalRunCommand = evaluateAndReplace(this.options.run, { scope, enclosures: ['${{', '}}'] })
       } catch (error) {
@@ -57,10 +57,20 @@ export default class Step extends BaseRunner<StepOptions> {
         }
       }
 
+      let finalEnvironment = this.options.environment
+
+      try {
+        finalEnvironment = this.evaluateObject(scope, this.options.environment)
+      } catch (error) {
+        this.internalStatus = Status.Error
+        this.internalError = error
+        return
+      }
+
       const subProcessOptions: SubProcessOptions = {
         command: this.finalRunCommand,
         input: this.options.input,
-        env: this.options.environment,
+        env: finalEnvironment,
         workingDirectory: finalWorkingDirectory
       }
 
@@ -99,11 +109,23 @@ export default class Step extends BaseRunner<StepOptions> {
       const UsableStep = this.options.usableMap[usableName]
 
       if (UsableStep) {
+        let finalEnvironment = this.options.environment
+        let finalWith = this.options.with
+
+        try {
+          finalEnvironment = this.evaluateObject(scope, this.options.environment)
+          finalWith = this.evaluateObject(scope, this.options.with)
+        } catch (error) {
+          this.internalStatus = Status.Error
+          this.internalError = error
+          return
+        }
+
         this.usable = new UsableStep({
-          environment: this.options.environment,
+          environment: finalEnvironment,
           scope: this.options.scope,
           target: this.options.target,
-          with: this.options.with,
+          with: finalWith,
           workingDirectory: this.options.workingDirectory
         })
 
@@ -144,5 +166,27 @@ export default class Step extends BaseRunner<StepOptions> {
   protected async internalStop(): Promise<void> {
     if (this.subProcess) return this.subProcess.stop()
     if (this.usable) return this.usable.stop()
+  }
+
+  private evaluateObject(scope: Record<string, any>, originalObject?: Record<string, any>): Record<string, any> {
+    if (originalObject) {
+      const withKeys = Object.keys(originalObject)
+      const newWith: Record<string, any> = {}
+
+      for (let i = 0; i < withKeys.length; i++) {
+        const key = withKeys[i]
+        const value = originalObject[key]
+
+        if (typeof value === 'string') {
+          newWith[key] = evaluateAndReplace(value, { scope, enclosures: ['${{', '}}'] })
+        } else {
+          newWith[key] = value
+        }
+      }
+
+      return newWith
+    }
+
+    return originalObject
   }
 }

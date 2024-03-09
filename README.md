@@ -66,6 +66,9 @@ routines:
 - **`environment`** `Object`
   The environment variables that should be passed to all the routines and steps.
 
+- **`maxConcurrentRoutines`** `number` `default: CPU cores count - 1`
+  The maximum number of routines that should be executed in parallel.
+
 - **`target`** `string`
   The target that should be used by all the routines and steps.
 

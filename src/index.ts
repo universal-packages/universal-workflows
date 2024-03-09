@@ -4,8 +4,6 @@ export * from './Workflow.types'
 export { default as Routine } from './Routine'
 export * from './Routine.types'
 
-export { default as TerminalPresenter } from './TerminalPresenter'
-
 export { default as Step } from './Step'
 export * from './Step.types'
 
