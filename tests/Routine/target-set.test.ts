@@ -64,13 +64,13 @@ describe(Routine, (): void => {
     })
 
     expect(listener.mock.calls).toEqual([
-      [{ event: 'step:running', payload: { index: 0 } }],
+      [{ event: 'step:running', payload: { index: 0, graph: expect.anything() } }],
       [{ event: 'running', payload: { startedAt: expect.any(Date) } }],
       [{ event: 'step:output', payload: { data: 'yes\n', index: 0 } }],
-      [{ event: 'step:success', payload: { index: 0 } }],
-      [{ event: 'step:running', payload: { index: 1 } }],
+      [{ event: 'step:success', payload: { index: 0, graph: expect.anything() } }],
+      [{ event: 'step:running', payload: { index: 1, graph: expect.anything() } }],
       [{ event: 'step:output', payload: { data: 'maybe\n', index: 1 } }],
-      [{ event: 'step:success', payload: { index: 1 } }],
+      [{ event: 'step:success', payload: { index: 1, graph: expect.anything() } }],
       [{ event: 'success', measurement: expect.any(Measurement) }],
       [{ event: 'end', measurement: expect.any(Measurement), payload: { endedAt: expect.any(Date) } }]
     ])

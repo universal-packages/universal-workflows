@@ -197,7 +197,7 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
     runDescriptor.status = RunDescriptorStatus.Running
 
     if (this.shouldSkipRunDescriptor(runDescriptor)) {
-      runDescriptor.routine.once(Status.Skipped, () => this.emit(`routine:${Status.Skipped}`, { payload: { name: runDescriptor.name } }))
+      runDescriptor.routine.once(Status.Skipped, () => this.emit(`routine:${Status.Skipped}`, { payload: { name: runDescriptor.name, graph: runDescriptor.routine.graph } }))
       runDescriptor.routine.skip()
       runDescriptor.status = RunDescriptorStatus.Skipped
 
@@ -209,15 +209,15 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
     }
 
     runDescriptor.routine.once(Status.Running, () => {
-      this.emit(`routine:${Status.Running}`, { payload: { name: runDescriptor.name } })
+      this.emit(`routine:${Status.Running}`, { payload: { name: runDescriptor.name, graph: runDescriptor.routine.graph } })
       if (onRunning) onRunning()
     })
     runDescriptor.routine.once(Status.Stopping, () => {
-      this.emit(`routine:${Status.Stopping}`, { payload: { name: runDescriptor.name } })
+      this.emit(`routine:${Status.Stopping}`, { payload: { name: runDescriptor.name, graph: runDescriptor.routine.graph } })
     })
     runDescriptor.routine.once(Status.Success, () => {
       runDescriptor.status = RunDescriptorStatus.Success
-      this.emit(`routine:${Status.Success}`, { payload: { name: runDescriptor.name } })
+      this.emit(`routine:${Status.Success}`, { payload: { name: runDescriptor.name, graph: runDescriptor.routine.graph } })
     })
     runDescriptor.routine.on('step:*', (event) => {
       const newEvent: EventIn = { payload: { ...event.payload, routine: runDescriptor.name } }
@@ -230,7 +230,7 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
         try {
           await runDescriptor.routine.run()
         } catch (error) {
-          this.emit(`routine:${runDescriptor.routine.status}`, { error, payload: { name: runDescriptor.name } })
+          this.emit(`routine:${runDescriptor.routine.status}`, { error, payload: { name: runDescriptor.name, graph: runDescriptor.routine.graph } })
 
           if (runDescriptor.routineDescriptor.onFailure === OnFailureAction.Continue) {
             runDescriptor.status = RunDescriptorStatus.Success
@@ -335,11 +335,25 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
       const strategyRunDescriptor = strategyRunDescriptors[i]
 
       strategyRunDescriptor.routine.once(Status.Running, () => {
-        this.emit(`routine:${Status.Running}`, { payload: { name: strategyRunDescriptor.routine.name, strategy: runDescriptor.name, strategyIndex: strategyRunDescriptor.index } })
+        this.emit(`routine:${Status.Running}`, {
+          payload: {
+            name: strategyRunDescriptor.routine.name,
+            strategy: runDescriptor.name,
+            strategyIndex: strategyRunDescriptor.index,
+            graph: strategyRunDescriptor.routine.graph
+          }
+        })
         if (onRunning && i == 0) onRunning()
       })
       strategyRunDescriptor.routine.once(Status.Stopping, () => {
-        this.emit(`routine:${Status.Stopping}`, { payload: { name: strategyRunDescriptor.routine.name, strategy: runDescriptor.name, strategyIndex: strategyRunDescriptor.index } })
+        this.emit(`routine:${Status.Stopping}`, {
+          payload: {
+            name: strategyRunDescriptor.routine.name,
+            strategy: runDescriptor.name,
+            strategyIndex: strategyRunDescriptor.index,
+            graph: strategyRunDescriptor.routine.graph
+          }
+        })
       })
 
       strategyRunDescriptor.routine.on('step:*', (event) => {
@@ -356,27 +370,49 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
       })
 
       strategyRunDescriptor.routine.once(Status.Success, () =>
-        this.emit(`routine:${Status.Success}`, { payload: { name: strategyRunDescriptor.routine.name, strategy: runDescriptor.name, strategyIndex: strategyRunDescriptor.index } })
+        this.emit(`routine:${Status.Success}`, {
+          payload: {
+            name: strategyRunDescriptor.routine.name,
+            strategy: runDescriptor.name,
+            strategyIndex: strategyRunDescriptor.index,
+            graph: strategyRunDescriptor.routine.graph
+          }
+        })
       )
 
       strategyRunDescriptor.routine.once(Status.Failure, (event) =>
         this.emit(`routine:${Status.Failure}`, {
           error: event.error,
-          payload: { name: strategyRunDescriptor.routine.name, strategy: runDescriptor.name, strategyIndex: strategyRunDescriptor.index }
+          payload: {
+            name: strategyRunDescriptor.routine.name,
+            strategy: runDescriptor.name,
+            strategyIndex: strategyRunDescriptor.index,
+            graph: strategyRunDescriptor.routine.graph
+          }
         })
       )
 
       strategyRunDescriptor.routine.once(Status.Stopped, (event) =>
         this.emit(`routine:${Status.Stopped}`, {
           error: event.error,
-          payload: { name: strategyRunDescriptor.routine.name, strategy: runDescriptor.name, strategyIndex: strategyRunDescriptor.index }
+          payload: {
+            name: strategyRunDescriptor.routine.name,
+            strategy: runDescriptor.name,
+            strategyIndex: strategyRunDescriptor.index,
+            graph: strategyRunDescriptor.routine.graph
+          }
         })
       )
 
       strategyRunDescriptor.routine.once(Status.Error, (event) =>
         this.emit(`routine:${Status.Error}`, {
           error: event.error,
-          payload: { name: strategyRunDescriptor.routine.name, strategy: runDescriptor.name, strategyIndex: strategyRunDescriptor.index }
+          payload: {
+            name: strategyRunDescriptor.routine.name,
+            strategy: runDescriptor.name,
+            strategyIndex: strategyRunDescriptor.index,
+            graph: strategyRunDescriptor.routine.graph
+          }
         })
       )
 

@@ -64,7 +64,7 @@ describe(Routine, (): void => {
     })
 
     expect(listener.mock.calls).toEqual([
-      [{ event: 'step:running', payload: { index: 0 } }],
+      [{ event: 'step:running', payload: { index: 0, graph: expect.anything() } }],
       [{ event: 'running', payload: { startedAt: expect.any(Date) } }],
       [
         {
@@ -75,14 +75,14 @@ describe(Routine, (): void => {
           }
         }
       ],
-      [{ event: 'step:success', payload: { index: 0 } }],
-      [{ event: 'step:running', payload: { index: 1 } }],
+      [{ event: 'step:success', payload: { index: 0, graph: expect.anything() } }],
+      [{ event: 'step:running', payload: { index: 1, graph: expect.anything() } }],
       [{ event: 'step:output', payload: { index: 1, data: "fatal: repository 'nonexistent' does not exist\n" } }],
       [
         {
           event: 'step:failure',
           error: new Error("Process exited with code 128\n\nfatal: repository 'nonexistent' does not exist\n"),
-          payload: { index: 1 }
+          payload: { index: 1, graph: expect.anything() }
         }
       ],
       [{ event: 'failure', error: new Error("Process exited with code 128\n\nfatal: repository 'nonexistent' does not exist\n"), measurement: expect.any(Measurement) }],
@@ -143,7 +143,7 @@ describe(Routine, (): void => {
     })
 
     expect(listener.mock.calls).toEqual([
-      [{ event: 'step:error', error: new Error('Ups'), payload: { index: 0 } }],
+      [{ event: 'step:error', error: new Error('Ups'), payload: { index: 0, graph: expect.anything() } }],
       [{ event: 'running', payload: { startedAt: expect.any(Date) } }],
       [{ event: 'failure', error: new Error('Ups'), measurement: expect.any(Measurement) }],
       [{ event: 'end', error: new Error('Ups'), measurement: expect.any(Measurement), payload: { endedAt: expect.any(Date) } }]

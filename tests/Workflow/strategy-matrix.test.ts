@@ -187,42 +187,74 @@ describe(Workflow, (): void => {
     })
 
     expect(listener).toHaveBeenCalledTimes(35)
-    expect(listener.mock.calls).toContainEqual([{ event: 'step:running', payload: { index: 0, routine: 'test1 [0]', strategy: 'test1', strategyIndex: 0 } }])
-    expect(listener.mock.calls).toContainEqual([{ event: 'routine:running', payload: { name: 'test1 [0]', strategy: 'test1', strategyIndex: 0 } }])
+    expect(listener.mock.calls).toContainEqual([
+      { event: 'step:running', payload: { index: 0, routine: 'test1 [0]', strategy: 'test1', strategyIndex: 0, graph: expect.anything() } }
+    ])
+    expect(listener.mock.calls).toContainEqual([{ event: 'routine:running', payload: { name: 'test1 [0]', strategy: 'test1', strategyIndex: 0, graph: expect.anything() } }])
     expect(listener.mock.calls).toContainEqual([{ event: 'running', payload: { startedAt: expect.any(Date) } }])
     expect(listener.mock.calls).toContainEqual([{ event: 'step:output', payload: { index: 0, routine: 'test1 [0]', strategy: 'test1', strategyIndex: 0, data: 'apple\n' } }])
-    expect(listener.mock.calls).toContainEqual([{ event: 'step:success', payload: { index: 0, routine: 'test1 [0]', strategy: 'test1', strategyIndex: 0 } }])
-    expect(listener.mock.calls).toContainEqual([{ event: 'step:running', payload: { index: 1, routine: 'test1 [0]', strategy: 'test1', strategyIndex: 0 } }])
+    expect(listener.mock.calls).toContainEqual([
+      { event: 'step:success', payload: { index: 0, routine: 'test1 [0]', strategy: 'test1', strategyIndex: 0, graph: expect.anything() } }
+    ])
+    expect(listener.mock.calls).toContainEqual([
+      { event: 'step:running', payload: { index: 1, routine: 'test1 [0]', strategy: 'test1', strategyIndex: 0, graph: expect.anything() } }
+    ])
     expect(listener.mock.calls).toContainEqual([{ event: 'step:output', payload: { index: 1, routine: 'test1 [0]', strategy: 'test1', strategyIndex: 0, data: 'cat\n' } }])
-    expect(listener.mock.calls).toContainEqual([{ event: 'step:success', payload: { index: 1, routine: 'test1 [0]', strategy: 'test1', strategyIndex: 0 } }])
-    expect(listener.mock.calls).toContainEqual([{ event: 'routine:success', payload: { name: 'test1 [0]', strategy: 'test1', strategyIndex: 0 } }])
+    expect(listener.mock.calls).toContainEqual([
+      { event: 'step:success', payload: { index: 1, routine: 'test1 [0]', strategy: 'test1', strategyIndex: 0, graph: expect.anything() } }
+    ])
+    expect(listener.mock.calls).toContainEqual([{ event: 'routine:success', payload: { name: 'test1 [0]', strategy: 'test1', strategyIndex: 0, graph: expect.anything() } }])
 
-    expect(listener.mock.calls).toContainEqual([{ event: 'step:running', payload: { index: 0, routine: 'test1 [1]', strategy: 'test1', strategyIndex: 1 } }])
-    expect(listener.mock.calls).toContainEqual([{ event: 'routine:running', payload: { name: 'test1 [1]', strategy: 'test1', strategyIndex: 1 } }])
+    expect(listener.mock.calls).toContainEqual([
+      { event: 'step:running', payload: { index: 0, routine: 'test1 [1]', strategy: 'test1', strategyIndex: 1, graph: expect.anything() } }
+    ])
+    expect(listener.mock.calls).toContainEqual([{ event: 'routine:running', payload: { name: 'test1 [1]', strategy: 'test1', strategyIndex: 1, graph: expect.anything() } }])
     expect(listener.mock.calls).toContainEqual([{ event: 'step:output', payload: { index: 0, routine: 'test1 [1]', strategy: 'test1', strategyIndex: 1, data: 'apple\n' } }])
-    expect(listener.mock.calls).toContainEqual([{ event: 'step:success', payload: { index: 0, routine: 'test1 [1]', strategy: 'test1', strategyIndex: 1 } }])
-    expect(listener.mock.calls).toContainEqual([{ event: 'step:running', payload: { index: 1, routine: 'test1 [1]', strategy: 'test1', strategyIndex: 1 } }])
+    expect(listener.mock.calls).toContainEqual([
+      { event: 'step:success', payload: { index: 0, routine: 'test1 [1]', strategy: 'test1', strategyIndex: 1, graph: expect.anything() } }
+    ])
+    expect(listener.mock.calls).toContainEqual([
+      { event: 'step:running', payload: { index: 1, routine: 'test1 [1]', strategy: 'test1', strategyIndex: 1, graph: expect.anything() } }
+    ])
     expect(listener.mock.calls).toContainEqual([{ event: 'step:output', payload: { index: 1, routine: 'test1 [1]', strategy: 'test1', strategyIndex: 1, data: 'dog\n' } }])
-    expect(listener.mock.calls).toContainEqual([{ event: 'step:success', payload: { index: 1, routine: 'test1 [1]', strategy: 'test1', strategyIndex: 1 } }])
-    expect(listener.mock.calls).toContainEqual([{ event: 'routine:success', payload: { name: 'test1 [1]', strategy: 'test1', strategyIndex: 1 } }])
+    expect(listener.mock.calls).toContainEqual([
+      { event: 'step:success', payload: { index: 1, routine: 'test1 [1]', strategy: 'test1', strategyIndex: 1, graph: expect.anything() } }
+    ])
+    expect(listener.mock.calls).toContainEqual([{ event: 'routine:success', payload: { name: 'test1 [1]', strategy: 'test1', strategyIndex: 1, graph: expect.anything() } }])
 
-    expect(listener.mock.calls).toContainEqual([{ event: 'step:running', payload: { index: 0, routine: 'test1 [2]', strategy: 'test1', strategyIndex: 2 } }])
-    expect(listener.mock.calls).toContainEqual([{ event: 'routine:running', payload: { name: 'test1 [2]', strategy: 'test1', strategyIndex: 2 } }])
+    expect(listener.mock.calls).toContainEqual([
+      { event: 'step:running', payload: { index: 0, routine: 'test1 [2]', strategy: 'test1', strategyIndex: 2, graph: expect.anything() } }
+    ])
+    expect(listener.mock.calls).toContainEqual([{ event: 'routine:running', payload: { name: 'test1 [2]', strategy: 'test1', strategyIndex: 2, graph: expect.anything() } }])
     expect(listener.mock.calls).toContainEqual([{ event: 'step:output', payload: { index: 0, routine: 'test1 [2]', strategy: 'test1', strategyIndex: 2, data: 'pear\n' } }])
-    expect(listener.mock.calls).toContainEqual([{ event: 'step:success', payload: { index: 0, routine: 'test1 [2]', strategy: 'test1', strategyIndex: 2 } }])
-    expect(listener.mock.calls).toContainEqual([{ event: 'step:running', payload: { index: 1, routine: 'test1 [2]', strategy: 'test1', strategyIndex: 2 } }])
+    expect(listener.mock.calls).toContainEqual([
+      { event: 'step:success', payload: { index: 0, routine: 'test1 [2]', strategy: 'test1', strategyIndex: 2, graph: expect.anything() } }
+    ])
+    expect(listener.mock.calls).toContainEqual([
+      { event: 'step:running', payload: { index: 1, routine: 'test1 [2]', strategy: 'test1', strategyIndex: 2, graph: expect.anything() } }
+    ])
     expect(listener.mock.calls).toContainEqual([{ event: 'step:output', payload: { index: 1, routine: 'test1 [2]', strategy: 'test1', strategyIndex: 2, data: 'cat\n' } }])
-    expect(listener.mock.calls).toContainEqual([{ event: 'step:success', payload: { index: 1, routine: 'test1 [2]', strategy: 'test1', strategyIndex: 2 } }])
-    expect(listener.mock.calls).toContainEqual([{ event: 'routine:success', payload: { name: 'test1 [2]', strategy: 'test1', strategyIndex: 2 } }])
+    expect(listener.mock.calls).toContainEqual([
+      { event: 'step:success', payload: { index: 1, routine: 'test1 [2]', strategy: 'test1', strategyIndex: 2, graph: expect.anything() } }
+    ])
+    expect(listener.mock.calls).toContainEqual([{ event: 'routine:success', payload: { name: 'test1 [2]', strategy: 'test1', strategyIndex: 2, graph: expect.anything() } }])
 
-    expect(listener.mock.calls).toContainEqual([{ event: 'step:running', payload: { index: 0, routine: 'test1 [3]', strategy: 'test1', strategyIndex: 3 } }])
-    expect(listener.mock.calls).toContainEqual([{ event: 'routine:running', payload: { name: 'test1 [3]', strategy: 'test1', strategyIndex: 3 } }])
+    expect(listener.mock.calls).toContainEqual([
+      { event: 'step:running', payload: { index: 0, routine: 'test1 [3]', strategy: 'test1', strategyIndex: 3, graph: expect.anything() } }
+    ])
+    expect(listener.mock.calls).toContainEqual([{ event: 'routine:running', payload: { name: 'test1 [3]', strategy: 'test1', strategyIndex: 3, graph: expect.anything() } }])
     expect(listener.mock.calls).toContainEqual([{ event: 'step:output', payload: { index: 0, routine: 'test1 [3]', strategy: 'test1', strategyIndex: 3, data: 'pear\n' } }])
-    expect(listener.mock.calls).toContainEqual([{ event: 'step:success', payload: { index: 1, routine: 'test1 [3]', strategy: 'test1', strategyIndex: 3 } }])
-    expect(listener.mock.calls).toContainEqual([{ event: 'step:running', payload: { index: 1, routine: 'test1 [3]', strategy: 'test1', strategyIndex: 3 } }])
+    expect(listener.mock.calls).toContainEqual([
+      { event: 'step:success', payload: { index: 1, routine: 'test1 [3]', strategy: 'test1', strategyIndex: 3, graph: expect.anything() } }
+    ])
+    expect(listener.mock.calls).toContainEqual([
+      { event: 'step:running', payload: { index: 1, routine: 'test1 [3]', strategy: 'test1', strategyIndex: 3, graph: expect.anything() } }
+    ])
     expect(listener.mock.calls).toContainEqual([{ event: 'step:output', payload: { index: 1, routine: 'test1 [3]', strategy: 'test1', strategyIndex: 3, data: 'dog\n' } }])
-    expect(listener.mock.calls).toContainEqual([{ event: 'step:success', payload: { index: 1, routine: 'test1 [3]', strategy: 'test1', strategyIndex: 3 } }])
-    expect(listener.mock.calls).toContainEqual([{ event: 'routine:success', payload: { name: 'test1 [3]', strategy: 'test1', strategyIndex: 3 } }])
+    expect(listener.mock.calls).toContainEqual([
+      { event: 'step:success', payload: { index: 1, routine: 'test1 [3]', strategy: 'test1', strategyIndex: 3, graph: expect.anything() } }
+    ])
+    expect(listener.mock.calls).toContainEqual([{ event: 'routine:success', payload: { name: 'test1 [3]', strategy: 'test1', strategyIndex: 3, graph: expect.anything() } }])
     expect(listener.mock.calls).toContainEqual([{ event: 'success', measurement: expect.any(Measurement) }])
     expect(listener.mock.calls).toContainEqual([{ event: 'end', measurement: expect.any(Measurement), payload: { endedAt: expect.any(Date) } }])
   })

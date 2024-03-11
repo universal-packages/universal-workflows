@@ -70,13 +70,13 @@ describe(Routine, (): void => {
     })
 
     expect(listener.mock.calls).toEqual([
-      [{ event: 'step:running', payload: { index: 0 } }],
+      [{ event: 'step:running', payload: { index: 0, graph: expect.anything() } }],
       [{ event: 'running', payload: { startedAt: expect.any(Date) } }],
       [{ event: 'step:output', payload: { data: 'This is a variable\n', index: 0 } }],
-      [{ event: 'step:success', payload: { index: 0 } }],
-      [{ event: 'step:running', payload: { index: 1 } }],
+      [{ event: 'step:success', payload: { index: 0, graph: expect.anything() } }],
+      [{ event: 'step:running', payload: { index: 1, graph: expect.anything() } }],
       [{ event: 'step:output', payload: { data: '2+2=4\n', index: 1 } }],
-      [{ event: 'step:success', payload: { index: 1 } }],
+      [{ event: 'step:success', payload: { index: 1, graph: expect.anything() } }],
       [{ event: 'success', measurement: expect.any(Measurement) }],
       [{ event: 'end', measurement: expect.any(Measurement), payload: { endedAt: expect.any(Date) } }]
     ])
@@ -149,7 +149,7 @@ describe(Routine, (): void => {
     })
 
     expect(listener.mock.calls).toEqual([
-      [{ event: 'step:error', error: new Error('HeHe'), payload: { index: 0 } }],
+      [{ event: 'step:error', error: new Error('HeHe'), payload: { index: 0, graph: expect.anything() } }],
       [{ event: 'running', payload: { startedAt: expect.any(Date) } }],
       [{ event: 'failure', error: new Error('HeHe'), measurement: expect.any(Measurement) }],
       [{ event: 'end', error: new Error('HeHe'), measurement: expect.any(Measurement), payload: { endedAt: expect.any(Date) } }]

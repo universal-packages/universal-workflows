@@ -133,11 +133,11 @@ describe(Routine, (): void => {
     })
 
     expect(listener.mock.calls).toEqual([
-      [{ event: 'step:running', payload: { index: 0 } }],
+      [{ event: 'step:running', payload: { index: 0, graph: expect.anything() } }],
       [{ event: 'running', payload: { startedAt: expect.any(Date) } }],
       [{ event: 'stopping' }],
-      [{ event: 'step:stopping', payload: { index: 0 } }],
-      [{ event: 'step:stopped', error: new Error('Step was stopped'), payload: { index: 0 } }],
+      [{ event: 'step:stopping', payload: { index: 0, graph: expect.anything() } }],
+      [{ event: 'step:stopped', error: new Error('Step was stopped'), payload: { index: 0, graph: expect.anything() } }],
       [{ event: 'stopped', error: new Error('Routine was stopped'), measurement: expect.any(Measurement) }],
       [{ event: 'end', error: new Error('Routine was stopped'), measurement: expect.any(Measurement), payload: { endedAt: expect.any(Date) } }]
     ])

@@ -63,19 +63,19 @@ describe(Routine, (): void => {
     })
 
     expect(listener.mock.calls).toEqual([
-      [{ event: 'step:running', payload: { index: 0 } }],
+      [{ event: 'step:running', payload: { index: 0, graph: expect.anything() } }],
       [{ event: 'running', payload: { startedAt: expect.any(Date) } }],
       [{ event: 'step:output', payload: { index: 0, data: "fatal: repository 'nonexistent' does not exist\n" } }],
       [
         {
           event: 'step:failure',
           error: new Error("Process exited with code 128\n\nfatal: repository 'nonexistent' does not exist\n"),
-          payload: { index: 0 }
+          payload: { index: 0, graph: expect.anything() }
         }
       ],
-      [{ event: 'step:running', payload: { index: 1 } }],
+      [{ event: 'step:running', payload: { index: 1, graph: expect.anything() } }],
       [{ event: 'step:output', payload: { data: 'This is a good step, using env: undefined, scope: undefined, and with: undefined\n', index: 1 } }],
-      [{ event: 'step:success', payload: { index: 1 } }],
+      [{ event: 'step:success', payload: { index: 1, graph: expect.anything() } }],
       [{ event: 'success', measurement: expect.any(Measurement) }],
       [{ event: 'end', measurement: expect.any(Measurement), payload: { endedAt: expect.any(Date) } }]
     ])

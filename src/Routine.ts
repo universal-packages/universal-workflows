@@ -37,14 +37,14 @@ export default class Routine extends BaseRunner<RoutineOptions> {
       this.currentStep = this.steps[i]
 
       if (this.shouldSkipStep(currentStepDescriptor)) {
-        this.currentStep.once(Status.Skipped, () => this.emit(`step:${Status.Skipped}`, { payload: { index: i } }))
+        this.currentStep.once(Status.Skipped, () => this.emit(`step:${Status.Skipped}`, { payload: { index: i, graph: this.currentStep.graph } }))
         this.currentStep.skip()
 
         continue
       }
 
-      this.currentStep.once(Status.Running, () => this.emit(`step:${Status.Running}`, { payload: { index: i } }))
-      this.currentStep.once(Status.Stopping, () => this.emit(`step:${Status.Stopping}`, { payload: { index: i } }))
+      this.currentStep.once(Status.Running, () => this.emit(`step:${Status.Running}`, { payload: { index: i, graph: this.currentStep.graph } }))
+      this.currentStep.once(Status.Stopping, () => this.emit(`step:${Status.Stopping}`, { payload: { index: i, graph: this.currentStep.graph } }))
       this.currentStep.on('output', (event: EmittedEvent) => this.emit('step:output', { payload: { index: i, data: event.payload.data } }))
 
       if (!onRunningRan) {
@@ -59,11 +59,11 @@ export default class Routine extends BaseRunner<RoutineOptions> {
       try {
         await this.currentStep.run()
 
-        this.emit(`step:${Status.Success}`, { payload: { index: i } })
+        this.emit(`step:${Status.Success}`, { payload: { index: i, graph: this.currentStep.graph } })
 
         if (i === this.steps.length - 1) this.internalStatus = Status.Success
       } catch (error) {
-        this.emit(`step:${this.currentStep.status}`, { error, payload: { index: i } })
+        this.emit(`step:${this.currentStep.status}`, { error, payload: { index: i, graph: this.currentStep.graph } })
 
         switch (this.currentStep.status) {
           case Status.Error:
