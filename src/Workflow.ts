@@ -319,6 +319,12 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
       })
     }
 
+    const anyStrategyRoutinesRunning = (): boolean => {
+      return strategyRunDescriptors.some((strategyRunDescriptor) => {
+        return [Status.Running, Status.Stopping].includes(strategyRunDescriptor.routine.status)
+      })
+    }
+
     const allStrategyRoutinesSucceed = (): boolean => {
       return strategyRunDescriptors.every((strategyRunDescriptor) => {
         return strategyRunDescriptor.routine.status === Status.Success
@@ -427,7 +433,10 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
           }
         }
 
-        if (allStrategyRoutinesFinished() && runDescriptor.status === RunDescriptorStatus.Running) {
+        if (
+          (allStrategyRoutinesFinished() && runDescriptor.status === RunDescriptorStatus.Running) ||
+          (!anyStrategyRoutinesRunning() && runDescriptor.status === RunDescriptorStatus.Canceled)
+        ) {
           if (allStrategyRoutinesSucceed()) {
             runDescriptor.status = RunDescriptorStatus.Success
           } else {
