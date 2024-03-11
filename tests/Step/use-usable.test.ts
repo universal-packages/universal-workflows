@@ -251,7 +251,6 @@ CODE-OF-CONDUCT.md
 CONTRIBUTING.md
 LICENSE.md
 README.md(\ncoverage)?
-example.ts
 node_modules
 package-lock.json
 package.json
@@ -272,7 +271,6 @@ CODE-OF-CONDUCT.md
 CONTRIBUTING.md
 LICENSE.md
 README.md(\ncoverage)?
-example.ts
 node_modules
 package-lock.json
 package.json
@@ -298,7 +296,6 @@ tsconfig.json\n`)
 CONTRIBUTING.md
 LICENSE.md
 README.md(\ncoverage)?
-example.ts
 node_modules
 package-lock.json
 package.json

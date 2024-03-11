@@ -315,7 +315,7 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
 
     const allStrategyRoutinesFinished = (): boolean => {
       return strategyRunDescriptors.every((strategyRunDescriptor) => {
-        return strategyRunDescriptor.routine.status !== Status.Running && strategyRunDescriptor.routine.status !== Status.Stopping
+        return ![Status.Running, Status.Stopping, Status.Idle].includes(strategyRunDescriptor.routine.status)
       })
     }
 
