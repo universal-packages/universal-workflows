@@ -44,7 +44,7 @@ describe(Routine, (): void => {
           error: null,
           measurement: expect.any(Measurement),
           name: null,
-          output: 'This is a good step, using env: {"variable":"This is a variable"}, scope: {"good":"Other output"}, and with: {"good":true}\n',
+          output: 'This is a good step, using env: {"variable":"This is a variable"}, scope: {"good":"Other output","routine":{"name":"r-test"}}, and with: {"good":true}\n',
           startedAt: expect.any(Date),
           status: Status.Success,
           usable: 'good'
@@ -71,7 +71,7 @@ describe(Routine, (): void => {
           event: 'step:output',
           payload: {
             index: 0,
-            data: 'This is a good step, using env: {"variable":"This is a variable"}, scope: {"good":"Other output"}, and with: {"good":true}\n'
+            data: 'This is a good step, using env: {"variable":"This is a variable"}, scope: {"good":"Other output","routine":{"name":"r-test"}}, and with: {"good":true}\n'
           }
         }
       ],
