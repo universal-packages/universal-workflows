@@ -144,7 +144,10 @@ export default class Routine extends BaseRunner<RoutineOptions> {
   }
 
   private shouldSkipStep(stepDescriptor: StepDescriptor): boolean {
-    const scope = this.options.strategyScope ? { ...this.options.scope, strategy: this.options.strategyScope } : { ...this.options.scope }
+    const scope = { ...this.options.scope }
+
+    if (this.options.strategyScope) scope.strategy = this.options.strategyScope
+    scope.routine = this.routineScope
 
     if (stepDescriptor.if) {
       return !this.evaluateExpression(stepDescriptor.if, scope)
