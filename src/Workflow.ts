@@ -77,6 +77,7 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
   public constructor(options?: WorkflowOptions) {
     super({
       stepUsableLocation: './src',
+      variables: {},
       ...options,
       maxConcurrentRoutines: Math.max(options?.maxConcurrentRoutines || os.cpus().length - 1, 1),
       targets: {
@@ -91,10 +92,11 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
     })
 
     this.name = this.options.name
+    this.scope = { variables: this.options.variables }
   }
 
   public static buildFrom(name: string, options?: BuildFromOptions): Workflow {
-    const finalOptions: BuildFromOptions = { stepUsableLocation: './src', workflowsLocation: './', ...options }
+    const finalOptions: BuildFromOptions = { stepUsableLocation: './src', variables: {}, workflowsLocation: './', ...options }
 
     const workflowDescriptors = loadPluginConfig('universal-workflows', { loadFrom: finalOptions.workflowsLocation }) || {}
 

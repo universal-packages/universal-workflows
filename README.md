@@ -36,6 +36,10 @@ await workflow.run()
 - **`stepUsableLocation`** `string` `default: ./src`
   Where all the step usable should be loaded from.
 
+
+- **`variables`** `object`
+  A map of variables to be used across the workflow by interpolating them, for example: `run: echo "Workflow variable: $<< variables.my-key >>"`
+
 - **`workflowsLocation`** `string` `default: ./`
   Where all the workflows should be loaded from and in which a `universal-workflows` directory or file should be found. Take a look at [universal-plugin-config-loader
   ](https://github.com/universal-packages/universal-plugin-config-loader) to learn how we load workflow files. Workflows can even be loaded from a the package.json file.

@@ -27,6 +27,7 @@ export enum RunDescriptorStatus {
 
 export interface BuildFromOptions {
   stepUsableLocation?: string
+  variables?: Record<string, string | number | boolean>
   workflowsLocation?: string
 }
 
@@ -38,6 +39,7 @@ export interface WorkflowOptions extends BaseRunnerOptions {
   targets?: Targets
   stepUsableLocation?: string
   routines: RoutineDescriptors
+  variables?: Record<string, string | number | boolean>
   workingDirectory?: string
 }
 
