@@ -4,14 +4,13 @@ import { Measurement } from '@universal-packages/time-measurer'
 import { Workflow } from '../../src'
 
 describe(Workflow, (): void => {
-  it('uses variables passed to the workflow', async (): Promise<void> => {
+  it('steps can access parent routine info', async (): Promise<void> => {
     const workflow = new Workflow({
       stepUsableLocation: './tests/__fixtures__/cases',
       target: 'spawn',
-      variables: { 'some-key': 'some value' },
       routines: {
         test1: {
-          steps: [{ name: 'test1', run: 'echo ${{ variables.some-key }}' }]
+          steps: [{ run: 'echo ${{ routine.name }}' }]
         }
       }
     })
@@ -32,6 +31,7 @@ describe(Workflow, (): void => {
     await workflow.run()
 
     expect(workflow.status).toEqual(Status.Success)
+
     expect(workflow.graph).toEqual({
       endedAt: expect.any(Date),
       error: null,
@@ -50,12 +50,12 @@ describe(Workflow, (): void => {
             status: Status.Success,
             steps: [
               {
-                command: 'echo some value',
+                command: 'echo test1',
                 endedAt: expect.any(Date),
                 error: null,
                 measurement: expect.any(Measurement),
-                name: 'test1',
-                output: 'some value\n',
+                name: null,
+                output: 'test1\n',
                 startedAt: expect.any(Date),
                 status: Status.Success,
                 usable: null
@@ -70,7 +70,7 @@ describe(Workflow, (): void => {
     expect(listener.mock.calls).toContainEqual([{ event: 'step:running', payload: { index: 0, routine: 'test1', graph: expect.anything() } }])
     expect(listener.mock.calls).toContainEqual([{ event: 'routine:running', payload: { name: 'test1', graph: expect.anything() } }])
     expect(listener.mock.calls).toContainEqual([{ event: 'running', payload: { startedAt: expect.any(Date) } }])
-    expect(listener.mock.calls).toContainEqual([{ event: 'step:output', payload: { index: 0, routine: 'test1', data: 'some value\n' } }])
+    expect(listener.mock.calls).toContainEqual([{ event: 'step:output', payload: { index: 0, routine: 'test1', data: 'test1\n' } }])
     expect(listener.mock.calls).toContainEqual([{ event: 'step:success', payload: { index: 0, routine: 'test1', graph: expect.anything() } }])
     expect(listener.mock.calls).toContainEqual([{ event: 'routine:success', payload: { name: 'test1', graph: expect.anything() } }])
     expect(listener.mock.calls).toContainEqual([{ event: 'success', measurement: expect.any(Measurement) }])

@@ -34,7 +34,10 @@ export default class Step extends BaseRunner<StepOptions> {
   }
 
   protected async internalRun(onRunning: () => void): Promise<void> {
-    const scope = this.options.strategyScope ? { ...this.options.scope, strategy: this.options.strategyScope } : { ...this.options.scope }
+    const scope = { ...this.options.scope }
+
+    if (this.options.strategyScope) scope.strategy = this.options.strategyScope
+    if (this.options.routineScope) scope.routine = this.options.routineScope
 
     if (this.options.run) {
       try {

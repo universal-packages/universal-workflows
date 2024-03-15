@@ -9,6 +9,7 @@ export interface StepOptions extends BaseRunnerOptions {
   name?: string
   run?: string
   usableMap?: UsableMap
+  routineScope?: Record<string, any>
   scope?: Record<string, any>
   strategyScope?: Record<string, any>
   target?: Target

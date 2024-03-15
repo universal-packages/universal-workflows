@@ -20,6 +20,7 @@ export default class Routine extends BaseRunner<RoutineOptions> {
     }
   }
 
+  private routineScope: Record<string, any> = {}
   private currentStep: Step
   private readonly steps: Step[] = []
 
@@ -27,6 +28,7 @@ export default class Routine extends BaseRunner<RoutineOptions> {
     super({ steps: [], usableMap: {}, ...options })
 
     this.name = this.options.name
+    this.routineScope = { name: this.name }
   }
 
   public async internalRun(onRunning: () => void): Promise<void> {
@@ -119,6 +121,7 @@ export default class Routine extends BaseRunner<RoutineOptions> {
 
       if (this.options.environment || currentStepDescriptor.environment) currentStepOptions.environment = { ...this.options.environment, ...currentStepDescriptor.environment }
       if (this.options.scope) currentStepOptions.scope = this.options.scope
+      currentStepOptions.routineScope = this.routineScope
       if (this.options.strategyScope) currentStepOptions.strategyScope = this.options.strategyScope
       if (descriptorTarget) {
         if (this.options.targets[descriptorTarget]) {
