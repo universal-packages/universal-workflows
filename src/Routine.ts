@@ -38,11 +38,20 @@ export default class Routine extends BaseRunner<RoutineOptions> {
       const currentStepDescriptor = this.options.steps[i]
       this.currentStep = this.steps[i]
 
-      if (this.shouldSkipStep(currentStepDescriptor)) {
-        this.currentStep.once(Status.Skipped, () => this.emit(`step:${Status.Skipped}`, { payload: { index: i, graph: this.currentStep.graph } }))
-        this.currentStep.skip()
+      try {
+        if (this.shouldSkipStep(currentStepDescriptor)) {
+          this.currentStep.once(Status.Skipped, () => this.emit(`step:${Status.Skipped}`, { payload: { index: i, graph: this.currentStep.graph } }))
+          this.currentStep.skip()
 
-        continue
+          continue
+        }
+      } catch (error) {
+        if (!onRunningRan) onRunning()
+
+        this.internalStatus = Status.Error
+        this.internalError = error
+
+        break
       }
 
       this.currentStep.once(Status.Running, () => this.emit(`step:${Status.Running}`, { payload: { index: i, graph: this.currentStep.graph } }))
