@@ -33,9 +33,11 @@ await workflow.run()
 
 ##### Options
 
+- **`allowDescribedTargetsOnTest`** `boolean` `default: false`
+  By default workflows use the test target to run commands in a test environment, but if you want to use the described targets in the workflow descriptor you can set this option to `true`.
+
 - **`stepUsableLocation`** `string` `default: ./src`
   Where all the step usable should be loaded from.
-
 
 - **`variables`** `object`
   A map of variables to be used across the workflow by interpolating them, for example: `run: echo "Workflow variable: $<< variables.my-key >>"`
@@ -221,7 +223,6 @@ routines:
 
       - **`target`** `string`
         The target that should be used by the step.
-
 
 `Workflow` will emit events regarding execution status and output.
 
