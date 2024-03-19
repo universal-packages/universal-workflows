@@ -1,6 +1,5 @@
-import { ExecEngine, Status } from '@universal-packages/sub-process'
+import { Status } from '@universal-packages/sub-process'
 import { Measurement } from '@universal-packages/time-measurer'
-import exp from 'constants'
 
 import { Routine } from '../../src'
 
@@ -8,8 +7,7 @@ describe(Routine, (): void => {
   it('is prepared for when the routine errors', async (): Promise<void> => {
     const routine = new Routine({
       name: 'r-test',
-      steps: [{ if: 'variables.not.existent', run: 'echo no' }],
-      target: { engine: 'spawn' }
+      steps: [{ if: 'variables.not.existent', run: 'echo no' }]
     })
     const listener = jest.fn()
 

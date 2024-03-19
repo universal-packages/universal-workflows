@@ -26,12 +26,14 @@ export enum RunDescriptorStatus {
 }
 
 export interface BuildFromOptions {
+  allowDescribedTargetsOnTest?: boolean
   stepUsableLocation?: string
   variables?: Record<string, string | number | boolean>
   workflowsLocation?: string
 }
 
 export interface WorkflowOptions extends BaseRunnerOptions {
+  allowDescribedTargetsOnTest?: boolean
   environment?: Record<string, string>
   maxConcurrentRoutines?: number
   name?: string

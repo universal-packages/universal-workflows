@@ -7,7 +7,6 @@ describe(Workflow, (): void => {
   it('uses variables passed to the workflow', async (): Promise<void> => {
     const workflow = new Workflow({
       stepUsableLocation: './tests/__fixtures__/cases',
-      target: 'spawn',
       variables: { 'some-key': 'some value' },
       routines: {
         test1: {

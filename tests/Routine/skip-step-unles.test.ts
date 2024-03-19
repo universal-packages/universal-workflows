@@ -7,14 +7,7 @@ describe(Routine, (): void => {
   it('can skip steps if the unless attribute evaluates to true', async (): Promise<void> => {
     const routine = new Routine({
       name: 'r-test',
-      steps: [
-        {
-          run: 'echo $SECOND_TEST_VARIABLE',
-          environment: { SECOND_TEST_VARIABLE: 'This is another variable' },
-          unless: '${{outputs.r-test.step-1}}'
-        }
-      ],
-      target: { engine: 'spawn' },
+      steps: [{ run: 'echo $SECOND_TEST_VARIABLE', unless: '${{outputs.r-test.step-1}}' }],
       scope: { outputs: { 'r-test': { 'step-1': true } } }
     })
     const listener = jest.fn()

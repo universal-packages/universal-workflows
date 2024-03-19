@@ -6,6 +6,7 @@ import { Workflow } from '../../src'
 describe(Workflow, (): void => {
   it('uses the step wd then teh routine one and finally the workflow one', async (): Promise<void> => {
     const workflow = new Workflow({
+      allowDescribedTargetsOnTest: true,
       stepUsableLocation: './tests/__fixtures__/cases',
       workingDirectory: './src',
       target: 'spawn',

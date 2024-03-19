@@ -7,7 +7,6 @@ describe(Workflow, (): void => {
   it('skips a routine if its if attribute evaluates to false', async (): Promise<void> => {
     const workflow = new Workflow({
       stepUsableLocation: './tests/__fixtures__/cases',
-      target: 'spawn',
       routines: {
         test1: {
           steps: [{ name: 'test1', run: 'echo test1' }],

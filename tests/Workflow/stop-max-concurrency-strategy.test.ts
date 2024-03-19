@@ -9,7 +9,6 @@ describe(Workflow, (): void => {
     const workflow = new Workflow({
       stepUsableLocation: './tests/__fixtures__/cases',
       maxConcurrentRoutines: 2,
-      target: 'spawn',
       routines: {
         test1: {
           steps: [{ name: 'test1', use: 'Controllable', with: { id: 'test1' } }]

@@ -7,17 +7,7 @@ describe(Routine, (): void => {
   it('runs a series of steps', async (): Promise<void> => {
     const routine = new Routine({
       name: 'r-test',
-      steps: [
-        {
-          run: 'echo $TEST_VARIABLE',
-          environment: { TEST_VARIABLE: 'This is a variable' }
-        },
-        {
-          run: 'echo $SECOND_TEST_VARIABLE',
-          environment: { SECOND_TEST_VARIABLE: 'This is another variable' }
-        }
-      ],
-      target: { engine: 'spawn' }
+      steps: [{ run: 'echo $TEST_VARIABLE' }, { run: 'echo $SECOND_TEST_VARIABLE' }]
     })
     const listener = jest.fn()
 
@@ -50,7 +40,7 @@ describe(Routine, (): void => {
           error: null,
           measurement: expect.any(Measurement),
           name: null,
-          output: 'This is a variable\n',
+          output: '$TEST_VARIABLE\n',
           startedAt: expect.any(Date),
           status: Status.Success,
           usable: null
@@ -61,7 +51,7 @@ describe(Routine, (): void => {
           error: null,
           measurement: expect.any(Measurement),
           name: null,
-          output: 'This is another variable\n',
+          output: '$SECOND_TEST_VARIABLE\n',
           startedAt: expect.any(Date),
           status: Status.Success,
           usable: null
@@ -72,10 +62,10 @@ describe(Routine, (): void => {
     expect(listener.mock.calls).toEqual([
       [{ event: 'step:running', payload: { index: 0, graph: expect.anything() } }],
       [{ event: 'running', payload: { startedAt: expect.any(Date) } }],
-      [{ event: 'step:output', payload: { data: 'This is a variable\n', index: 0 } }],
+      [{ event: 'step:output', payload: { data: '$TEST_VARIABLE\n', index: 0 } }],
       [{ event: 'step:success', payload: { index: 0, graph: expect.anything() } }],
       [{ event: 'step:running', payload: { index: 1, graph: expect.anything() } }],
-      [{ event: 'step:output', payload: { data: 'This is another variable\n', index: 1 } }],
+      [{ event: 'step:output', payload: { data: '$SECOND_TEST_VARIABLE\n', index: 1 } }],
       [{ event: 'step:success', payload: { index: 1, graph: expect.anything() } }],
       [{ event: 'success', measurement: expect.any(Measurement) }],
       [{ event: 'end', measurement: expect.any(Measurement), payload: { endedAt: expect.any(Date) } }]

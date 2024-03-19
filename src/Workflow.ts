@@ -26,6 +26,8 @@ import BaseUsable from './BaseUsable'
 import { workflowSchema } from './Workflow.schema'
 import { Targets, UsableMap, WorkflowOptions } from './Workflow.types'
 
+const ON_TEST = process.env.NODE_ENV === 'test'
+
 export default class Workflow extends BaseRunner<WorkflowOptions> {
   public readonly name: string
 
@@ -127,7 +129,12 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
       throw new Error(message)
     }
 
-    return new Workflow({ stepUsableLocation: finalOptions.stepUsableLocation, variables: finalOptions.variables, ...workflowDescriptor })
+    return new Workflow({
+      allowDescribedTargetsOnTest: finalOptions.allowDescribedTargetsOnTest,
+      stepUsableLocation: finalOptions.stepUsableLocation,
+      variables: finalOptions.variables,
+      ...workflowDescriptor
+    })
   }
 
   protected async internalPrepare(): Promise<void> {
@@ -656,8 +663,11 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
         usableMap: this.usableMap,
         ...currentRoutineDescriptorWithoutTarget
       }
-      if (this.options.environment || currentRoutineDescriptorWithoutTarget.environment)
+
+      if (this.options.environment || currentRoutineDescriptorWithoutTarget.environment) {
         currentRunDescriptor.routineOptions.environment = { ...this.options.environment, ...currentRoutineDescriptorWithoutTarget.environment }
+      }
+
       if (descriptorTarget) {
         if (this.targets[descriptorTarget]) {
           currentRunDescriptor.routineOptions.target = this.targets[descriptorTarget]
@@ -671,6 +681,7 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
           throw new Error(`The target "${this.options.target}" was not found in the targets map`)
         }
       }
+
       if (currentRoutineDescriptorWithoutTarget.workingDirectory) {
         currentRunDescriptor.routineOptions.workingDirectory = currentRunDescriptor.routineOptions.workingDirectory
       } else if (this.options.workingDirectory) {
@@ -789,7 +800,8 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
 
     for (let i = 0; i < targetsKeys.length; i++) {
       const currentTargetKey = targetsKeys[i]
-      const currentTarget = this.options.targets[currentTargetKey]
+      const currentTargetAccessKey = ON_TEST && !this.options.allowDescribedTargetsOnTest ? 'test' : currentTargetKey
+      const currentTarget = this.options.targets[currentTargetAccessKey]
 
       if (typeof currentTarget.engine === 'string') {
         const GatheredAdapter: EngineInterfaceClass = finalAdapters[currentTarget.engine]

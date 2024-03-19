@@ -6,7 +6,6 @@ describe(Workflow, (): void => {
   it('throws if routines have circular dependencies', async (): Promise<void> => {
     const workflow = new Workflow({
       stepUsableLocation: './tests/__fixtures__/cases',
-      target: 'spawn',
       routines: {
         test1: {
           dependsOn: 'test2',

@@ -9,7 +9,6 @@ describe(Workflow, (): void => {
     const workflow = new Workflow({
       maxConcurrentRoutines: 4,
       stepUsableLocation: './tests/__fixtures__/cases',
-      target: 'spawn',
       routines: {
         test1: {
           strategy: { matrix: { fruit: ['apple', 'banana'], color: ['red', 'yellow'] } },

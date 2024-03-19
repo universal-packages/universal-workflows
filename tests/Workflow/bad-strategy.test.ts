@@ -6,7 +6,6 @@ describe(Workflow, (): void => {
   it('throws if a strategy is specified without the valid necessary descriptors', async (): Promise<void> => {
     const workflow = new Workflow({
       stepUsableLocation: './tests/__fixtures__/cases',
-      target: 'spawn',
       routines: {
         test1: {
           strategy: {},

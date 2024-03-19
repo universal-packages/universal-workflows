@@ -8,7 +8,6 @@ describe(Workflow, (): void => {
     const workflow = new Workflow({
       maxConcurrentRoutines: 8,
       stepUsableLocation: './tests/__fixtures__/cases',
-      target: 'spawn',
       routines: {
         test1: {
           steps: [{ name: 'test1', run: 'echo test1' }]
@@ -19,7 +18,7 @@ describe(Workflow, (): void => {
         },
         test3: {
           strategy: { matrix: { seconds: [0.5, 1], multiplier: [1, 2] }, include: [{ seconds: 5, multiplier: 'nop' }] },
-          steps: [{ run: '${{ (strategy.seconds * strategy.multiplier) ? `sleep ${strategy.seconds * strategy.multiplier}` : "git clone nonexistent" }}' }],
+          steps: [{ run: '${{ (strategy.seconds * strategy.multiplier) ? `sleep ${strategy.seconds * strategy.multiplier}` : "failure" }}' }],
           dependsOn: 'test1',
           onFailure: OnFailureAction.Continue
         },
@@ -29,7 +28,7 @@ describe(Workflow, (): void => {
         },
         test5: {
           strategy: { matrix: { seconds: [0.5, 1], multiplier: [1, 2] }, include: [{ seconds: 5, multiplier: 'nop' }] },
-          steps: [{ run: '${{ (strategy.seconds * strategy.multiplier) ? `sleep ${strategy.seconds * strategy.multiplier}` : "git clone nonexistent" }}' }],
+          steps: [{ run: '${{ (strategy.seconds * strategy.multiplier) ? `sleep ${strategy.seconds * strategy.multiplier}` : "failure" }}' }],
           dependsOn: ['test3', 'test4'],
           onFailure: OnFailureAction.Continue
         }
@@ -211,19 +210,19 @@ describe(Workflow, (): void => {
               },
               {
                 endedAt: expect.any(Date),
-                error: "Process exited with code 128\n\nfatal: repository 'nonexistent' does not exist\n",
+                error: 'Process exited with code 1\n\nCommand failed',
                 measurement: expect.any(Measurement),
                 name: 'test3 [4]',
                 startedAt: expect.any(Date),
                 status: Status.Failure,
                 steps: [
                   {
-                    command: 'git clone nonexistent',
+                    command: 'failure',
                     endedAt: expect.any(Date),
-                    error: "Process exited with code 128\n\nfatal: repository 'nonexistent' does not exist\n",
+                    error: 'Process exited with code 1\n\nCommand failed',
                     measurement: expect.any(Measurement),
                     name: null,
-                    output: "fatal: repository 'nonexistent' does not exist\n",
+                    output: 'Command failed',
                     startedAt: expect.any(Date),
                     status: Status.Failure,
                     usable: null
@@ -367,19 +366,19 @@ describe(Workflow, (): void => {
               },
               {
                 endedAt: expect.any(Date),
-                error: "Process exited with code 128\n\nfatal: repository 'nonexistent' does not exist\n",
+                error: 'Process exited with code 1\n\nCommand failed',
                 measurement: expect.any(Measurement),
                 name: 'test5 [4]',
                 startedAt: expect.any(Date),
                 status: Status.Failure,
                 steps: [
                   {
-                    command: 'git clone nonexistent',
+                    command: 'failure',
                     endedAt: expect.any(Date),
-                    error: "Process exited with code 128\n\nfatal: repository 'nonexistent' does not exist\n",
+                    error: 'Process exited with code 1\n\nCommand failed',
                     measurement: expect.any(Measurement),
                     name: null,
-                    output: "fatal: repository 'nonexistent' does not exist\n",
+                    output: 'Command failed',
                     startedAt: expect.any(Date),
                     status: Status.Failure,
                     usable: null
@@ -474,20 +473,18 @@ describe(Workflow, (): void => {
       { event: 'step:running', payload: { index: 0, routine: 'test3 [4]', strategy: 'test3', strategyIndex: 4, graph: expect.anything() } }
     ])
     expect(listener.mock.calls).toContainEqual([{ event: 'routine:running', payload: { name: 'test3 [4]', strategy: 'test3', strategyIndex: 4, graph: expect.anything() } }])
-    expect(listener.mock.calls).toContainEqual([
-      { event: 'step:output', payload: { index: 0, routine: 'test3 [4]', data: "fatal: repository 'nonexistent' does not exist\n", strategy: 'test3', strategyIndex: 4 } }
-    ])
+    expect(listener.mock.calls).toContainEqual([{ event: 'step:output', payload: { index: 0, routine: 'test3 [4]', data: 'Command failed', strategy: 'test3', strategyIndex: 4 } }])
     expect(listener.mock.calls).toContainEqual([
       {
         event: 'step:failure',
-        error: new Error("Process exited with code 128\n\nfatal: repository 'nonexistent' does not exist\n"),
+        error: new Error('Process exited with code 1\n\nCommand failed'),
         payload: { index: 0, routine: 'test3 [4]', strategy: 'test3', strategyIndex: 4, graph: expect.anything() }
       }
     ])
     expect(listener.mock.calls).toContainEqual([
       {
         event: 'routine:failure',
-        error: new Error("Process exited with code 128\n\nfatal: repository 'nonexistent' does not exist\n"),
+        error: new Error('Process exited with code 1\n\nCommand failed'),
         payload: { name: 'test3 [4]', strategy: 'test3', strategyIndex: 4, graph: expect.anything() }
       }
     ])
@@ -562,20 +559,18 @@ describe(Workflow, (): void => {
       { event: 'step:running', payload: { index: 0, routine: 'test5 [4]', strategy: 'test5', strategyIndex: 4, graph: expect.anything() } }
     ])
     expect(listener.mock.calls).toContainEqual([{ event: 'routine:running', payload: { name: 'test5 [4]', strategy: 'test5', strategyIndex: 4, graph: expect.anything() } }])
-    expect(listener.mock.calls).toContainEqual([
-      { event: 'step:output', payload: { index: 0, routine: 'test5 [4]', data: "fatal: repository 'nonexistent' does not exist\n", strategy: 'test5', strategyIndex: 4 } }
-    ])
+    expect(listener.mock.calls).toContainEqual([{ event: 'step:output', payload: { index: 0, routine: 'test5 [4]', data: 'Command failed', strategy: 'test5', strategyIndex: 4 } }])
     expect(listener.mock.calls).toContainEqual([
       {
         event: 'step:failure',
-        error: new Error("Process exited with code 128\n\nfatal: repository 'nonexistent' does not exist\n"),
+        error: new Error('Process exited with code 1\n\nCommand failed'),
         payload: { index: 0, routine: 'test5 [4]', strategy: 'test5', strategyIndex: 4, graph: expect.anything() }
       }
     ])
     expect(listener.mock.calls).toContainEqual([
       {
         event: 'routine:failure',
-        error: new Error("Process exited with code 128\n\nfatal: repository 'nonexistent' does not exist\n"),
+        error: new Error('Process exited with code 1\n\nCommand failed'),
         payload: { name: 'test5 [4]', strategy: 'test5', strategyIndex: 4, graph: expect.anything() }
       }
     ])

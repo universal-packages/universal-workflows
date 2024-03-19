@@ -9,9 +9,8 @@ describe(Routine, (): void => {
     const routine = new Routine({
       name: 'r-test',
       scope: { good: 'Other output' },
-      steps: [{ use: 'good', with: { good: true }, environment: { variable: 'This is a variable' } }, { run: 'git clone nonexistent' }],
-      usableMap: { good: GoodUsable },
-      target: { engine: 'spawn' }
+      steps: [{ use: 'good', with: { good: true }, environment: { variable: 'This is a variable' } }, { run: 'failure' }],
+      usableMap: { good: GoodUsable }
     })
     const listener = jest.fn()
 
@@ -32,7 +31,7 @@ describe(Routine, (): void => {
     expect(routine.status).toEqual(Status.Failure)
     expect(routine.graph).toEqual({
       endedAt: expect.any(Date),
-      error: "Process exited with code 128\n\nfatal: repository 'nonexistent' does not exist\n",
+      error: 'Process exited with code 1\n\nCommand failed',
       measurement: expect.any(Measurement),
       name: 'r-test',
       startedAt: expect.any(Date),
@@ -50,12 +49,12 @@ describe(Routine, (): void => {
           usable: 'good'
         },
         {
-          command: 'git clone nonexistent',
+          command: 'failure',
           endedAt: expect.any(Date),
-          error: "Process exited with code 128\n\nfatal: repository 'nonexistent' does not exist\n",
+          error: 'Process exited with code 1\n\nCommand failed',
           measurement: expect.any(Measurement),
           name: null,
-          output: "fatal: repository 'nonexistent' does not exist\n",
+          output: 'Command failed',
           startedAt: expect.any(Date),
           status: Status.Failure,
           usable: null
@@ -77,19 +76,19 @@ describe(Routine, (): void => {
       ],
       [{ event: 'step:success', payload: { index: 0, graph: expect.anything() } }],
       [{ event: 'step:running', payload: { index: 1, graph: expect.anything() } }],
-      [{ event: 'step:output', payload: { index: 1, data: "fatal: repository 'nonexistent' does not exist\n" } }],
+      [{ event: 'step:output', payload: { index: 1, data: 'Command failed' } }],
       [
         {
           event: 'step:failure',
-          error: new Error("Process exited with code 128\n\nfatal: repository 'nonexistent' does not exist\n"),
+          error: new Error('Process exited with code 1\n\nCommand failed'),
           payload: { index: 1, graph: expect.anything() }
         }
       ],
-      [{ event: 'failure', error: new Error("Process exited with code 128\n\nfatal: repository 'nonexistent' does not exist\n"), measurement: expect.any(Measurement) }],
+      [{ event: 'failure', error: new Error('Process exited with code 1\n\nCommand failed'), measurement: expect.any(Measurement) }],
       [
         {
           event: 'end',
-          error: new Error("Process exited with code 128\n\nfatal: repository 'nonexistent' does not exist\n"),
+          error: new Error('Process exited with code 1\n\nCommand failed'),
           measurement: expect.any(Measurement),
           payload: { endedAt: expect.any(Date) }
         }

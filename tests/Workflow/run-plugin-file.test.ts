@@ -5,7 +5,11 @@ import { Workflow } from '../../src'
 
 describe(Workflow, (): void => {
   it('can build a workflow from a plug-in', async (): Promise<void> => {
-    const workflow = Workflow.buildFrom('echo-all-the-way', { stepUsableLocation: './tests/__fixtures__/cases', workflowsLocation: './tests/__fixtures__' })
+    const workflow = Workflow.buildFrom('echo-all-the-way', {
+      allowDescribedTargetsOnTest: true,
+      stepUsableLocation: './tests/__fixtures__/cases',
+      workflowsLocation: './tests/__fixtures__'
+    })
 
     await workflow.run()
 

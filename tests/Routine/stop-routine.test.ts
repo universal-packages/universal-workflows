@@ -7,8 +7,7 @@ describe(Routine, (): void => {
   it('is prepared to be stopped', async (): Promise<void> => {
     const routine = new Routine({
       name: 'r-test',
-      steps: [{ run: 'sleep 1000' }, { run: 'echo unreachable' }],
-      target: { engine: 'spawn' }
+      steps: [{ run: 'sleep 1000' }, { run: 'echo unreachable' }]
     })
     const listener = jest.fn()
 

@@ -7,7 +7,6 @@ describe(Workflow, (): void => {
   it('generates and run several routines grouped based on a single descriptor', async (): Promise<void> => {
     const workflow = new Workflow({
       stepUsableLocation: './tests/__fixtures__/cases',
-      target: 'spawn',
       routines: {
         test1: {
           strategy: {

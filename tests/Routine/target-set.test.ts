@@ -8,10 +8,10 @@ describe(Routine, (): void => {
     const routine = new Routine({
       name: 'r-test',
       steps: [
-        { run: 'echo yes', target: 'spawn' },
-        { run: 'echo maybe', target: 'spawn' }
+        { run: 'echo yes', target: 'test' },
+        { run: 'echo maybe', target: 'test' }
       ],
-      targets: { spawn: { engine: 'spawn' } }
+      targets: { test: { engine: 'test' } }
     })
     const listener = jest.fn()
 

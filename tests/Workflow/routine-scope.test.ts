@@ -7,7 +7,6 @@ describe(Workflow, (): void => {
   it('steps can access parent routine info', async (): Promise<void> => {
     const workflow = new Workflow({
       stepUsableLocation: './tests/__fixtures__/cases',
-      target: 'spawn',
       routines: {
         test1: {
           steps: [{ run: 'echo ${{ routine.name }}' }]

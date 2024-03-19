@@ -6,7 +6,6 @@ describe(Workflow, (): void => {
   it('throws when a usable can not be loaded properly', async (): Promise<void> => {
     const workflow = new Workflow({
       stepUsableLocation: './tests/__fixtures__/load-error',
-      target: 'spawn',
       routines: {
         test1: {
           steps: [{ run: 'echo nop' }]

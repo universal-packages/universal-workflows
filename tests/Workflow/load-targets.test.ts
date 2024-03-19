@@ -5,6 +5,7 @@ import { Workflow } from '../../src'
 describe(Workflow, (): void => {
   it('trows when a target specifies an unknown engine', async (): Promise<void> => {
     const workflow = new Workflow({
+      allowDescribedTargetsOnTest: true,
       stepUsableLocation: './tests/__fixtures__/cases',
       targets: { unknown: { engine: 'unknown' } },
       routines: {
@@ -47,6 +48,7 @@ describe(Workflow, (): void => {
     const engine = { prepare: jest.fn() } as any
 
     const workflow = new Workflow({
+      allowDescribedTargetsOnTest: true,
       stepUsableLocation: './tests/__fixtures__/load-error',
       targets: { mock: { engine } },
       routines: {

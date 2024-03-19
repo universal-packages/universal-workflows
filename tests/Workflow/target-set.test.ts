@@ -6,6 +6,7 @@ import { Workflow } from '../../src'
 describe(Workflow, (): void => {
   it('sets the target specified in the routine descriptor', async (): Promise<void> => {
     const workflow = new Workflow({
+      allowDescribedTargetsOnTest: true,
       stepUsableLocation: './tests/__fixtures__/cases',
       routines: {
         test1: {
@@ -68,6 +69,7 @@ describe(Workflow, (): void => {
 
   it('trows when a routine target specifies an unknown engine', async (): Promise<void> => {
     const workflow = new Workflow({
+      allowDescribedTargetsOnTest: true,
       stepUsableLocation: './tests/__fixtures__/cases',
       routines: {
         test1: {
@@ -116,6 +118,7 @@ describe(Workflow, (): void => {
 
   it('trows when a routine target specifies an unknown engine', async (): Promise<void> => {
     const workflow = new Workflow({
+      allowDescribedTargetsOnTest: true,
       stepUsableLocation: './tests/__fixtures__/cases',
       target: 'unknown',
       routines: {

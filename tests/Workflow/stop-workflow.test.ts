@@ -7,16 +7,15 @@ describe(Workflow, (): void => {
   it('is prepared to stop routines', async (): Promise<void> => {
     const workflow = new Workflow({
       stepUsableLocation: './tests/__fixtures__/cases',
-      target: 'spawn',
       routines: {
         test1: {
           steps: [{ name: 'test1', run: 'echo test1' }]
         },
         test2: {
-          steps: [{ name: 'test2', run: 'git clone nonexistent' }]
+          steps: [{ name: 'test2', run: 'failure' }]
         },
         test3: {
-          steps: [{ name: 'test3', run: 'sleep 10' }]
+          steps: [{ name: 'test3', run: 'sleep 1000' }]
         },
         test4: {
           steps: [{ name: 'test4', run: 'echo test3' }],
@@ -81,7 +80,7 @@ describe(Workflow, (): void => {
             status: Status.Running,
             steps: [
               {
-                command: 'git clone nonexistent',
+                command: 'failure',
                 endedAt: null,
                 error: null,
                 measurement: null,
@@ -102,7 +101,7 @@ describe(Workflow, (): void => {
             status: Status.Running,
             steps: [
               {
-                command: 'sleep 10',
+                command: 'sleep 1000',
                 endedAt: null,
                 error: null,
                 measurement: null,
@@ -129,7 +128,7 @@ describe(Workflow, (): void => {
       ]
     })
 
-    await new Promise((resolve) => setTimeout(resolve, 2500))
+    await new Promise((resolve) => setTimeout(resolve, 100))
 
     workflow.stop()
 
@@ -167,19 +166,19 @@ describe(Workflow, (): void => {
           },
           {
             endedAt: expect.any(Date),
-            error: "Process exited with code 128\n\nfatal: repository 'nonexistent' does not exist\n",
+            error: 'Process exited with code 1\n\nCommand failed',
             measurement: expect.any(Measurement),
             name: 'test2',
             startedAt: expect.any(Date),
             status: Status.Failure,
             steps: [
               {
-                command: 'git clone nonexistent',
+                command: 'failure',
                 endedAt: expect.any(Date),
-                error: "Process exited with code 128\n\nfatal: repository 'nonexistent' does not exist\n",
+                error: 'Process exited with code 1\n\nCommand failed',
                 measurement: expect.any(Measurement),
                 name: 'test2',
-                output: "fatal: repository 'nonexistent' does not exist\n",
+                output: 'Command failed',
                 startedAt: expect.any(Date),
                 status: Status.Failure,
                 usable: null
@@ -195,7 +194,7 @@ describe(Workflow, (): void => {
             status: Status.Stopping,
             steps: [
               {
-                command: 'sleep 10',
+                command: 'sleep 1000',
                 endedAt: null,
                 error: null,
                 measurement: null,
@@ -257,19 +256,19 @@ describe(Workflow, (): void => {
           },
           {
             endedAt: expect.any(Date),
-            error: "Process exited with code 128\n\nfatal: repository 'nonexistent' does not exist\n",
+            error: 'Process exited with code 1\n\nCommand failed',
             measurement: expect.any(Measurement),
             name: 'test2',
             startedAt: expect.any(Date),
             status: Status.Failure,
             steps: [
               {
-                command: 'git clone nonexistent',
+                command: 'failure',
                 endedAt: expect.any(Date),
-                error: "Process exited with code 128\n\nfatal: repository 'nonexistent' does not exist\n",
+                error: 'Process exited with code 1\n\nCommand failed',
                 measurement: expect.any(Measurement),
                 name: 'test2',
-                output: "fatal: repository 'nonexistent' does not exist\n",
+                output: 'Command failed',
                 startedAt: expect.any(Date),
                 status: Status.Failure,
                 usable: null
@@ -285,7 +284,7 @@ describe(Workflow, (): void => {
             status: Status.Stopped,
             steps: [
               {
-                command: 'sleep 10',
+                command: 'sleep 1000',
                 endedAt: expect.any(Date),
                 error: 'Step was stopped',
                 measurement: expect.any(Measurement),
@@ -321,18 +320,18 @@ describe(Workflow, (): void => {
 
     expect(listener.mock.calls).toContainEqual([{ event: 'step:running', payload: { index: 0, routine: 'test2', graph: expect.anything() } }])
     expect(listener.mock.calls).toContainEqual([{ event: 'routine:running', payload: { name: 'test2', graph: expect.anything() } }])
-    expect(listener.mock.calls).toContainEqual([{ event: 'step:output', payload: { index: 0, routine: 'test2', data: "fatal: repository 'nonexistent' does not exist\n" } }])
+    expect(listener.mock.calls).toContainEqual([{ event: 'step:output', payload: { index: 0, routine: 'test2', data: 'Command failed' } }])
     expect(listener.mock.calls).toContainEqual([
       {
         event: 'step:failure',
-        error: new Error("Process exited with code 128\n\nfatal: repository 'nonexistent' does not exist\n"),
+        error: new Error('Process exited with code 1\n\nCommand failed'),
         payload: { index: 0, routine: 'test2', graph: expect.anything() }
       }
     ])
     expect(listener.mock.calls).toContainEqual([
       {
         event: 'routine:failure',
-        error: new Error("Process exited with code 128\n\nfatal: repository 'nonexistent' does not exist\n"),
+        error: new Error('Process exited with code 1\n\nCommand failed'),
         payload: { name: 'test2', graph: expect.anything() }
       }
     ])

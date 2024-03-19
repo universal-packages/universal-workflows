@@ -1,4 +1,4 @@
-import { Status } from '@universal-packages/sub-process'
+import { Status, TestEngine } from '@universal-packages/sub-process'
 import { Measurement } from '@universal-packages/time-measurer'
 
 import { Step } from '../../src'
@@ -6,13 +6,13 @@ import { Step } from '../../src'
 describe(Step, (): void => {
   describe('running a command (run) step', (): void => {
     it('runs a described step', async (): Promise<void> => {
-      const step = new Step({ run: 'echo $variable', environment: { variable: 'This is a variable' }, target: { engine: 'spawn' } })
+      const step = new Step({ run: 'echo message' })
       const listener = jest.fn()
 
       step.on('*', listener)
 
       expect(step.graph).toEqual({
-        command: 'echo $variable',
+        command: 'echo message',
         endedAt: null,
         error: null,
         measurement: null,
@@ -26,14 +26,14 @@ describe(Step, (): void => {
       await step.run()
 
       expect(step.status).toEqual(Status.Success)
-      expect(step.output).toEqual('This is a variable\n')
+      expect(step.output).toEqual('message\n')
       expect(step.graph).toEqual({
-        command: 'echo $variable',
+        command: 'echo message',
         endedAt: expect.any(Date),
         error: null,
         measurement: expect.any(Measurement),
         name: null,
-        output: 'This is a variable\n',
+        output: 'message\n',
         startedAt: expect.any(Date),
         status: Status.Success,
         usable: null
@@ -41,7 +41,7 @@ describe(Step, (): void => {
 
       expect(listener.mock.calls).toEqual([
         [{ event: 'running', payload: { startedAt: expect.any(Date) } }],
-        [{ event: 'output', payload: { data: 'This is a variable\n' } }],
+        [{ event: 'output', payload: { data: 'message\n' } }],
         [{ event: 'success', measurement: expect.any(Measurement) }],
         [{ event: 'end', measurement: expect.any(Measurement), payload: { endedAt: expect.any(Date) } }]
       ])

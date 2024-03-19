@@ -7,7 +7,6 @@ describe(Workflow, (): void => {
   it('generates the strategy getting it from the outputs', async (): Promise<void> => {
     const workflow = new Workflow({
       stepUsableLocation: './tests/__fixtures__/cases',
-      target: 'spawn',
       routines: {
         test1: {
           steps: [{ name: 'strategy', use: 'generate-strategy' }]

@@ -8,18 +8,7 @@ describe(Routine, (): void => {
     const scope = {}
     const routine = new Routine({
       name: 'r-test',
-      steps: [
-        {
-          name: 'step-1',
-          run: 'echo $TEST_VARIABLE',
-          environment: { TEST_VARIABLE: 'This is a variable' }
-        },
-        {
-          run: 'echo $SECOND_TEST_VARIABLE',
-          environment: { SECOND_TEST_VARIABLE: 'This is another variable' }
-        }
-      ],
-      target: { engine: 'spawn' },
+      steps: [{ name: 'step-1', run: 'echo $TEST_VARIABLE' }, { run: 'echo $SECOND_TEST_VARIABLE' }],
       scope: scope
     })
 
@@ -50,7 +39,7 @@ describe(Routine, (): void => {
           error: null,
           measurement: expect.any(Measurement),
           name: 'step-1',
-          output: 'This is a variable\n',
+          output: '$TEST_VARIABLE\n',
           startedAt: expect.any(Date),
           status: Status.Success,
           usable: null
@@ -61,7 +50,7 @@ describe(Routine, (): void => {
           error: null,
           measurement: expect.any(Measurement),
           name: null,
-          output: 'This is another variable\n',
+          output: '$SECOND_TEST_VARIABLE\n',
           startedAt: expect.any(Date),
           status: Status.Success,
           usable: null
@@ -69,6 +58,6 @@ describe(Routine, (): void => {
       ]
     })
 
-    expect(scope).toEqual({ outputs: { 'r-test': { 'step-1': 'This is a variable\n' } } })
+    expect(scope).toEqual({ outputs: { 'r-test': { 'step-1': '$TEST_VARIABLE\n' } } })
   })
 })

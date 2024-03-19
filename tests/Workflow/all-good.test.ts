@@ -7,7 +7,6 @@ describe(Workflow, (): void => {
   it('runs routines in parallel', async (): Promise<void> => {
     const workflow = new Workflow({
       stepUsableLocation: './tests/__fixtures__/cases',
-      target: 'spawn',
       routines: {
         test1: {
           steps: [{ name: 'test1', run: 'echo test1' }]

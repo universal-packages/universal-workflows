@@ -7,7 +7,6 @@ describe(Workflow, (): void => {
   it('fails if the generated matrix is not an object', async (): Promise<void> => {
     const workflow = new Workflow({
       stepUsableLocation: './tests/__fixtures__/cases',
-      target: 'spawn',
       routines: {
         test1: {
           steps: [{ name: 'strategy', use: 'generate-strategy' }]

@@ -6,9 +6,10 @@ import { Workflow } from '../../src'
 describe(Workflow, (): void => {
   it('Uses step env then routine and finally the workflow one', async (): Promise<void> => {
     const workflow = new Workflow({
+      allowDescribedTargetsOnTest: true,
       stepUsableLocation: './tests/__fixtures__/cases',
-      environment: { VARIABLE: 'from workflow' },
       target: 'spawn',
+      environment: { VARIABLE: 'from workflow' },
       routines: {
         test1: { steps: [{ run: 'echo $VARIABLE' }] },
         test2: { steps: [{ run: 'echo $VARIABLE' }], environment: { VARIABLE: 'from routine' } },

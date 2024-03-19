@@ -1,4 +1,4 @@
-import { Status } from '@universal-packages/sub-process'
+import { Status, TestEngine } from '@universal-packages/sub-process'
 import { Measurement } from '@universal-packages/time-measurer'
 
 import { OnFailureAction, Routine } from '../../src'
@@ -8,9 +8,8 @@ describe(Routine, (): void => {
   it('continues if a step fails if it was expected to', async (): Promise<void> => {
     const routine = new Routine({
       name: 'r-test',
-      steps: [{ run: 'git clone nonexistent', onFailure: OnFailureAction.Continue }, { use: 'good' }],
-      usableMap: { good: GoodUsable },
-      target: { engine: 'spawn' }
+      steps: [{ run: 'failure', onFailure: OnFailureAction.Continue }, { use: 'good' }],
+      usableMap: { good: GoodUsable }
     })
     const listener = jest.fn()
 
@@ -38,12 +37,12 @@ describe(Routine, (): void => {
       status: Status.Success,
       steps: [
         {
-          command: 'git clone nonexistent',
+          command: 'failure',
           endedAt: expect.any(Date),
-          error: "Process exited with code 128\n\nfatal: repository 'nonexistent' does not exist\n",
+          error: 'Process exited with code 1\n\nCommand failed',
           measurement: expect.any(Measurement),
           name: null,
-          output: "fatal: repository 'nonexistent' does not exist\n",
+          output: 'Command failed',
           startedAt: expect.any(Date),
           status: Status.Failure,
           usable: null
@@ -65,14 +64,8 @@ describe(Routine, (): void => {
     expect(listener.mock.calls).toEqual([
       [{ event: 'step:running', payload: { index: 0, graph: expect.anything() } }],
       [{ event: 'running', payload: { startedAt: expect.any(Date) } }],
-      [{ event: 'step:output', payload: { index: 0, data: "fatal: repository 'nonexistent' does not exist\n" } }],
-      [
-        {
-          event: 'step:failure',
-          error: new Error("Process exited with code 128\n\nfatal: repository 'nonexistent' does not exist\n"),
-          payload: { index: 0, graph: expect.anything() }
-        }
-      ],
+      [{ event: 'step:output', payload: { index: 0, data: 'Command failed' } }],
+      [{ event: 'step:failure', error: new Error('Process exited with code 1\n\nCommand failed'), payload: { index: 0, graph: expect.anything() } }],
       [{ event: 'step:running', payload: { index: 1, graph: expect.anything() } }],
       [{ event: 'step:output', payload: { data: 'This is a good step, using env: undefined, scope: {"routine":{"name":"r-test"}}, and with: undefined\n', index: 1 } }],
       [{ event: 'step:success', payload: { index: 1, graph: expect.anything() } }],
