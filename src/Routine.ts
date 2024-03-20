@@ -28,7 +28,7 @@ export default class Routine extends BaseRunner<RoutineOptions> {
     super({ steps: [], usableMap: {}, ...options })
 
     this.name = this.options.name
-    this.routineScope = { name: this.name }
+    this.routineScope = { name: this.name, outputs: {} }
   }
 
   public async internalRun(onRunning: () => void): Promise<void> {
@@ -103,8 +103,9 @@ export default class Routine extends BaseRunner<RoutineOptions> {
         if (currentStepDescriptor.name) {
           if (!this.options.scope.outputs) this.options.scope.outputs = {}
           if (!this.options.scope.outputs[this.name]) this.options.scope.outputs[this.name] = {}
-
           this.options.scope.outputs[this.name][currentStepDescriptor.name] = this.currentStep.output
+
+          this.routineScope.outputs[currentStepDescriptor.name] = this.currentStep.output
         }
       }
 
