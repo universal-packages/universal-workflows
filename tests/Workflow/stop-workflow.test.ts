@@ -7,6 +7,7 @@ describe(Workflow, (): void => {
   it('is prepared to stop routines', async (): Promise<void> => {
     const workflow = new Workflow({
       stepUsableLocation: './tests/__fixtures__/cases',
+      maxConcurrentRoutines: 3,
       routines: {
         test1: {
           steps: [{ name: 'test1', run: 'echo test1' }]

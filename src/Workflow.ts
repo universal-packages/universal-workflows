@@ -81,7 +81,7 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
       stepUsableLocation: './src',
       variables: {},
       ...options,
-      maxConcurrentRoutines: Math.max(options?.maxConcurrentRoutines || os.cpus().length - 1, 1),
+      maxConcurrentRoutines: Math.max(options?.maxConcurrentRoutines || (process.env.NODE_ENV === 'test' ? 1 : os.cpus().length - 1), 1),
       targets: {
         ...{
           spawn: { engine: 'spawn' },
