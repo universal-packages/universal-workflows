@@ -172,7 +172,7 @@ describe(Workflow, (): void => {
         ],
         [
           {
-            error: 'Strategy include did not evaluate to an array if objects',
+            error: 'Strategy include did not evaluate to an array of objects',
             name: 'test2',
             strategy: []
           }

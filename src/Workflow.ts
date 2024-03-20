@@ -300,7 +300,7 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
           runDescriptor.routineDescriptor.strategy.include = include
         } else {
           runDescriptor.status = RunDescriptorStatus.Failure
-          runDescriptor.error = 'Strategy include did not evaluate to an array if objects'
+          runDescriptor.error = 'Strategy include did not evaluate to an array of objects'
 
           this.handleAfterRunDescriptorFinished(runDescriptor)
           return
@@ -709,6 +709,8 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
     const matrix = (strategy.matrix || {}) as Record<string, string[] | number[] | boolean[]>
     const include = (strategy.include || []) as Record<string, string | number | boolean>[]
     const combinations: CombinationItem[] = []
+
+    if (include.length === 0 && Object.keys(matrix).length === 0) throw new Error('Strategy matrix or include must be specified')
 
     const generateBaseCombinations = (keys: string[], index: number, current: Record<string, string | number | boolean>): void => {
       if (index === keys.length) {
