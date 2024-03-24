@@ -56,7 +56,7 @@ name: test-and-deploy
 routines:
   test:
     steps:
-      - run: npm run test:full
+      - run: npm run test:coverage
 
   deploy:
     steps:
