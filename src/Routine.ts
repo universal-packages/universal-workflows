@@ -169,7 +169,7 @@ export default class Routine extends BaseRunner<RoutineOptions> {
   }
 
   private evaluateExpression(expression: string, scope: Record<string, any>): any {
-    const finalIf = expression.replace(/(\$\{\{\s*|\s*\}\})/g, '')
-    return evaluate(finalIf, scope)
+    const finalExpression = expression.replace(/(\$\{\{\s*|\s*\}\})/g, '')
+    return evaluate(finalExpression, scope)
   }
 }

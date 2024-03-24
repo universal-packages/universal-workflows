@@ -175,6 +175,19 @@ export const workflowSchema: JSONSchema7 = {
                 run: {
                   type: 'string'
                 },
+                setVariable: {
+                  type: 'object',
+                  additionalProperties: false,
+                  properties: {
+                    name: {
+                      type: 'string'
+                    },
+                    value: {
+                      type: 'string'
+                    }
+                  },
+                  required: ['name', 'value']
+                },
                 unless: {
                   type: 'string'
                 },

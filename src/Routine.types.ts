@@ -1,7 +1,7 @@
 import { BaseRunnerOptions, Status } from '@universal-packages/sub-process'
 import { Measurement } from '@universal-packages/time-measurer'
 
-import { StepGraph } from './Step.types'
+import { SetVariable, StepGraph } from './Step.types'
 import { OnFailureAction, Target, Targets, UsableMap } from './Workflow.types'
 
 export interface RoutineOptions extends BaseRunnerOptions {
@@ -23,6 +23,7 @@ export interface StepDescriptor {
   name?: string
   onFailure?: OnFailureAction
   run?: string
+  setVariable?: SetVariable
   unless?: string
   use?: string
   target?: string

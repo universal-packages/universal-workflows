@@ -11,6 +11,7 @@ export interface StepOptions extends BaseRunnerOptions {
   usableMap?: UsableMap
   routineScope?: Record<string, any>
   scope?: Record<string, any>
+  setVariable?: SetVariable
   strategyScope?: Record<string, any>
   target?: Target
   use?: string
@@ -28,4 +29,9 @@ export interface StepGraph {
   startedAt?: Date
   status: Status
   usable?: string
+}
+
+export interface SetVariable {
+  name: string
+  value: string
 }

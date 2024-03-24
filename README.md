@@ -214,6 +214,13 @@ routines:
 
       - **`run`** `string`
         The command to be run by the step.
+      - **`setVariable`** `Object`
+        Set a variable to be used in the workflow by evaluating the value string.
+
+        - **`name`** `string`
+          The name of the variable.
+        - **`value`** `string`
+          The expression to be evaluated to set the variable. Here the `output` is accessible to get the output of just run step.
 
       - **`unless`** `string`
         If this evaluates to `false` the step will be executed if not it will be skipped.

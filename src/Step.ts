@@ -1,5 +1,5 @@
 import { BaseRunner, Status, SubProcess, SubProcessOptions } from '@universal-packages/sub-process'
-import { evaluateAndReplace } from '@universal-packages/variable-replacer'
+import { evaluate, evaluateAndReplace } from '@universal-packages/variable-replacer'
 import { camelCase } from 'change-case'
 
 import { BaseUsable } from '.'
@@ -105,6 +105,18 @@ export default class Step extends BaseRunner<StepOptions> {
         this.stopListeningTo(this.subProcess)
         this.subProcess.removeAllListeners()
         this.subProcess = null
+
+        if (this.options.setVariable) {
+          try {
+            const variableName = this.options.setVariable.name
+            const variableValue = this.evaluateExpression(this.options.setVariable.value, { ...scope, output: this.internalOutput })
+
+            this.options.scope.variables[variableName] = variableValue
+          } catch (error) {
+            this.internalStatus = Status.Error
+            this.internalError = error
+          }
+        }
       }
     } else if (this.options.use) {
       const usableName = camelCase(this.options.use)
@@ -157,6 +169,18 @@ export default class Step extends BaseRunner<StepOptions> {
           this.stopListeningTo(this.usable)
           this.usable.removeAllListeners()
           this.usable = null
+
+          if (this.options.setVariable) {
+            try {
+              const variableName = this.options.setVariable.name
+              const variableValue = this.evaluateExpression(this.options.setVariable.value, { ...scope, output: this.internalOutput })
+
+              this.options.scope.variables[variableName] = variableValue
+            } catch (error) {
+              this.internalStatus = Status.Error
+              this.internalError = error
+            }
+          }
         }
       } else {
         throw new Error(`No usable step with the name ${this.options.use} found`)
@@ -191,5 +215,10 @@ export default class Step extends BaseRunner<StepOptions> {
     }
 
     return originalObject
+  }
+
+  private evaluateExpression(expression: string, scope: Record<string, any>): any {
+    const finalExpression = expression.replace(/(\$\{\{\s*|\s*\}\})/g, '')
+    return evaluate(finalExpression, scope)
   }
 }

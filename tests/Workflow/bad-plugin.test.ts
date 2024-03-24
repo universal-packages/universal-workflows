@@ -97,7 +97,8 @@ const scenarios = [
   { name: 'bad-step-on-failure', errors: ['/routines/echo1/steps/0/onFailure must be equal to one of the allowed values ["continue","fail"]'] },
   { name: 'bad-step-target', errors: ['/routines/echo1/steps/0/target must be string'] },
   { name: 'bad-step-with', errors: ['/routines/echo1/steps/0/with/var must be string,number,boolean'] },
-  { name: 'bad-step-working-directory', errors: ['/routines/echo1/steps/0/workingDirectory must be string'] }
+  { name: 'bad-step-working-directory', errors: ['/routines/echo1/steps/0/workingDirectory must be string'] },
+  { name: 'bad-step-set-variable', errors: ["/routines/echo1/steps/0/setVariable must have required property 'name'"] }
 ]
 
 describe(Workflow, (): void => {

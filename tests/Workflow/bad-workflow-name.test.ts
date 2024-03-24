@@ -26,6 +26,7 @@ bad-step-input
 bad-step-name
 bad-step-on-failure
 bad-step-run
+bad-step-set-variable
 bad-step-target
 bad-step-unless
 bad-step-use
