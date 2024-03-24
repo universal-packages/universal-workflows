@@ -94,7 +94,7 @@ export default class Workflow extends BaseRunner<WorkflowOptions> {
     })
 
     this.name = this.options.name
-    this.scope = { variables: this.options.variables }
+    this.scope = { variables: this.options.variables || {} }
   }
 
   public static buildFrom(name: string, options?: BuildFromOptions): Workflow {
