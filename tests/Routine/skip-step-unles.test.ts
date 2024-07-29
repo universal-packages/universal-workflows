@@ -44,6 +44,7 @@ describe(Routine, (): void => {
           output: null,
           startedAt: null,
           status: Status.Skipped,
+          strategy: null,
           usable: null
         }
       ]

@@ -49,6 +49,7 @@ __fixtures__
 setup.ts\n`,
           startedAt: expect.any(Date),
           status: Status.Success,
+          strategy: null,
           usable: null
         },
         {
@@ -69,6 +70,7 @@ Workflow.types.ts
 index.ts\n`,
           startedAt: expect.any(Date),
           status: Status.Success,
+          strategy: null,
           usable: null
         }
       ],

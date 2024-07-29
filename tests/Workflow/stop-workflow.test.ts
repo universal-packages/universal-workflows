@@ -68,6 +68,7 @@ describe(Workflow, (): void => {
                 output: null,
                 startedAt: expect.any(Date),
                 status: Status.Running,
+                strategy: null,
                 usable: null
               }
             ]
@@ -89,6 +90,7 @@ describe(Workflow, (): void => {
                 output: null,
                 startedAt: expect.any(Date),
                 status: Status.Running,
+                strategy: null,
                 usable: null
               }
             ]
@@ -110,6 +112,7 @@ describe(Workflow, (): void => {
                 output: null,
                 startedAt: expect.any(Date),
                 status: Status.Running,
+                strategy: null,
                 usable: null
               }
             ]
@@ -161,6 +164,7 @@ describe(Workflow, (): void => {
                 output: 'test1\n',
                 startedAt: expect.any(Date),
                 status: Status.Success,
+                strategy: null,
                 usable: null
               }
             ]
@@ -182,6 +186,7 @@ describe(Workflow, (): void => {
                 output: 'Command failed',
                 startedAt: expect.any(Date),
                 status: Status.Failure,
+                strategy: null,
                 usable: null
               }
             ]
@@ -203,6 +208,7 @@ describe(Workflow, (): void => {
                 output: null,
                 startedAt: expect.any(Date),
                 status: Status.Stopping,
+                strategy: null,
                 usable: null
               }
             ]
@@ -251,6 +257,7 @@ describe(Workflow, (): void => {
                 output: 'test1\n',
                 startedAt: expect.any(Date),
                 status: Status.Success,
+                strategy: null,
                 usable: null
               }
             ]
@@ -272,6 +279,7 @@ describe(Workflow, (): void => {
                 output: 'Command failed',
                 startedAt: expect.any(Date),
                 status: Status.Failure,
+                strategy: null,
                 usable: null
               }
             ]
@@ -293,6 +301,7 @@ describe(Workflow, (): void => {
                 output: null,
                 startedAt: expect.any(Date),
                 status: Status.Stopped,
+                strategy: null,
                 usable: null
               }
             ]

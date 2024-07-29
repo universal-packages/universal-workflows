@@ -28,6 +28,7 @@ export interface StepGraph {
   output?: string
   startedAt?: Date
   status: Status
+  strategy?: Record<string, any>
   usable?: string
 }
 

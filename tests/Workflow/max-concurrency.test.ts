@@ -78,6 +78,7 @@ describe(Workflow, (): void => {
                 output: null,
                 startedAt: expect.any(Date),
                 status: 'running',
+                strategy: null,
                 usable: 'Controllable'
               }
             ]
@@ -99,6 +100,7 @@ describe(Workflow, (): void => {
                 output: null,
                 startedAt: expect.any(Date),
                 status: 'running',
+                strategy: null,
                 usable: 'Controllable'
               }
             ]
@@ -203,6 +205,7 @@ describe(Workflow, (): void => {
                 output: 'Controllable step with id: test1 is running\n',
                 startedAt: expect.any(Date),
                 status: 'success',
+                strategy: null,
                 usable: 'Controllable'
               }
             ]
@@ -224,6 +227,7 @@ describe(Workflow, (): void => {
                 output: null,
                 startedAt: expect.any(Date),
                 status: 'running',
+                strategy: null,
                 usable: 'Controllable'
               }
             ]
@@ -245,6 +249,7 @@ describe(Workflow, (): void => {
                 output: null,
                 startedAt: expect.any(Date),
                 status: 'running',
+                strategy: null,
                 usable: 'Controllable'
               }
             ]
@@ -341,6 +346,7 @@ describe(Workflow, (): void => {
                 output: 'Controllable step with id: test1 is running\n',
                 startedAt: expect.any(Date),
                 status: 'success',
+                strategy: null,
                 usable: 'Controllable'
               }
             ]
@@ -362,6 +368,7 @@ describe(Workflow, (): void => {
                 output: 'Controllable step with id: test2 is running\n',
                 startedAt: expect.any(Date),
                 status: 'success',
+                strategy: null,
                 usable: 'Controllable'
               }
             ]
@@ -383,6 +390,7 @@ describe(Workflow, (): void => {
                 output: 'Controllable step with id: test3 is running\n',
                 startedAt: expect.any(Date),
                 status: 'success',
+                strategy: null,
                 usable: 'Controllable'
               }
             ]
@@ -408,6 +416,11 @@ describe(Workflow, (): void => {
                     output: null,
                     startedAt: expect.any(Date),
                     status: 'running',
+                    strategy: {
+                      animal: 'cat',
+                      fruit: 'apple',
+                      index: 0
+                    },
                     usable: 'Controllable'
                   },
                   {
@@ -419,6 +432,11 @@ describe(Workflow, (): void => {
                     output: null,
                     startedAt: null,
                     status: 'idle',
+                    strategy: {
+                      animal: 'cat',
+                      fruit: 'apple',
+                      index: 0
+                    },
                     usable: null
                   }
                 ],
@@ -444,6 +462,11 @@ describe(Workflow, (): void => {
                     output: null,
                     startedAt: expect.any(Date),
                     status: 'running',
+                    strategy: {
+                      animal: 'dog',
+                      fruit: 'apple',
+                      index: 1
+                    },
                     usable: 'Controllable'
                   },
                   {
@@ -455,6 +478,11 @@ describe(Workflow, (): void => {
                     output: null,
                     startedAt: null,
                     status: 'idle',
+                    strategy: {
+                      animal: 'dog',
+                      fruit: 'apple',
+                      index: 1
+                    },
                     usable: null
                   }
                 ],
@@ -525,6 +553,7 @@ describe(Workflow, (): void => {
                 output: 'Controllable step with id: test1 is running\n',
                 startedAt: expect.any(Date),
                 status: 'success',
+                strategy: null,
                 usable: 'Controllable'
               }
             ]
@@ -546,6 +575,7 @@ describe(Workflow, (): void => {
                 output: 'Controllable step with id: test2 is running\n',
                 startedAt: expect.any(Date),
                 status: 'success',
+                strategy: null,
                 usable: 'Controllable'
               }
             ]
@@ -567,6 +597,7 @@ describe(Workflow, (): void => {
                 output: 'Controllable step with id: test3 is running\n',
                 startedAt: expect.any(Date),
                 status: 'success',
+                strategy: null,
                 usable: 'Controllable'
               }
             ]
@@ -592,6 +623,11 @@ describe(Workflow, (): void => {
                     output: 'Controllable step with id: apple-0 is running\n',
                     startedAt: expect.any(Date),
                     status: 'success',
+                    strategy: {
+                      animal: 'cat',
+                      fruit: 'apple',
+                      index: 0
+                    },
                     usable: 'Controllable'
                   },
                   {
@@ -603,6 +639,11 @@ describe(Workflow, (): void => {
                     output: 'cat\n',
                     startedAt: expect.any(Date),
                     status: 'success',
+                    strategy: {
+                      animal: 'cat',
+                      fruit: 'apple',
+                      index: 0
+                    },
                     usable: null
                   }
                 ],
@@ -628,6 +669,11 @@ describe(Workflow, (): void => {
                     output: 'Controllable step with id: apple-1 is running\n',
                     startedAt: expect.any(Date),
                     status: 'success',
+                    strategy: {
+                      animal: 'dog',
+                      fruit: 'apple',
+                      index: 1
+                    },
                     usable: 'Controllable'
                   },
                   {
@@ -639,6 +685,11 @@ describe(Workflow, (): void => {
                     output: 'dog\n',
                     startedAt: expect.any(Date),
                     status: 'success',
+                    strategy: {
+                      animal: 'dog',
+                      fruit: 'apple',
+                      index: 1
+                    },
                     usable: null
                   }
                 ],
@@ -664,6 +715,11 @@ describe(Workflow, (): void => {
                     output: null,
                     startedAt: expect.any(Date),
                     status: 'running',
+                    strategy: {
+                      animal: 'cat',
+                      fruit: 'pear',
+                      index: 2
+                    },
                     usable: 'Controllable'
                   },
                   {
@@ -675,6 +731,11 @@ describe(Workflow, (): void => {
                     output: null,
                     startedAt: null,
                     status: 'idle',
+                    strategy: {
+                      animal: 'cat',
+                      fruit: 'pear',
+                      index: 2
+                    },
                     usable: null
                   }
                 ],
@@ -700,6 +761,11 @@ describe(Workflow, (): void => {
                     output: null,
                     startedAt: expect.any(Date),
                     status: 'running',
+                    strategy: {
+                      animal: 'dog',
+                      fruit: 'pear',
+                      index: 3
+                    },
                     usable: 'Controllable'
                   },
                   {
@@ -711,6 +777,11 @@ describe(Workflow, (): void => {
                     output: null,
                     startedAt: null,
                     status: 'idle',
+                    strategy: {
+                      animal: 'dog',
+                      fruit: 'pear',
+                      index: 3
+                    },
                     usable: null
                   }
                 ],
@@ -755,6 +826,7 @@ describe(Workflow, (): void => {
                 output: 'Controllable step with id: test1 is running\n',
                 startedAt: expect.any(Date),
                 status: 'success',
+                strategy: null,
                 usable: 'Controllable'
               }
             ]
@@ -776,6 +848,7 @@ describe(Workflow, (): void => {
                 output: 'Controllable step with id: test2 is running\n',
                 startedAt: expect.any(Date),
                 status: 'success',
+                strategy: null,
                 usable: 'Controllable'
               }
             ]
@@ -797,6 +870,7 @@ describe(Workflow, (): void => {
                 output: 'Controllable step with id: test3 is running\n',
                 startedAt: expect.any(Date),
                 status: 'success',
+                strategy: null,
                 usable: 'Controllable'
               }
             ]
@@ -822,6 +896,11 @@ describe(Workflow, (): void => {
                     output: 'Controllable step with id: apple-0 is running\n',
                     startedAt: expect.any(Date),
                     status: 'success',
+                    strategy: {
+                      animal: 'cat',
+                      fruit: 'apple',
+                      index: 0
+                    },
                     usable: 'Controllable'
                   },
                   {
@@ -833,6 +912,11 @@ describe(Workflow, (): void => {
                     output: 'cat\n',
                     startedAt: expect.any(Date),
                     status: 'success',
+                    strategy: {
+                      animal: 'cat',
+                      fruit: 'apple',
+                      index: 0
+                    },
                     usable: null
                   }
                 ],
@@ -858,6 +942,11 @@ describe(Workflow, (): void => {
                     output: 'Controllable step with id: apple-1 is running\n',
                     startedAt: expect.any(Date),
                     status: 'success',
+                    strategy: {
+                      animal: 'dog',
+                      fruit: 'apple',
+                      index: 1
+                    },
                     usable: 'Controllable'
                   },
                   {
@@ -869,6 +958,11 @@ describe(Workflow, (): void => {
                     output: 'dog\n',
                     startedAt: expect.any(Date),
                     status: 'success',
+                    strategy: {
+                      animal: 'dog',
+                      fruit: 'apple',
+                      index: 1
+                    },
                     usable: null
                   }
                 ],
@@ -894,6 +988,11 @@ describe(Workflow, (): void => {
                     output: 'Controllable step with id: pear-2 is running\n',
                     startedAt: expect.any(Date),
                     status: 'success',
+                    strategy: {
+                      animal: 'cat',
+                      fruit: 'pear',
+                      index: 2
+                    },
                     usable: 'Controllable'
                   },
                   {
@@ -905,6 +1004,11 @@ describe(Workflow, (): void => {
                     output: 'cat\n',
                     startedAt: expect.any(Date),
                     status: 'success',
+                    strategy: {
+                      animal: 'cat',
+                      fruit: 'pear',
+                      index: 2
+                    },
                     usable: null
                   }
                 ],
@@ -930,6 +1034,11 @@ describe(Workflow, (): void => {
                     output: 'Controllable step with id: pear-3 is running\n',
                     startedAt: expect.any(Date),
                     status: 'success',
+                    strategy: {
+                      animal: 'dog',
+                      fruit: 'pear',
+                      index: 3
+                    },
                     usable: 'Controllable'
                   },
                   {
@@ -941,6 +1050,11 @@ describe(Workflow, (): void => {
                     output: 'dog\n',
                     startedAt: expect.any(Date),
                     status: 'success',
+                    strategy: {
+                      animal: 'dog',
+                      fruit: 'pear',
+                      index: 3
+                    },
                     usable: null
                   }
                 ],

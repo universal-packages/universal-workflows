@@ -43,6 +43,7 @@ describe(Routine, (): void => {
           output: '$TEST_VARIABLE\n',
           startedAt: expect.any(Date),
           status: Status.Success,
+          strategy: null,
           usable: null
         },
         {
@@ -54,6 +55,7 @@ describe(Routine, (): void => {
           output: '$SECOND_TEST_VARIABLE\n',
           startedAt: expect.any(Date),
           status: Status.Success,
+          strategy: null,
           usable: null
         }
       ]

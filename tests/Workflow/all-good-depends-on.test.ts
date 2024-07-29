@@ -79,6 +79,7 @@ describe(Workflow, (): void => {
                 output: 'test1\n',
                 startedAt: expect.any(Date),
                 status: Status.Success,
+                strategy: null,
                 usable: null
               }
             ]
@@ -100,6 +101,7 @@ describe(Workflow, (): void => {
                 output: 'test2\n',
                 startedAt: expect.any(Date),
                 status: Status.Success,
+                strategy: null,
                 usable: null
               }
             ]
@@ -123,6 +125,7 @@ describe(Workflow, (): void => {
                 output: 'test3\n',
                 startedAt: expect.any(Date),
                 status: Status.Success,
+                strategy: null,
                 usable: null
               }
             ]
@@ -144,6 +147,7 @@ describe(Workflow, (): void => {
                 output: 'test4\n',
                 startedAt: expect.any(Date),
                 status: Status.Success,
+                strategy: null,
                 usable: null
               }
             ]
@@ -165,6 +169,7 @@ describe(Workflow, (): void => {
                 output: 'test6\n',
                 startedAt: expect.any(Date),
                 status: Status.Success,
+                strategy: null,
                 usable: null
               }
             ]
@@ -188,6 +193,7 @@ describe(Workflow, (): void => {
                 output: 'test5\n',
                 startedAt: expect.any(Date),
                 status: Status.Success,
+                strategy: null,
                 usable: null
               }
             ]
@@ -209,6 +215,7 @@ describe(Workflow, (): void => {
                 output: 'test7\n',
                 startedAt: expect.any(Date),
                 status: Status.Success,
+                strategy: null,
                 usable: null
               }
             ]

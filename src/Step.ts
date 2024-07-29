@@ -16,6 +16,7 @@ export default class Step extends BaseRunner<StepOptions> {
       output: this.internalOutput || null,
       startedAt: this.internalStartedAt ? new Date(this.internalStartedAt) : null,
       status: this.status,
+      strategy: this.options.strategyScope || null,
       usable: this.options.use || null
     }
   }

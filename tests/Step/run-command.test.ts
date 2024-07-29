@@ -20,6 +20,7 @@ describe(Step, (): void => {
         output: null,
         startedAt: null,
         status: Status.Idle,
+        strategy: null,
         usable: null
       })
 
@@ -36,6 +37,7 @@ describe(Step, (): void => {
         output: 'message\n',
         startedAt: expect.any(Date),
         status: Status.Success,
+        strategy: null,
         usable: null
       })
 
@@ -66,6 +68,7 @@ describe(Step, (): void => {
         output: null,
         startedAt: null,
         status: Status.Idle,
+        strategy: null,
         usable: null
       })
 
@@ -82,6 +85,7 @@ describe(Step, (): void => {
         output: 'Comes form values generated dynamically while running\n',
         startedAt: expect.any(Date),
         status: Status.Success,
+        strategy: null,
         usable: null
       })
 
@@ -108,6 +112,7 @@ describe(Step, (): void => {
         output: null,
         startedAt: null,
         status: Status.Idle,
+        strategy: null,
         usable: null
       })
 
@@ -124,6 +129,7 @@ describe(Step, (): void => {
         output: "fatal: repository 'nonexistent' does not exist\n",
         startedAt: expect.any(Date),
         status: Status.Failure,
+        strategy: null,
         usable: null
       })
 
@@ -157,6 +163,7 @@ describe(Step, (): void => {
         output: null,
         startedAt: null,
         status: Status.Idle,
+        strategy: null,
         usable: null
       })
 
@@ -173,6 +180,7 @@ describe(Step, (): void => {
         output: null,
         startedAt: expect.any(Date),
         status: Status.Running,
+        strategy: null,
         usable: null
       })
 
@@ -187,6 +195,7 @@ describe(Step, (): void => {
         output: null,
         startedAt: expect.any(Date),
         status: Status.Stopping,
+        strategy: null,
         usable: null
       })
 
@@ -203,6 +212,7 @@ describe(Step, (): void => {
         output: null,
         startedAt: expect.any(Date),
         status: Status.Stopped,
+        strategy: null,
         usable: null
       })
 
@@ -242,6 +252,7 @@ describe(Step, (): void => {
         output: null,
         startedAt: null,
         status: Status.Idle,
+        strategy: null,
         usable: null
       })
 
@@ -268,6 +279,7 @@ __fixtures__
 setup.ts\n`,
         startedAt: expect.any(Date),
         status: Status.Success,
+        strategy: null,
         usable: null
       })
 

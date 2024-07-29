@@ -76,6 +76,7 @@ describe(Workflow, (): void => {
                 },
                 startedAt: expect.any(Date),
                 status: Status.Success,
+                strategy: null,
                 usable: 'generate-strategy'
               }
             ]
@@ -165,6 +166,7 @@ describe(Workflow, (): void => {
                 },
                 startedAt: expect.any(Date),
                 status: Status.Success,
+                strategy: null,
                 usable: 'generate-strategy'
               }
             ]

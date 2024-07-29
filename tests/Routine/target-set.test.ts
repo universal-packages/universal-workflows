@@ -47,6 +47,7 @@ describe(Routine, (): void => {
           output: 'yes\n',
           startedAt: expect.any(Date),
           status: Status.Success,
+          strategy: null,
           usable: null
         },
         {
@@ -58,6 +59,7 @@ describe(Routine, (): void => {
           output: 'maybe\n',
           startedAt: expect.any(Date),
           status: Status.Success,
+          strategy: null,
           usable: null
         }
       ]

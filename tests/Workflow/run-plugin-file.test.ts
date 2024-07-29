@@ -44,6 +44,12 @@ describe(Workflow, (): void => {
                     output: 'apple\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'apple',
+                      animal: 'cat',
+                      shape: 'circle',
+                      index: 0
+                    },
                     usable: null
                   },
                   {
@@ -55,6 +61,12 @@ describe(Workflow, (): void => {
                     output: 'cat\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'apple',
+                      animal: 'cat',
+                      shape: 'circle',
+                      index: 0
+                    },
                     usable: null
                   }
                 ],
@@ -81,6 +93,12 @@ describe(Workflow, (): void => {
                     output: 'apple\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'apple',
+                      animal: 'dog',
+                      shape: 'circle',
+                      index: 1
+                    },
                     usable: null
                   },
                   {
@@ -92,6 +110,12 @@ describe(Workflow, (): void => {
                     output: 'dog\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'apple',
+                      animal: 'dog',
+                      shape: 'circle',
+                      index: 1
+                    },
                     usable: null
                   }
                 ],
@@ -118,6 +142,12 @@ describe(Workflow, (): void => {
                     output: 'banana\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'banana',
+                      animal: 'cat',
+                      shape: 'square',
+                      index: 2
+                    },
                     usable: null
                   },
                   {
@@ -129,6 +159,12 @@ describe(Workflow, (): void => {
                     output: 'cat\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'banana',
+                      animal: 'cat',
+                      shape: 'square',
+                      index: 2
+                    },
                     usable: null
                   }
                 ],
@@ -155,6 +191,12 @@ describe(Workflow, (): void => {
                     output: 'banana\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'banana',
+                      animal: 'dog',
+                      shape: 'square',
+                      index: 3
+                    },
                     usable: null
                   },
                   {
@@ -166,6 +208,12 @@ describe(Workflow, (): void => {
                     output: 'dog\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'banana',
+                      animal: 'dog',
+                      shape: 'square',
+                      index: 3
+                    },
                     usable: null
                   }
                 ],
@@ -194,6 +242,7 @@ describe(Workflow, (): void => {
                 output: 'bar\n',
                 startedAt: expect.any(Date),
                 status: Status.Success,
+                strategy: null,
                 usable: null
               },
               {
@@ -205,6 +254,7 @@ describe(Workflow, (): void => {
                 output: '42\n',
                 startedAt: expect.any(Date),
                 status: Status.Success,
+                strategy: null,
                 usable: null
               },
               {
@@ -216,6 +266,7 @@ describe(Workflow, (): void => {
                 output: 'true\n',
                 startedAt: expect.any(Date),
                 status: Status.Success,
+                strategy: null,
                 usable: null
               },
               {
@@ -227,6 +278,7 @@ describe(Workflow, (): void => {
                 output: 'echo2\n',
                 startedAt: expect.any(Date),
                 status: Status.Success,
+                strategy: null,
                 usable: null
               },
               {
@@ -238,6 +290,7 @@ describe(Workflow, (): void => {
                 output: '2\n',
                 startedAt: expect.any(Date),
                 status: Status.Success,
+                strategy: null,
                 usable: null
               },
               {
@@ -249,6 +302,7 @@ describe(Workflow, (): void => {
                 output: 'true\n',
                 startedAt: expect.any(Date),
                 status: Status.Success,
+                strategy: null,
                 usable: null
               }
             ]
@@ -272,6 +326,7 @@ describe(Workflow, (): void => {
                 output: "fatal: repository 'nonexistent' does not exist\n",
                 startedAt: expect.any(Date),
                 status: Status.Failure,
+                strategy: null,
                 usable: null
               }
             ]

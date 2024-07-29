@@ -28,6 +28,7 @@ describe(Step, (): void => {
         output: null,
         startedAt: null,
         status: Status.Idle,
+        strategy: null,
         usable: 'Good'
       })
 
@@ -46,6 +47,7 @@ describe(Step, (): void => {
         output: 'This is a good step, using env: {"variable":"This is a variable"}, scope: {"good":"Other output"}, and with: {"good":true}\n',
         startedAt: expect.any(Date),
         status: Status.Success,
+        strategy: null,
         usable: 'Good'
       })
 
@@ -77,6 +79,7 @@ describe(Step, (): void => {
         output: null,
         startedAt: null,
         status: Status.Idle,
+        strategy: null,
         usable: 'failure'
       })
 
@@ -93,6 +96,7 @@ describe(Step, (): void => {
         output: 'This is step is about to fail\n',
         startedAt: expect.any(Date),
         status: Status.Failure,
+        strategy: null,
         usable: 'failure'
       })
 
@@ -144,6 +148,7 @@ describe(Step, (): void => {
         output: null,
         startedAt: null,
         status: Status.Idle,
+        strategy: null,
         usable: 'good'
       })
 
@@ -160,6 +165,7 @@ describe(Step, (): void => {
         output: null,
         startedAt: expect.any(Date),
         status: Status.Running,
+        strategy: null,
         usable: 'good'
       })
 
@@ -174,6 +180,7 @@ describe(Step, (): void => {
         output: null,
         startedAt: expect.any(Date),
         status: Status.Stopping,
+        strategy: null,
         usable: 'good'
       })
 
@@ -193,6 +200,7 @@ describe(Step, (): void => {
           'This is a good step, using env: {"variable":"This is a variable"}, scope: {"good":"Other output"}, and with: {"good":true}\nThe good step was stopped before it could finish\n',
         startedAt: expect.any(Date),
         status: Status.Stopped,
+        strategy: null,
         usable: 'good'
       })
 
@@ -239,6 +247,7 @@ describe(Step, (): void => {
         output: null,
         startedAt: null,
         status: Status.Idle,
+        strategy: null,
         usable: 'several'
       })
 
@@ -281,6 +290,7 @@ tsconfig.json\n`)
         ),
         startedAt: expect.any(Date),
         status: Status.Success,
+        strategy: null,
         usable: 'several'
       })
 

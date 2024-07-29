@@ -57,6 +57,7 @@ describe(Workflow, (): void => {
                 output: 'some value\n',
                 startedAt: expect.any(Date),
                 status: Status.Success,
+                strategy: null,
                 usable: null
               }
             ]

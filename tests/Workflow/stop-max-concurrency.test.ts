@@ -77,6 +77,7 @@ describe(Workflow, (): void => {
                 output: null,
                 startedAt: expect.any(Date),
                 status: 'running',
+                strategy: null,
                 usable: 'Controllable'
               }
             ]
@@ -98,6 +99,7 @@ describe(Workflow, (): void => {
                 output: null,
                 startedAt: expect.any(Date),
                 status: 'running',
+                strategy: null,
                 usable: 'Controllable'
               }
             ]
@@ -203,6 +205,7 @@ describe(Workflow, (): void => {
                 output: 'Controllable step with id: test1 is running\nControllable step with id: test1 was stopped\n',
                 startedAt: expect.any(Date),
                 status: 'stopped',
+                strategy: null,
                 usable: 'Controllable'
               }
             ]
@@ -224,6 +227,7 @@ describe(Workflow, (): void => {
                 output: 'Controllable step with id: test2 is running\nControllable step with id: test2 was stopped\n',
                 startedAt: expect.any(Date),
                 status: 'stopped',
+                strategy: null,
                 usable: 'Controllable'
               }
             ]

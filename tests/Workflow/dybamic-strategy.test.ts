@@ -76,6 +76,7 @@ describe(Workflow, (): void => {
                 },
                 startedAt: expect.any(Date),
                 status: Status.Success,
+                strategy: null,
                 usable: 'generate-strategy'
               }
             ]
@@ -103,6 +104,12 @@ describe(Workflow, (): void => {
                     output: 'apple\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'apple',
+                      index: 0,
+                      number: 1,
+                      shape: 'circle'
+                    },
                     usable: null
                   },
                   {
@@ -114,6 +121,12 @@ describe(Workflow, (): void => {
                     output: '1\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'apple',
+                      index: 0,
+                      number: 1,
+                      shape: 'circle'
+                    },
                     usable: null
                   },
                   {
@@ -125,6 +138,12 @@ describe(Workflow, (): void => {
                     output: 'circle\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'apple',
+                      index: 0,
+                      number: 1,
+                      shape: 'circle'
+                    },
                     usable: null
                   }
                 ],
@@ -151,6 +170,12 @@ describe(Workflow, (): void => {
                     output: 'apple\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'apple',
+                      index: 1,
+                      number: 2,
+                      shape: 'circle'
+                    },
                     usable: null
                   },
                   {
@@ -162,6 +187,12 @@ describe(Workflow, (): void => {
                     output: '2\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'apple',
+                      index: 1,
+                      number: 2,
+                      shape: 'circle'
+                    },
                     usable: null
                   },
                   {
@@ -173,6 +204,12 @@ describe(Workflow, (): void => {
                     output: 'circle\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'apple',
+                      index: 1,
+                      number: 2,
+                      shape: 'circle'
+                    },
                     usable: null
                   }
                 ],
@@ -199,6 +236,12 @@ describe(Workflow, (): void => {
                     output: 'pear\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'pear',
+                      index: 2,
+                      number: 1,
+                      shape: 'circle'
+                    },
                     usable: null
                   },
                   {
@@ -210,6 +253,12 @@ describe(Workflow, (): void => {
                     output: '1\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'pear',
+                      index: 2,
+                      number: 1,
+                      shape: 'circle'
+                    },
                     usable: null
                   },
                   {
@@ -221,6 +270,12 @@ describe(Workflow, (): void => {
                     output: 'circle\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'pear',
+                      index: 2,
+                      number: 1,
+                      shape: 'circle'
+                    },
                     usable: null
                   }
                 ],
@@ -247,6 +302,12 @@ describe(Workflow, (): void => {
                     output: 'pear\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'pear',
+                      index: 3,
+                      number: 2,
+                      shape: 'circle'
+                    },
                     usable: null
                   },
                   {
@@ -258,6 +319,12 @@ describe(Workflow, (): void => {
                     output: '2\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'pear',
+                      index: 3,
+                      number: 2,
+                      shape: 'circle'
+                    },
                     usable: null
                   },
                   {
@@ -269,6 +336,12 @@ describe(Workflow, (): void => {
                     output: 'circle\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'pear',
+                      index: 3,
+                      number: 2,
+                      shape: 'circle'
+                    },
                     usable: null
                   }
                 ],

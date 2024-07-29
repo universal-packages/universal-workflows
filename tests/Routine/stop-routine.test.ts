@@ -44,6 +44,7 @@ describe(Routine, (): void => {
           output: null,
           startedAt: expect.any(Date),
           status: Status.Running,
+          strategy: null,
           usable: null
         },
         {
@@ -55,6 +56,7 @@ describe(Routine, (): void => {
           output: null,
           startedAt: null,
           status: Status.Idle,
+          strategy: null,
           usable: null
         }
       ]
@@ -79,6 +81,7 @@ describe(Routine, (): void => {
           output: null,
           startedAt: expect.any(Date),
           status: Status.Stopping,
+          strategy: null,
           usable: null
         },
         {
@@ -90,6 +93,7 @@ describe(Routine, (): void => {
           output: null,
           startedAt: null,
           status: Status.Idle,
+          strategy: null,
           usable: null
         }
       ]
@@ -115,6 +119,7 @@ describe(Routine, (): void => {
           output: null,
           startedAt: expect.any(Date),
           status: Status.Stopped,
+          strategy: null,
           usable: null
         },
         {
@@ -126,6 +131,7 @@ describe(Routine, (): void => {
           output: null,
           startedAt: null,
           status: Status.Idle,
+          strategy: null,
           usable: null
         }
       ]

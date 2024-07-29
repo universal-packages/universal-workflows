@@ -64,6 +64,11 @@ describe(Workflow, (): void => {
                     output: null,
                     startedAt: expect.any(Date),
                     status: Status.Running,
+                    strategy: {
+                      fruit: 'apple',
+                      color: 'red',
+                      index: 0
+                    },
                     usable: 'Controllable'
                   }
                 ],
@@ -89,6 +94,11 @@ describe(Workflow, (): void => {
                     output: null,
                     startedAt: expect.any(Date),
                     status: Status.Running,
+                    strategy: {
+                      fruit: 'apple',
+                      color: 'yellow',
+                      index: 1
+                    },
                     usable: 'Controllable'
                   }
                 ],
@@ -114,6 +124,11 @@ describe(Workflow, (): void => {
                     output: null,
                     startedAt: expect.any(Date),
                     status: Status.Running,
+                    strategy: {
+                      fruit: 'banana',
+                      color: 'red',
+                      index: 2
+                    },
                     usable: 'Controllable'
                   }
                 ],
@@ -139,6 +154,11 @@ describe(Workflow, (): void => {
                     output: null,
                     startedAt: expect.any(Date),
                     status: Status.Running,
+                    strategy: {
+                      fruit: 'banana',
+                      color: 'yellow',
+                      index: 3
+                    },
                     usable: 'Controllable'
                   }
                 ],
@@ -193,6 +213,11 @@ describe(Workflow, (): void => {
                     output: 'Controllable step with id: apple-red is running\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'apple',
+                      color: 'red',
+                      index: 0
+                    },
                     usable: 'Controllable'
                   }
                 ],
@@ -218,6 +243,11 @@ describe(Workflow, (): void => {
                     output: 'Controllable step with id: apple-yellow is running\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'apple',
+                      color: 'yellow',
+                      index: 1
+                    },
                     usable: 'Controllable'
                   }
                 ],
@@ -243,6 +273,11 @@ describe(Workflow, (): void => {
                     output: 'Controllable step with id: banana-red is running\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'banana',
+                      color: 'red',
+                      index: 2
+                    },
                     usable: 'Controllable'
                   }
                 ],
@@ -268,6 +303,11 @@ describe(Workflow, (): void => {
                     output: null,
                     startedAt: expect.any(Date),
                     status: Status.Stopping,
+                    strategy: {
+                      fruit: 'banana',
+                      color: 'yellow',
+                      index: 3
+                    },
                     usable: 'Controllable'
                   }
                 ],
@@ -316,6 +356,11 @@ describe(Workflow, (): void => {
                     output: 'Controllable step with id: apple-red is running\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'apple',
+                      color: 'red',
+                      index: 0
+                    },
                     usable: 'Controllable'
                   }
                 ],
@@ -341,6 +386,11 @@ describe(Workflow, (): void => {
                     output: 'Controllable step with id: apple-yellow is running\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'apple',
+                      color: 'yellow',
+                      index: 1
+                    },
                     usable: 'Controllable'
                   }
                 ],
@@ -366,6 +416,11 @@ describe(Workflow, (): void => {
                     output: 'Controllable step with id: banana-red is running\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'banana',
+                      color: 'red',
+                      index: 2
+                    },
                     usable: 'Controllable'
                   }
                 ],
@@ -391,6 +446,11 @@ describe(Workflow, (): void => {
                     output: 'Controllable step with id: banana-yellow is running\nControllable step with id: banana-yellow was stopped\n',
                     startedAt: expect.any(Date),
                     status: Status.Stopped,
+                    strategy: {
+                      fruit: 'banana',
+                      color: 'yellow',
+                      index: 3
+                    },
                     usable: 'Controllable'
                   }
                 ],

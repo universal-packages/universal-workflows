@@ -78,6 +78,7 @@ describe(Workflow, (): void => {
                 output: null,
                 startedAt: expect.any(Date),
                 status: 'running',
+                strategy: null,
                 usable: 'Controllable'
               }
             ]
@@ -99,6 +100,7 @@ describe(Workflow, (): void => {
                 output: null,
                 startedAt: expect.any(Date),
                 status: 'running',
+                strategy: null,
                 usable: 'Controllable'
               }
             ]
@@ -208,6 +210,7 @@ describe(Workflow, (): void => {
                 output: 'Controllable step with id: test1 is running\n',
                 startedAt: expect.any(Date),
                 status: 'success',
+                strategy: null,
                 usable: 'Controllable'
               }
             ]
@@ -229,6 +232,7 @@ describe(Workflow, (): void => {
                 output: 'Controllable step with id: test2 is running\n',
                 startedAt: expect.any(Date),
                 status: 'success',
+                strategy: null,
                 usable: 'Controllable'
               }
             ]
@@ -250,6 +254,7 @@ describe(Workflow, (): void => {
                 output: 'Controllable step with id: test3 is running\nControllable step with id: test3 was stopped\n',
                 startedAt: expect.any(Date),
                 status: 'stopped',
+                strategy: null,
                 usable: 'Controllable'
               }
             ]
@@ -275,6 +280,11 @@ describe(Workflow, (): void => {
                     output: 'Controllable step with id: apple-0 is running\nControllable step with id: apple-0 was stopped\n',
                     startedAt: expect.any(Date),
                     status: 'stopped',
+                    strategy: {
+                      animal: 'cat',
+                      fruit: 'apple',
+                      index: 0
+                    },
                     usable: 'Controllable'
                   },
                   {
@@ -286,6 +296,11 @@ describe(Workflow, (): void => {
                     output: null,
                     startedAt: null,
                     status: 'idle',
+                    strategy: {
+                      animal: 'cat',
+                      fruit: 'apple',
+                      index: 0
+                    },
                     usable: null
                   }
                 ],

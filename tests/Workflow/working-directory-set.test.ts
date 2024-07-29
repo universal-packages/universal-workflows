@@ -68,6 +68,7 @@ Workflow.types.ts
 index.ts\n`,
                 startedAt: expect.any(Date),
                 status: Status.Success,
+                strategy: null,
                 usable: null
               }
             ]
@@ -94,6 +95,7 @@ __fixtures__
 setup.ts\n`,
                 startedAt: expect.any(Date),
                 status: Status.Success,
+                strategy: null,
                 usable: null
               }
             ]
@@ -117,6 +119,7 @@ load-error
 universal-workflows\n`,
                 startedAt: expect.any(Date),
                 status: Status.Success,
+                strategy: null,
                 usable: null
               }
             ]

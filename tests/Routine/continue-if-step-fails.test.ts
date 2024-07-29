@@ -45,6 +45,7 @@ describe(Routine, (): void => {
           output: 'Command failed',
           startedAt: expect.any(Date),
           status: Status.Failure,
+          strategy: null,
           usable: null
         },
         {
@@ -56,6 +57,7 @@ describe(Routine, (): void => {
           output: 'This is a good step, using env: undefined, scope: {"routine":{"name":"r-test","outputs":{}}}, and with: undefined\n',
           startedAt: expect.any(Date),
           status: Status.Success,
+          strategy: null,
           usable: 'good'
         }
       ]

@@ -91,6 +91,13 @@ describe(Workflow, (): void => {
                     output: 'pink\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'apple',
+                      animal: 'cat',
+                      color: 'pink',
+                      shape: 'circle',
+                      index: 0
+                    },
                     usable: null
                   },
                   {
@@ -102,6 +109,13 @@ describe(Workflow, (): void => {
                     output: 'apple\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'apple',
+                      animal: 'cat',
+                      color: 'pink',
+                      shape: 'circle',
+                      index: 0
+                    },
                     usable: null
                   },
                   {
@@ -113,6 +127,13 @@ describe(Workflow, (): void => {
                     output: 'cat\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'apple',
+                      animal: 'cat',
+                      color: 'pink',
+                      shape: 'circle',
+                      index: 0
+                    },
                     usable: null
                   },
                   {
@@ -124,6 +145,13 @@ describe(Workflow, (): void => {
                     output: 'circle\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'apple',
+                      animal: 'cat',
+                      color: 'pink',
+                      shape: 'circle',
+                      index: 0
+                    },
                     usable: null
                   }
                 ],
@@ -151,6 +179,13 @@ describe(Workflow, (): void => {
                     output: 'green\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'apple',
+                      animal: 'dog',
+                      color: 'green',
+                      shape: 'circle',
+                      index: 1
+                    },
                     usable: null
                   },
                   {
@@ -162,6 +197,13 @@ describe(Workflow, (): void => {
                     output: 'apple\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'apple',
+                      animal: 'dog',
+                      color: 'green',
+                      shape: 'circle',
+                      index: 1
+                    },
                     usable: null
                   },
                   {
@@ -173,6 +215,13 @@ describe(Workflow, (): void => {
                     output: 'dog\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'apple',
+                      animal: 'dog',
+                      color: 'green',
+                      shape: 'circle',
+                      index: 1
+                    },
                     usable: null
                   },
                   {
@@ -184,6 +233,13 @@ describe(Workflow, (): void => {
                     output: 'circle\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'apple',
+                      animal: 'dog',
+                      color: 'green',
+                      shape: 'circle',
+                      index: 1
+                    },
                     usable: null
                   }
                 ],
@@ -211,6 +267,12 @@ describe(Workflow, (): void => {
                     output: 'pink\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'pear',
+                      animal: 'cat',
+                      color: 'pink',
+                      index: 2
+                    },
                     usable: null
                   },
                   {
@@ -222,6 +284,12 @@ describe(Workflow, (): void => {
                     output: 'pear\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'pear',
+                      animal: 'cat',
+                      color: 'pink',
+                      index: 2
+                    },
                     usable: null
                   },
                   {
@@ -233,6 +301,12 @@ describe(Workflow, (): void => {
                     output: 'cat\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'pear',
+                      animal: 'cat',
+                      color: 'pink',
+                      index: 2
+                    },
                     usable: null
                   },
                   {
@@ -244,6 +318,12 @@ describe(Workflow, (): void => {
                     output: 'undefined\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'pear',
+                      animal: 'cat',
+                      color: 'pink',
+                      index: 2
+                    },
                     usable: null
                   }
                 ],
@@ -270,6 +350,12 @@ describe(Workflow, (): void => {
                     output: 'green\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'pear',
+                      animal: 'dog',
+                      color: 'green',
+                      index: 3
+                    },
                     usable: null
                   },
                   {
@@ -281,6 +367,12 @@ describe(Workflow, (): void => {
                     output: 'pear\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'pear',
+                      animal: 'dog',
+                      color: 'green',
+                      index: 3
+                    },
                     usable: null
                   },
                   {
@@ -292,6 +384,12 @@ describe(Workflow, (): void => {
                     output: 'dog\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'pear',
+                      animal: 'dog',
+                      color: 'green',
+                      index: 3
+                    },
                     usable: null
                   },
                   {
@@ -303,6 +401,12 @@ describe(Workflow, (): void => {
                     output: 'undefined\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'pear',
+                      animal: 'dog',
+                      color: 'green',
+                      index: 3
+                    },
                     usable: null
                   }
                 ],
@@ -329,6 +433,10 @@ describe(Workflow, (): void => {
                     output: 'undefined\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'banana',
+                      index: 4
+                    },
                     usable: null
                   },
                   {
@@ -340,6 +448,10 @@ describe(Workflow, (): void => {
                     output: 'banana\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'banana',
+                      index: 4
+                    },
                     usable: null
                   },
                   {
@@ -351,6 +463,10 @@ describe(Workflow, (): void => {
                     output: 'undefined\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'banana',
+                      index: 4
+                    },
                     usable: null
                   },
                   {
@@ -362,6 +478,10 @@ describe(Workflow, (): void => {
                     output: 'undefined\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'banana',
+                      index: 4
+                    },
                     usable: null
                   }
                 ],
@@ -386,6 +506,11 @@ describe(Workflow, (): void => {
                     output: 'undefined\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'banana',
+                      animal: 'cat',
+                      index: 5
+                    },
                     usable: null
                   },
                   {
@@ -397,6 +522,11 @@ describe(Workflow, (): void => {
                     output: 'banana\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'banana',
+                      animal: 'cat',
+                      index: 5
+                    },
                     usable: null
                   },
                   {
@@ -408,6 +538,11 @@ describe(Workflow, (): void => {
                     output: 'cat\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'banana',
+                      animal: 'cat',
+                      index: 5
+                    },
                     usable: null
                   },
                   {
@@ -419,6 +554,11 @@ describe(Workflow, (): void => {
                     output: 'undefined\n',
                     startedAt: expect.any(Date),
                     status: Status.Success,
+                    strategy: {
+                      fruit: 'banana',
+                      animal: 'cat',
+                      index: 5
+                    },
                     usable: null
                   }
                 ],
